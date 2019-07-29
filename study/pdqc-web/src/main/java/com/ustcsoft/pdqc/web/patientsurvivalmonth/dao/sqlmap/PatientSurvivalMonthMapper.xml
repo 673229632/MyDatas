@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PatientSurvivalMonthMapper">
+    <select id="selectPatientSurvivalMonth" resultType="com.ustcsoft.pdqc.web.patientsurvivalmonth.form.PatientSurvivalMonthForm">
+        SELECT 
+            hp_id AS hp_id,
+            COUNT(name) AS countNumber,
+            SUM(TIMESTAMPDIFF(month,first_dialsys_date,sysdate())) AS countMonth
+        FROM
+            pd_d_patient_info
+        WHERE
+            del_flag = "0"
+        AND 
+            outcome_type = "PD_OUT_1" and first_dialsys_date is not null
+        GROUP BY hp_id
+    </select>
+    
+    <select id="PatientSurvivalMonthDetail" resultType="com.ustcsoft.pdqc.web.patientsurvivalmonth.form.SurvivalMonthDetailForm">
+        SELECT
+        	hp_id AS hp_id,
+        	name AS name,
+        	phone_no AS phone_no,
+        	infection_diseases AS infection_diseases,
+        	 DATE_FORMAT(first_dialsys_date,'%Y-%m-%d') AS first_dialsys_date,
+        	TIMESTAMPDIFF(
+        		MONTH,
+        		first_dialsys_date,
+        		sysdate()
+        	) AS survivalMonth
+        FROM
+        	pd_d_patient_info
+        WHERE
+        	del_flag = "0"
+        AND outcome_type = "PD_OUT_1"
+        AND first_dialsys_date IS NOT NULL
+        AND hp_id = #{hp_id}
+    </select>
+</mapper>

@@ -1,0 +1,144 @@
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+
+@args String roleNo
+
+
+@widget.ctnr.Form("search_form"){
+	@widget.ctrl.Hidden({sLabel:"角色编号:",oValue:roleNo, sName:"roleNo", sId:"roleNo", sGroupCss:"col-3"})
+}
+@widget.ctnr.FormTitle(sTitle :"已添加用户列表"){
+	@widget.ctnr.Row(){
+		@widget.ctnr.BtnBox(sAlign:"left"){
+			@widget.ctnr.Div(sCss:"col-xs-12"){
+				@widget.ctrl.Button({sLabel:"批量删除",sOnClick:"batchDelete", sBtncss:"btn-normal", sId:"delBatch"})
+			}
+		}
+		@widget.ctrl.Table(sId:"search-result", sQueryParamFunction:"createQueryParams", sUrl:"/roleManagement/getRoleUserData", iPageSize:10, sSidePagination:"server"){
+			@widget.ctnr.Columns(){
+				{field: 'state', align:'center', checkbox: true},
+				{field: 'sno', align:'center', title: 'No', formatter: function (value, row, index){
+						return index+1;
+					}
+				},
+				{field: 'userNo', title: '用户编号', visible:false},
+				{field: 'userRealName', title: '用户名称'},
+				{field: 'phoneNum', title: '手机号码'},
+				{field: 'orgName', title: '所属组织'},
+				{field: 'orgNo', title: '所属组织编号', visible:false},
+			}
+		}
+	
+	}
+}
+@widget.ctnr.FormTitle(sTitle :"未添加用户列表"){
+	@widget.ctnr.Row(){
+		@widget.ctnr.Div(sCss:"col-xs-12", sStyle:"margin-top:10px"){
+			@widget.ctnr.Form("notadd_form"){
+				@widget.ctrl.Input({sLabel:"用户姓名:", sName:"userRealName", sId:"userRealName", sGroupCss:"col-4"})
+				@widget.ctrl.Input({sLabel:"手机号码:", sName:"phoneNum", sId:"phoneNum", sGroupCss:"col-4"})
+			}
+		}
+		@widget.ctnr.BtnBox(sAlign:"right"){
+			@widget.ctnr.Div(sCss:"col-xs-12"){
+				@widget.ctrl.Button({sLabel:"查询", sBtncss:"btn-normal",sOnClick:"searchUser", sId:"searchUserBtn"})
+				@widget.ctrl.Button({sLabel:"添加用户", sBtncss:"btn-normal", sOnClick:"addUser", sId:"addUserBtn"})
+			}
+		}
+		@widget.ctrl.Table(sId:"notadd-result", sQueryParamFunction:"createNotAddQueryParams", sUrl:"/roleManagement/getRoleNotAddUserData", iPageSize:10, sSidePagination:"server"){
+			@widget.ctnr.Columns(){
+				{field: 'state', align:'center', checkbox: true},
+				{field: 'sno', align:'center', title: 'No', formatter: function (value, row, index){
+						return index+1;
+					}
+				},
+				{field: 'userNo', title: '用户编号', visible:false},
+				{field: 'userRealName', title: '用户名称'},
+				{field: 'phoneNum', title: '手机号码'},
+				{field: 'orgName', title: '所属组织'},
+				{field: 'orgNo', title: '所属组织编号', visible:false},
+			}
+		}
+	}
+}
+
+<script>
+//列表检索参数
+function createQueryParams(params) {
+    return buildQueryParam('#search_form', params);
+}
+
+//列表检索参数
+function createNotAddQueryParams(params) {
+    return buildQueryParam('#notadd_form', params);
+}
+
+//批量删除
+function batchDelete() {
+	var changerows = $('#search-result').bootstrapTable('getSelections');
+	if (changerows.length > 0) {
+		var codes = "";
+		for (var i=0; i < changerows.length; i++) {
+			codes += changerows[i].userNo + ",";
+		}
+		codes.substr(0,codes.length-1);
+		Ajax.ajax({
+			url : '@url("/roleManagement/delBatchUser")',
+			data : {userNos : codes},
+			success : function(data) {
+				if (data.successCount > 0) {
+					parent.MsgBox.success(data.retMsg,function() {
+						location.reload();
+					});
+				} else {
+					parent.MsgBox.warning(data.retMsg,function() {
+						location.reload();
+					});
+				}
+			}
+		});
+	} else {
+		MsgBox.warning("请选择用户");
+	}
+}
+
+//刷新表格
+function freshtable() {
+	$('#notadd-result').bootstrapTable('refresh');
+}
+
+// 查询未添加用户
+function searchUser() {
+	freshtable();
+}
+
+// 添加用户
+function addUser() {
+	var changerows = $('#notadd-result').bootstrapTable('getSelections');
+	var roleNo = $('#roleNo').val();
+	if (changerows.length > 0) {
+		var codes = "";
+		for (var i=0; i < changerows.length; i++) {
+			codes += changerows[i].userNo + ",";
+		}
+		codes.substring(0,codes.length-1);
+		Ajax.ajax({
+			url : '@url("/roleManagement/addRoleUserData")',
+			data : {userNos : codes,
+					roleNo : roleNo},
+			success : function(data) {
+				if (data.successCount > 0) {
+					parent.MsgBox.success(data.retMsg,function() {
+						location.reload();
+					});
+				} else {
+					parent.MsgBox.warning(data.retMsg,function() {
+						location.reload();
+					});
+				}
+			}
+		});
+	} else {
+		MsgBox.warning("请选择用户");
+	}
+}
+</script>

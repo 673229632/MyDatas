@@ -1,0 +1,36 @@
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+@import com.ustcsoft.pdqc.web.scoremanagement.form.HistoricalRecords;
+@args String diaylsisid
+@widget.ctnr.Div(sCss:"col-xs-12"){
+	@widget.ctnr.Form("search_form"){
+		@widget.ctrl.Hidden({ sName:"diaylsisid", sId:"diaylsisid",sGroupCss:"col-4",oValue:diaylsisid})
+	}
+	
+	@widget.ctrl.Table(sId:"view_result", sQueryParamFunction:"createQueryParams", sUrl:"/dialysisMechanism/getScoringDetails", iPageSize:10, sSidePagination:"server"){
+		@widget.ctnr.Columns(){
+      		{field: 'id', title: 'id',visible:false},
+      		{field: 'diaylsisId', title: 'diaylsisId',visible:false},
+			{field: 'scoreName', title: '评分名'},
+			{field: 'score', title: '得分'},
+			{title: '得分明细', formatter: function (value, row, index){
+				return "<div><input type='button' style='margin-left: 5px' onclick='ScoringDetail(\""+ row.id +"\")' value='查看' title='查看' /></div>";
+				}
+      		},
+		}
+	}
+}
+<script>
+function createQueryParams(params){
+	return buildQueryParam('#search_form', params);
+}
+
+//得分明细
+function ScoringDetail(val) {
+	var id = "" + val;
+	parent.MsgBox.warning("当前无法查看得分明细",function(){
+		location.reload();
+	});
+} 
+</script>

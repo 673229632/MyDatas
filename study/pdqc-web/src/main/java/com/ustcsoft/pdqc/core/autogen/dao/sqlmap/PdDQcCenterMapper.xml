@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdDQcCenterMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenter">
+    <id column="qc_center_no" jdbcType="VARCHAR" property="qcCenterNo" />
+    <result column="org_no" jdbcType="VARCHAR" property="orgNo" />
+    <result column="qc_center_name" jdbcType="VARCHAR" property="qcCenterName" />
+    <result column="qc_center_address" jdbcType="VARCHAR" property="qcCenterAddress" />
+    <result column="qc_center_tel" jdbcType="VARCHAR" property="qcCenterTel" />
+    <result column="qc_center_postcode" jdbcType="VARCHAR" property="qcCenterPostcode" />
+    <result column="qc_center_email" jdbcType="VARCHAR" property="qcCenterEmail" />
+    <result column="qc_center_fax" jdbcType="VARCHAR" property="qcCenterFax" />
+    <result column="qc_center_meno" jdbcType="VARCHAR" property="qcCenterMeno" />
+    <result column="qc_center_manager" jdbcType="VARCHAR" property="qcCenterManager" />
+    <result column="order_index" jdbcType="BIGINT" property="orderIndex" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="BIGINT" property="rowVersion" />
+    <result column="screen_id" jdbcType="VARCHAR" property="screenId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    qc_center_no, org_no, qc_center_name, qc_center_address, qc_center_tel, qc_center_postcode, 
+    qc_center_email, qc_center_fax, qc_center_meno, qc_center_manager, order_index, del_flag, 
+    created_by, date_created, modified_by, date_modified, row_version, screen_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenterExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_d_qc_center
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenterKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_d_qc_center
+    where qc_center_no = #{qcCenterNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenterKey">
+    delete from pd_d_qc_center
+    where qc_center_no = #{qcCenterNo,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenterExample">
+    delete from pd_d_qc_center
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenter">
+    insert into pd_d_qc_center (qc_center_no, org_no, qc_center_name, 
+      qc_center_address, qc_center_tel, qc_center_postcode, 
+      qc_center_email, qc_center_fax, qc_center_meno, 
+      qc_center_manager, order_index, del_flag, 
+      created_by, date_created, modified_by, 
+      date_modified, row_version, screen_id
+      )
+    values (#{qcCenterNo,jdbcType=VARCHAR}, #{orgNo,jdbcType=VARCHAR}, #{qcCenterName,jdbcType=VARCHAR}, 
+      #{qcCenterAddress,jdbcType=VARCHAR}, #{qcCenterTel,jdbcType=VARCHAR}, #{qcCenterPostcode,jdbcType=VARCHAR}, 
+      #{qcCenterEmail,jdbcType=VARCHAR}, #{qcCenterFax,jdbcType=VARCHAR}, #{qcCenterMeno,jdbcType=VARCHAR}, 
+      #{qcCenterManager,jdbcType=VARCHAR}, #{orderIndex,jdbcType=BIGINT}, #{delFlag,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{dateCreated,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, 
+      #{dateModified,jdbcType=TIMESTAMP}, #{rowVersion,jdbcType=BIGINT}, #{screenId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenter">
+    insert into pd_d_qc_center
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="qcCenterNo != null">
+        qc_center_no,
+      </if>
+      <if test="orgNo != null">
+        org_no,
+      </if>
+      <if test="qcCenterName != null">
+        qc_center_name,
+      </if>
+      <if test="qcCenterAddress != null">
+        qc_center_address,
+      </if>
+      <if test="qcCenterTel != null">
+        qc_center_tel,
+      </if>
+      <if test="qcCenterPostcode != null">
+        qc_center_postcode,
+      </if>
+      <if test="qcCenterEmail != null">
+        qc_center_email,
+      </if>
+      <if test="qcCenterFax != null">
+        qc_center_fax,
+      </if>
+      <if test="qcCenterMeno != null">
+        qc_center_meno,
+      </if>
+      <if test="qcCenterManager != null">
+        qc_center_manager,
+      </if>
+      <if test="orderIndex != null">
+        order_index,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+      <if test="screenId != null">
+        screen_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="qcCenterNo != null">
+        #{qcCenterNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orgNo != null">
+        #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterName != null">
+        #{qcCenterName,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterAddress != null">
+        #{qcCenterAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterTel != null">
+        #{qcCenterTel,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterPostcode != null">
+        #{qcCenterPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterEmail != null">
+        #{qcCenterEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterFax != null">
+        #{qcCenterFax,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterMeno != null">
+        #{qcCenterMeno,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterManager != null">
+        #{qcCenterManager,jdbcType=VARCHAR},
+      </if>
+      <if test="orderIndex != null">
+        #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="screenId != null">
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenterExample" resultType="java.lang.Integer">
+    select count(*) from pd_d_qc_center
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_d_qc_center
+    <set>
+      <if test="record._selectiveMark.qcCenterNo != null">
+        qc_center_no = #{record.qcCenterNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orgNo != null">
+        org_no = #{record.orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterName != null">
+        qc_center_name = #{record.qcCenterName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterAddress != null">
+        qc_center_address = #{record.qcCenterAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterTel != null">
+        qc_center_tel = #{record.qcCenterTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterPostcode != null">
+        qc_center_postcode = #{record.qcCenterPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterEmail != null">
+        qc_center_email = #{record.qcCenterEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterFax != null">
+        qc_center_fax = #{record.qcCenterFax,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterMeno != null">
+        qc_center_meno = #{record.qcCenterMeno,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterManager != null">
+        qc_center_manager = #{record.qcCenterManager,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orderIndex != null">
+        order_index = #{record.orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.screenId != null">
+        screen_id = #{record.screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_d_qc_center
+    set qc_center_no = #{record.qcCenterNo,jdbcType=VARCHAR},
+      org_no = #{record.orgNo,jdbcType=VARCHAR},
+      qc_center_name = #{record.qcCenterName,jdbcType=VARCHAR},
+      qc_center_address = #{record.qcCenterAddress,jdbcType=VARCHAR},
+      qc_center_tel = #{record.qcCenterTel,jdbcType=VARCHAR},
+      qc_center_postcode = #{record.qcCenterPostcode,jdbcType=VARCHAR},
+      qc_center_email = #{record.qcCenterEmail,jdbcType=VARCHAR},
+      qc_center_fax = #{record.qcCenterFax,jdbcType=VARCHAR},
+      qc_center_meno = #{record.qcCenterMeno,jdbcType=VARCHAR},
+      qc_center_manager = #{record.qcCenterManager,jdbcType=VARCHAR},
+      order_index = #{record.orderIndex,jdbcType=BIGINT},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=BIGINT},
+      screen_id = #{record.screenId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenter">
+    update pd_d_qc_center
+    <set>
+      <if test="_selectiveMark.orgNo != null">
+        org_no = #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterName != null">
+        qc_center_name = #{qcCenterName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterAddress != null">
+        qc_center_address = #{qcCenterAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterTel != null">
+        qc_center_tel = #{qcCenterTel,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterPostcode != null">
+        qc_center_postcode = #{qcCenterPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterEmail != null">
+        qc_center_email = #{qcCenterEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterFax != null">
+        qc_center_fax = #{qcCenterFax,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterMeno != null">
+        qc_center_meno = #{qcCenterMeno,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterManager != null">
+        qc_center_manager = #{qcCenterManager,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.orderIndex != null">
+        order_index = #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.screenId != null">
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where qc_center_no = #{qcCenterNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDQcCenter">
+    update pd_d_qc_center
+    set org_no = #{orgNo,jdbcType=VARCHAR},
+      qc_center_name = #{qcCenterName,jdbcType=VARCHAR},
+      qc_center_address = #{qcCenterAddress,jdbcType=VARCHAR},
+      qc_center_tel = #{qcCenterTel,jdbcType=VARCHAR},
+      qc_center_postcode = #{qcCenterPostcode,jdbcType=VARCHAR},
+      qc_center_email = #{qcCenterEmail,jdbcType=VARCHAR},
+      qc_center_fax = #{qcCenterFax,jdbcType=VARCHAR},
+      qc_center_meno = #{qcCenterMeno,jdbcType=VARCHAR},
+      qc_center_manager = #{qcCenterManager,jdbcType=VARCHAR},
+      order_index = #{orderIndex,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=BIGINT},
+      screen_id = #{screenId,jdbcType=VARCHAR}
+    where qc_center_no = #{qcCenterNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

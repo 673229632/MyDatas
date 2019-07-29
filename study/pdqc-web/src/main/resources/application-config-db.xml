@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans    
+    http://www.springframework.org/schema/beans/spring-beans-4.2.xsd    
+    http://www.springframework.org/schema/context    
+    http://www.springframework.org/schema/context/spring-context-4.2.xsd    
+    http://www.springframework.org/schema/tx    
+    http://www.springframework.org/schema/tx/spring-tx-4.2.xsd    
+    http://www.springframework.org/schema/aop    
+    http://www.springframework.org/schema/aop/spring-aop-4.2.xsd    
+    http://www.springframework.org/schema/util     
+    http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+    <description>DB相关的配置信息</description>
+
+    <!-- 配置数据源DBCP -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <!-- 驱动 -->
+        <property name="driverClassName" value="${Jdbc.DriverClassName}" />
+        <!-- URL -->
+        <property name="url" value="${Jdbc.URL}" />
+        <!-- 用户名 -->
+        <property name="username" value="${Jdbc.UserName}" />
+        <!-- 用户密码 -->
+        <property name="password" value="${Jdbc.Password}" />
+        <!-- 连接池最大使用连接数 -->
+        <property name="maxActive" value="${Jdbc.MaxActive}" />
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="${Jdbc.InitialSize}" />
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="${Jdbc.MaxWait}" />
+        <!-- 连接池最大空闲 -->
+        <property name="maxIdle" value="${Jdbc.MaxIdle}" />
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="${Jdbc.MinIdle}" />
+        <!-- 自动清除无用连接 -->
+        <property name="removeAbandoned" value="${Jdbc.RemoveAbandoned}" />
+        <!-- 清除无用连接的等待时间 -->
+        <property name="removeAbandonedTimeout" value="${Jdbc.RemoveAbandonedTimeout}" />
+
+        <!-- 解决8小时断开问题 -->
+        <!-- 验证用SQL -->
+        <property name="validationQuery" value="${Jdbc.DBCP.ValidationQuery}" />
+        <!-- 打开检查,用异步线程evict进行检查 -->
+        <property name="testWhileIdle" value="${Jdbc.DBCP.TestWhileIdle}" />
+        <!-- 设置的Evict线程的时间 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${Jdbc.DBCP.TimeBetweenEvictionRunsMillis}" />
+        <!-- 连接池中连接，在时间段内一直空闲， 被逐出连接池的时间 -->
+        <property name="minEvictableIdleTimeMillis" value="${Jdbc.DBCP.MinEvictableIdleTimeMillis}" />
+        <!-- 每次检查链接的数量 -->
+        <property name="numTestsPerEvictionRun" value="${Jdbc.DBCP.NumTestsPerEvictionRun}" />
+    </bean>
+
+    <!-- mybatis文件配置，扫描所有mapper文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath:com/ustcsoft/*/**/dao/sqlmap/*.xml" />
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+    </bean>
+    
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.ustcsoft.pdqc.core.autogen.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+    
+    <bean id="commonDao" class="com.ustcsoft.pdqc.web.common.dao.impl.WebCommonDaoImpl">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    
+    <!-- 对数据源进行事务管理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="transactionAttributes">
+            <props>
+                <prop key="insert*">PROPAGATION_REQUIRED, -Exception</prop>
+                <prop key="update*">PROPAGATION_REQUIRED, -Exception</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED, -Exception</prop>
+                <prop key="save*">PROPAGATION_REQUIRED, -Exception</prop>
+                <prop key="do*">PROPAGATION_REQUIRED, -Exception</prop>
+                <prop key="select*">PROPAGATION_SUPPORTS,readOnly, -Exception</prop>
+                <prop key="get*">PROPAGATION_SUPPORTS,readOnly, -Exception</prop>
+                <prop key="find*">PROPAGATION_SUPPORTS,readOnly, -Exception</prop>
+                <prop key="search*">PROPAGATION_SUPPORTS,readOnly, -Exception</prop>
+                <prop key="*">PROPAGATION_SUPPORTS,readOnly, -Exception</prop>
+            </props>
+        </property>
+    </bean>
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionInterceptor</value>
+            </list>
+        </property>
+        <property name="beanNames">
+            <list>
+                <value>*ServiceImpl</value>
+            </list>
+        </property>
+    </bean>
+    
+</beans>

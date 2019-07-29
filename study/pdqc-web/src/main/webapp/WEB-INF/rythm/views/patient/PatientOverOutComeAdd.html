@@ -1,0 +1,256 @@
+@extends(views.common.DialogView,  v_sTitle:"转归信息上报/编辑")
+@import com.ustcsoft.pdqc.web.common.entity.Code
+@import com.ustcsoft.pdqc.web.patient.form.PatientOutComeCondForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+@args String hpId
+@args String patientId
+@args List<Code> exitCodes
+@args List<Code> turnOverPlaces
+@args List<Code> turnOverReason
+@args List<Code> deathCodes
+@args List<Code> cardiovascularReason
+@args List<Code> cerebrovascularReason
+@args List<Code> infectedReason
+@args PatientOutComeCondForm condForm
+@widget.ctnr.Row() {
+@widget.ctnr.Column(sCss:"col-8") {
+	@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-2 hanzi5",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-2 hanzi5",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-2 hanzi5",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+}
+}
+@widget.ctnr.Form("patientOverOutCome_form"){
+	@widget.ctrl.Hidden(sId:"id",sName:"id",oValue:condForm.getId())
+	@widget.ctrl.Hidden(sId:"patientId",sName:"patientId",oValue:condForm.getPatientId())
+	@widget.ctrl.Hidden(sId:"hpId",sName:"hpId",oValue:condForm.getHpId())
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"转归日期:",sGroupCss:"col-3 hanzi5",sName:"outComeDate",sId:"outComeDate",
+	  				sFormat:"YYYY-MM-DD",bRequired:true)
+		@widget.ctrl.SelectPicker(sLabel:"转归类型:", sName:"outComeType", sId:"outComeType",
+	  				bShowEmptyOption:true,oOptions:"{'PD_OUT_1':'在科患者','PD_OUT_2':'退出患者','PD_OUT_3':'死亡患者','PD_OUT_4':'转出患者'}",sGroupCss:"col-6 hanzi5"
+	  				,bRequired:true)
+	}
+	@widget.ctnr.Row() {
+		@widget.ctnr.Div(sId:"exitPatientDiv"){
+			@widget.ctrl.SelectPicker(sLabel:"退出类型:", sName:"exitType", sId:"exitType",
+  				bShowEmptyOption:true,oOptions:exitCodes,sGroupCss:"col-6 hanzi5")
+  			<!--退出类型其它  -->
+  			@widget.ctnr.Div(sId:"exitPatientOtherDiv"){
+  				@widget.ctrl.Input(sLabel:"其它退出类型:",sName:"exitPatientOther",sMaxLength:"160",sGroupCss:"col-6 hanzi5")
+  			}
+		}
+	
+		@widget.ctnr.Div(sId:"turnOverPatientDiv"){
+			@widget.ctrl.SelectPicker(sLabel:"转出地点:", sName:"turnOverPlace",sId:"turnOverPlace",oOptions:turnOverPlaces,sGroupCss:"col-6 hanzi5")
+			@widget.ctrl.SelectPicker(sLabel:"转出原因:", sName:"turnOverReason",sId:"turnOverReason",oOptions:turnOverReason,sGroupCss:"col-6 hanzi5")
+			<!--转出类型其它 -->
+			@widget.ctnr.Div(sId:"turnOverPatientOtherDiv"){
+	  			@widget.ctrl.Input(sLabel:"其它转出原因:",sName:"turnOverPatientOther",sMaxLength:"160",sGroupCss:"col-6 hanzi5",sGroupCss:"col-6 hanzi5")
+	  		}
+		}
+	
+		@widget.ctnr.Div(sId:"deathPatientDiv"){
+			@widget.ctrl.SelectPicker(sLabel:"死亡原因:", sName:"deathReason",sId:"deathReason",oOptions:deathCodes,sGroupCss:"col-6 hanzi5")
+			<!--心血管事件 -->
+			@widget.ctnr.Div(sId:"cardiovascularDiv"){
+				@widget.ctrl.SelectPicker(sLabel:"心血管事件:", sName:"cardiovascular",sId:"cardiovascular",oOptions:cardiovascularReason,sGroupCss:"col-6 hanzi5")
+				@widget.ctnr.Div(sId:"cardiovascularDiv_1"){
+					@widget.ctrl.Input(sLabel:"其它心血管事件:",sName:"cardiovascularOther",sMaxLength:"160",sGroupCss:"col-6 hanzi5")
+				}
+			}
+			<!--脑血管事件 -->
+			@widget.ctnr.Div(sId:"cerebrovascularDiv"){
+				@widget.ctrl.SelectPicker(sLabel:"脑血管事件:", sName:"cerebrovascular",sId:"cerebrovascular",oOptions:cerebrovascularReason,sGroupCss:"col-6 hanzi5")
+				@widget.ctnr.Div(sId:"cerebrovascular_1"){
+					@widget.ctrl.Input(sLabel:"其它脑血管事件:",sName:"cerebrovascularOther",sMaxLength:"160",sGroupCss:"col-6 hanzi5")
+				}
+			}
+			<!--感染 -->
+			@widget.ctnr.Div(sId:"infectedDiv"){
+				@widget.ctrl.SelectPicker(sLabel:"感染:", sName:"infected",sId:"infected",oOptions:infectedReason,sGroupCss:"col-6 hanzi5")
+				@widget.ctnr.Div(sId:"infectedReason_1"){
+					@widget.ctrl.Input(sLabel:"其它感染:",sName:"infectedReasonOther",sMaxLength:"160",sGroupCss:"col-6 hanzi5")
+				}
+			}
+			<!--其它死亡原因 -->
+			@widget.ctnr.Div(sId:"deathOtherDiv"){
+				@widget.ctrl.Input(sLabel:"其它死亡原因:",sName:"deathOther",sMaxLength:"160",sGroupCss:"col-6 hanzi5")
+			}
+		}
+ }
+	@widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"editSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+ 	}
+ }
+ <script type="text/javascript">
+ 		$(function(){
+ 			initHide();
+ 		});
+ 		//转归类型切换
+ 		$("#outComeType").on('change',function(){
+ 			initHide();
+ 			initSelectOption();
+ 			typeChange();
+ 		});
+ 		//重置所有已经选择的项目
+ 		function initSelectOption(){
+ 			$("#exitType").find(".selectpicker").selectpicker('val', "");
+ 			$("#turnOverPlace").find(".selectpicker").selectpicker('val', "");
+ 			$("#turnOverReason").find(".selectpicker").selectpicker('val', "");
+ 			$("#deathReason").find(".selectpicker").selectpicker('val', "");
+ 			$("#cardiovascular").find(".selectpicker").selectpicker('val', "");
+ 			$("#cerebrovascular").find(".selectpicker").selectpicker('val', "");
+ 			$("#infected").find(".selectpicker").selectpicker('val', "");
+ 		}
+ 		function typeChange(){
+ 			var outComeType=Widget.getValue($("#outComeType"));
+ 			//退出
+ 			if(outComeType=="PD_OUT_2"){
+ 				$("#exitPatientDiv").show();
+ 				var exitType=Widget.getValue($("#exitType"));
+ 				if(exitType=="PD_OUT_2_5"){
+ 					$("#exitPatientOtherDiv").show();
+ 				}else{
+ 					$("#exitPatientOtherDiv").hide();
+ 				}
+ 			}else if(outComeType=="PD_OUT_3"){//死亡
+ 				$("#deathPatientDiv").show();
+ 				$("#cardiovascularDiv").hide();
+ 				$("#cerebrovascularDiv").hide();
+ 				$("#infectedDiv").hide();
+ 				var deathReason=Widget.getValue($("#deathReason"));
+ 				if(deathReason=="PD_OUT_3_5"){
+ 					$("#deathOtherDiv").show();
+ 				}else{
+ 					$("#deathOtherDiv").hide();
+ 				}
+ 				
+ 			}else if(outComeType=="PD_OUT_4"){//转出
+ 				$("#turnOverPatientDiv").show();
+ 				var turnOverReason=Widget.getValue($("#turnOverReason"));
+ 				if(turnOverReason=="PD_OUT_4_2_4"){
+ 					$("#turnOverPatientOtherDiv").show();
+ 				}else{
+ 					$("#turnOverPatientOtherDiv").hide();
+ 				}
+ 				
+ 			}
+ 		}
+ 		//退出切换
+ 		$("#exitType").on('change',function(){
+ 			var exitType=Widget.getValue($("#exitType"));
+ 			if(exitType=="PD_OUT_2_5"){
+ 				$("#exitPatientOtherDiv").show();
+ 			}else{
+ 				$("#exitPatientOtherDiv").hide();
+ 			}
+ 		});
+ 		//转出原因切换
+ 		$("#turnOverReason").on('change',function(){
+ 			var turnOverReason=Widget.getValue($("#turnOverReason"));
+ 			if(turnOverReason=="PD_OUT_4_2_4"){
+ 				$("#turnOverPatientOtherDiv").show();
+ 			}else{
+ 				$("#turnOverPatientOtherDiv").hide();
+ 			}
+ 		});
+ 		//死亡原因切换
+ 		$("#deathReason").on('change',function(){
+ 			initDeathReason();
+ 			var deathReason=Widget.getValue($("#deathReason"));
+ 			if(deathReason=="PD_OUT_3_1"){
+ 				$("#cardiovascularDiv").show();
+ 			}else if(deathReason=="PD_OUT_3_2"){
+ 				$("#cerebrovascularDiv").show();
+ 			}else if(deathReason=="PD_OUT_3_3"){
+ 				$("#infectedDiv").show();
+ 			}else if(deathReason=="PD_OUT_3_5"){
+ 				$("#deathOtherDiv").show();
+ 			}
+ 		});
+ 		//初始化死亡原因
+ 		function initDeathReason(){
+ 			$("#cardiovascularDiv").hide();
+ 			var cardiovascular=Widget.getValue($("#cardiovascular"));
+ 			if(cardiovascular=="PD_OUT_3_1_4"){
+ 				$("#cardiovascularDiv_1").show();
+ 			}else{
+ 				$("#cardiovascularDiv_1").hide();
+ 			}
+ 			$("#cerebrovascularDiv").hide();
+ 			var cerebrovascular=Widget.getValue($("#cerebrovascular"));
+ 			if(cerebrovascular=="PD_OUT_3_2_3"){
+ 				$("#cerebrovascular_1").show();
+ 			}else{
+ 				$("#cerebrovascular_1").hide();
+ 			}
+ 			$("#infectedDiv").hide();
+ 			var infected=Widget.getValue($("#infected"));
+ 			if(infected=="PD_OUT_3_3_5"){
+ 				$("#infectedReason_1").show();
+ 			}else{
+ 				$("#infectedReason_1").hide();
+ 			}
+ 			$("#deathOtherDiv").hide();
+ 		}
+ 		//心血管事件切换
+ 		$("#cardiovascular").on('change',function(){
+ 			var cardiovascular=Widget.getValue($("#cardiovascular"));
+ 			if(cardiovascular=="PD_OUT_3_1_4"){
+ 				$("#cardiovascularDiv_1").show();
+ 			}else{
+ 				$("#cardiovascularDiv_1").hide();
+ 			}
+ 		});
+ 		//脑血管事件切换
+ 		$("#cerebrovascular").on('change',function(){
+ 			var cerebrovascular=Widget.getValue($("#cerebrovascular"));
+ 			if(cerebrovascular=="PD_OUT_3_2_3"){
+ 				$("#cerebrovascular_1").show();
+ 			}else{
+ 				$("#cerebrovascular_1").hide();
+ 			}
+ 		});
+ 		//感染事件切换
+ 		$("#infected").on('change',function(){
+ 			var infected=Widget.getValue($("#infected"));
+ 			if(infected=="PD_OUT_3_3_5"){
+ 				$("#infectedReason_1").show();
+ 			}else{
+ 				$("#infectedReason_1").hide();
+ 			}
+ 		});
+ 		//初始化隐藏
+ 		function initHide(){
+ 			$("#exitPatientDiv").hide();
+ 			$("#turnOverPatientDiv").hide();
+ 			$("#deathPatientDiv").hide();
+ 		}
+ 		//保存
+ 		function editSave(){
+ 			var patientId=$("#patientId").val();
+ 			$('#patientOverOutCome_form').bootstrapValidator('validate');
+ 			var isValid = $('#patientOverOutCome_form').data('bootstrapValidator').isValid();
+ 			if(!isValid){
+ 		    	return;
+ 		    }
+ 			var sConidtion = $('#patientOverOutCome_form').serialize();
+ 			Ajax.ajax({
+ 				url : '@url("/patientOverView/saveOutcome")',
+ 				data : sConidtion,
+ 				success : function(data) {
+ 					if (data.retCode == 0) {
+ 						parent.MsgBox.success(data.retMsg,function(){
+ 		                    parent.$("#search-result2").bootstrapTable('refresh', {query: {patientId : patientId}});
+ 		                    Dialog.closeSelf();
+ 		                });
+ 					} else {
+ 						MsgBox.warning(data.retMsg);
+ 					}
+ 				}
+ 			});
+ 		}
+ </script>

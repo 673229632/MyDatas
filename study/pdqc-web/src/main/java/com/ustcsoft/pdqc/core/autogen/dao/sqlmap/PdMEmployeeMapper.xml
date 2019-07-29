@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdMEmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployee">
+    <id column="employee_no" jdbcType="VARCHAR" property="employeeNo" />
+    <result column="org_no" jdbcType="VARCHAR" property="orgNo" />
+    <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
+    <result column="employee_sex" jdbcType="VARCHAR" property="employeeSex" />
+    <result column="employee_type" jdbcType="VARCHAR" property="employeeType" />
+    <result column="certificate_type" jdbcType="VARCHAR" property="certificateType" />
+    <result column="certificate_no" jdbcType="VARCHAR" property="certificateNo" />
+    <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="employee_tel" jdbcType="VARCHAR" property="employeeTel" />
+    <result column="medi_year" jdbcType="VARCHAR" property="mediYear" />
+    <result column="dial_year" jdbcType="VARCHAR" property="dialYear" />
+    <result column="employee_mobile" jdbcType="VARCHAR" property="employeeMobile" />
+    <result column="employee_address" jdbcType="VARCHAR" property="employeeAddress" />
+    <result column="order_index" jdbcType="BIGINT" property="orderIndex" />
+    <result column="work_start" jdbcType="DATE" property="workStart" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="employee_email" jdbcType="VARCHAR" property="employeeEmail" />
+    <result column="employee_post" jdbcType="VARCHAR" property="employeePost" />
+    <result column="is_parttime" jdbcType="CHAR" property="isParttime" />
+    <result column="is_check" jdbcType="CHAR" property="isCheck" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="BIGINT" property="rowVersion" />
+    <result column="screen_id" jdbcType="VARCHAR" property="screenId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    employee_no, org_no, employee_name, employee_sex, employee_type, certificate_type, 
+    certificate_no, id_card_no, birthday, employee_tel, medi_year, dial_year, employee_mobile, 
+    employee_address, order_index, work_start, education, employee_email, employee_post, 
+    is_parttime, is_check, del_flag, created_by, date_created, modified_by, date_modified, 
+    row_version, screen_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_m_employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_m_employee
+    where employee_no = #{employeeNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeKey">
+    delete from pd_m_employee
+    where employee_no = #{employeeNo,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeExample">
+    delete from pd_m_employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployee">
+    insert into pd_m_employee (employee_no, org_no, employee_name, 
+      employee_sex, employee_type, certificate_type, 
+      certificate_no, id_card_no, birthday, 
+      employee_tel, medi_year, dial_year, 
+      employee_mobile, employee_address, order_index, 
+      work_start, education, employee_email, 
+      employee_post, is_parttime, is_check, 
+      del_flag, created_by, date_created, 
+      modified_by, date_modified, row_version, 
+      screen_id)
+    values (#{employeeNo,jdbcType=VARCHAR}, #{orgNo,jdbcType=VARCHAR}, #{employeeName,jdbcType=VARCHAR}, 
+      #{employeeSex,jdbcType=VARCHAR}, #{employeeType,jdbcType=VARCHAR}, #{certificateType,jdbcType=VARCHAR}, 
+      #{certificateNo,jdbcType=VARCHAR}, #{idCardNo,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{employeeTel,jdbcType=VARCHAR}, #{mediYear,jdbcType=VARCHAR}, #{dialYear,jdbcType=VARCHAR}, 
+      #{employeeMobile,jdbcType=VARCHAR}, #{employeeAddress,jdbcType=VARCHAR}, #{orderIndex,jdbcType=BIGINT}, 
+      #{workStart,jdbcType=DATE}, #{education,jdbcType=VARCHAR}, #{employeeEmail,jdbcType=VARCHAR}, 
+      #{employeePost,jdbcType=VARCHAR}, #{isParttime,jdbcType=CHAR}, #{isCheck,jdbcType=CHAR}, 
+      #{delFlag,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{dateCreated,jdbcType=TIMESTAMP}, 
+      #{modifiedBy,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, #{rowVersion,jdbcType=BIGINT}, 
+      #{screenId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployee">
+    insert into pd_m_employee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="employeeNo != null">
+        employee_no,
+      </if>
+      <if test="orgNo != null">
+        org_no,
+      </if>
+      <if test="employeeName != null">
+        employee_name,
+      </if>
+      <if test="employeeSex != null">
+        employee_sex,
+      </if>
+      <if test="employeeType != null">
+        employee_type,
+      </if>
+      <if test="certificateType != null">
+        certificate_type,
+      </if>
+      <if test="certificateNo != null">
+        certificate_no,
+      </if>
+      <if test="idCardNo != null">
+        id_card_no,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="employeeTel != null">
+        employee_tel,
+      </if>
+      <if test="mediYear != null">
+        medi_year,
+      </if>
+      <if test="dialYear != null">
+        dial_year,
+      </if>
+      <if test="employeeMobile != null">
+        employee_mobile,
+      </if>
+      <if test="employeeAddress != null">
+        employee_address,
+      </if>
+      <if test="orderIndex != null">
+        order_index,
+      </if>
+      <if test="workStart != null">
+        work_start,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="employeeEmail != null">
+        employee_email,
+      </if>
+      <if test="employeePost != null">
+        employee_post,
+      </if>
+      <if test="isParttime != null">
+        is_parttime,
+      </if>
+      <if test="isCheck != null">
+        is_check,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+      <if test="screenId != null">
+        screen_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="employeeNo != null">
+        #{employeeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orgNo != null">
+        #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeName != null">
+        #{employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeSex != null">
+        #{employeeSex,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeType != null">
+        #{employeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateType != null">
+        #{certificateType,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateNo != null">
+        #{certificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardNo != null">
+        #{idCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="employeeTel != null">
+        #{employeeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="mediYear != null">
+        #{mediYear,jdbcType=VARCHAR},
+      </if>
+      <if test="dialYear != null">
+        #{dialYear,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeMobile != null">
+        #{employeeMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeAddress != null">
+        #{employeeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="orderIndex != null">
+        #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="workStart != null">
+        #{workStart,jdbcType=DATE},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeEmail != null">
+        #{employeeEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="employeePost != null">
+        #{employeePost,jdbcType=VARCHAR},
+      </if>
+      <if test="isParttime != null">
+        #{isParttime,jdbcType=CHAR},
+      </if>
+      <if test="isCheck != null">
+        #{isCheck,jdbcType=CHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="screenId != null">
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeExample" resultType="java.lang.Integer">
+    select count(*) from pd_m_employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_m_employee
+    <set>
+      <if test="record._selectiveMark.employeeNo != null">
+        employee_no = #{record.employeeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orgNo != null">
+        org_no = #{record.orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.employeeName != null">
+        employee_name = #{record.employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.employeeSex != null">
+        employee_sex = #{record.employeeSex,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.employeeType != null">
+        employee_type = #{record.employeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.certificateType != null">
+        certificate_type = #{record.certificateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.certificateNo != null">
+        certificate_no = #{record.certificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.idCardNo != null">
+        id_card_no = #{record.idCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.birthday != null">
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record._selectiveMark.employeeTel != null">
+        employee_tel = #{record.employeeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.mediYear != null">
+        medi_year = #{record.mediYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dialYear != null">
+        dial_year = #{record.dialYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.employeeMobile != null">
+        employee_mobile = #{record.employeeMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.employeeAddress != null">
+        employee_address = #{record.employeeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orderIndex != null">
+        order_index = #{record.orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.workStart != null">
+        work_start = #{record.workStart,jdbcType=DATE},
+      </if>
+      <if test="record._selectiveMark.education != null">
+        education = #{record.education,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.employeeEmail != null">
+        employee_email = #{record.employeeEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.employeePost != null">
+        employee_post = #{record.employeePost,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.isParttime != null">
+        is_parttime = #{record.isParttime,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.isCheck != null">
+        is_check = #{record.isCheck,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.screenId != null">
+        screen_id = #{record.screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_m_employee
+    set employee_no = #{record.employeeNo,jdbcType=VARCHAR},
+      org_no = #{record.orgNo,jdbcType=VARCHAR},
+      employee_name = #{record.employeeName,jdbcType=VARCHAR},
+      employee_sex = #{record.employeeSex,jdbcType=VARCHAR},
+      employee_type = #{record.employeeType,jdbcType=VARCHAR},
+      certificate_type = #{record.certificateType,jdbcType=VARCHAR},
+      certificate_no = #{record.certificateNo,jdbcType=VARCHAR},
+      id_card_no = #{record.idCardNo,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      employee_tel = #{record.employeeTel,jdbcType=VARCHAR},
+      medi_year = #{record.mediYear,jdbcType=VARCHAR},
+      dial_year = #{record.dialYear,jdbcType=VARCHAR},
+      employee_mobile = #{record.employeeMobile,jdbcType=VARCHAR},
+      employee_address = #{record.employeeAddress,jdbcType=VARCHAR},
+      order_index = #{record.orderIndex,jdbcType=BIGINT},
+      work_start = #{record.workStart,jdbcType=DATE},
+      education = #{record.education,jdbcType=VARCHAR},
+      employee_email = #{record.employeeEmail,jdbcType=VARCHAR},
+      employee_post = #{record.employeePost,jdbcType=VARCHAR},
+      is_parttime = #{record.isParttime,jdbcType=CHAR},
+      is_check = #{record.isCheck,jdbcType=CHAR},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=BIGINT},
+      screen_id = #{record.screenId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployee">
+    update pd_m_employee
+    <set>
+      <if test="_selectiveMark.orgNo != null">
+        org_no = #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.employeeName != null">
+        employee_name = #{employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.employeeSex != null">
+        employee_sex = #{employeeSex,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.employeeType != null">
+        employee_type = #{employeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.certificateType != null">
+        certificate_type = #{certificateType,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.certificateNo != null">
+        certificate_no = #{certificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.idCardNo != null">
+        id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="_selectiveMark.employeeTel != null">
+        employee_tel = #{employeeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.mediYear != null">
+        medi_year = #{mediYear,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dialYear != null">
+        dial_year = #{dialYear,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.employeeMobile != null">
+        employee_mobile = #{employeeMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.employeeAddress != null">
+        employee_address = #{employeeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.orderIndex != null">
+        order_index = #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.workStart != null">
+        work_start = #{workStart,jdbcType=DATE},
+      </if>
+      <if test="_selectiveMark.education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.employeeEmail != null">
+        employee_email = #{employeeEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.employeePost != null">
+        employee_post = #{employeePost,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.isParttime != null">
+        is_parttime = #{isParttime,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.isCheck != null">
+        is_check = #{isCheck,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.screenId != null">
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where employee_no = #{employeeNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployee">
+    update pd_m_employee
+    set org_no = #{orgNo,jdbcType=VARCHAR},
+      employee_name = #{employeeName,jdbcType=VARCHAR},
+      employee_sex = #{employeeSex,jdbcType=VARCHAR},
+      employee_type = #{employeeType,jdbcType=VARCHAR},
+      certificate_type = #{certificateType,jdbcType=VARCHAR},
+      certificate_no = #{certificateNo,jdbcType=VARCHAR},
+      id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      employee_tel = #{employeeTel,jdbcType=VARCHAR},
+      medi_year = #{mediYear,jdbcType=VARCHAR},
+      dial_year = #{dialYear,jdbcType=VARCHAR},
+      employee_mobile = #{employeeMobile,jdbcType=VARCHAR},
+      employee_address = #{employeeAddress,jdbcType=VARCHAR},
+      order_index = #{orderIndex,jdbcType=BIGINT},
+      work_start = #{workStart,jdbcType=DATE},
+      education = #{education,jdbcType=VARCHAR},
+      employee_email = #{employeeEmail,jdbcType=VARCHAR},
+      employee_post = #{employeePost,jdbcType=VARCHAR},
+      is_parttime = #{isParttime,jdbcType=CHAR},
+      is_check = #{isCheck,jdbcType=CHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=BIGINT},
+      screen_id = #{screenId,jdbcType=VARCHAR}
+    where employee_no = #{employeeNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

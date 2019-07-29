@@ -1,0 +1,32 @@
+
+//居右
+@widget.ctnr.Column(sAlign:"right",sCss:"col-12"){
+}
+
+//横线
+<hr style="height:1px;border:none;border-top:1px ridge #808e99;width:95%;"/>
+
+
+<style>
+	.fixed-table-container thead th .both {
+		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFAAAA////////////////////////////////////////////////////////AAAAO/MiIgAAABB0Uk5TAAUP8PVAOBkfXOLV5VIyACgbL3kAAABNSURBVAjXY2DAAgSBAEQz7Vm1ak0AkMF4c+bMmQUoUpuNjY3BUs/S0tIUQEIdQCAAklri4uICkmIoBwKQCGNqaGioArIuBiUgEMBiNQDazxQcxe1GUgAAAABJRU5ErkJggg==);
+	}
+
+	.fixed-table-container thead th .asc {
+		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAAB5QTFRF////AAAA////////////////////////////////+ZDkTwAAAAl0Uk5TPwAQMO8gyIFgG2j/WwAAAEBJREFUCNdjEIQCBiRGKYwxQWA6lCHECmMwGEKlZiZCGHDFCF0zZ8IUM4AYalOMGBiYgAxhD6DUBJAUI4alEAAA4NMRa3dgvSUAAAAASUVORK5CYII=);
+	}
+
+	.fixed-table-container thead th .desc {
+		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAAB5QTFRF////AAAA////////////////////////////////+ZDkTwAAAAl0Uk5TPwAQMO8gyIFgG2j/WwAAAD1JREFUCNdjEIQCBiRGKYwxQWDmzAlghhADAxOMAZeCMOCKkXQlCkIVG4IYalOMWMFSwh4C0yFqGDEshQAAKOsRa9bYf1UAAAAASUVORK5CYII=);
+	}
+</style>
+
+,sortable:true
+
+
+	.clicked{
+		background-color : yellow;
+	}
+	 $("#search-result6 tbody tr").removeClass("clicked");
+	 element.addClass("clicked");
+

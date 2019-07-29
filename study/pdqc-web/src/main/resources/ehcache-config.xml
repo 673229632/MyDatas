@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- EhCache的配置 -->
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+    updateCheck="false" name="ehcache">
+    <!-- 默认存储位置(注意多个工程的冲突) -->
+    <diskStore path="java.io.tmpdir"/>
+    
+    <!-- maxEntriesLocalHeap : 堆内存中最大缓存对象数，0没有限制 -->
+    <!-- eternal:是否永久有效，如果为true，timeouts将被忽略，将永不过期 -->
+    <!-- timeToIdleSeconds:失效前的空闲秒数，当eternal为false时，这个属性才有效，0为不限制 -->
+    <!-- timeToLiveSeconds:失效前的存活秒数，创建时间到失效时间的间隔为存活时间，当eternal为false时，这个属性才有效，0为不限制 -->
+    <!-- diskExpiryThreadIntervalSeconds:磁盘失效线程运行时间间隔 -->
+    
+    <!-- 默认缓存配置 -->
+    <defaultCache 
+        maxElementsInMemory="10000" 
+        eternal="false" 
+        timeToIdleSeconds="120" 
+        timeToLiveSeconds="120"
+        overflowToDisk="false" 
+        diskPersistent="false" 
+        diskExpiryThreadIntervalSeconds="120" />
+        
+
+    <!-- 密码重试次数缓存(锁定60分钟) -->
+    <!-- 由marsfw-shiro-web.jar!com.ustcsoft.marsfw.shiro.web.filter.authc.handler.RetryLimitCacheHandler使用 -->
+    <cache name="shiro-passwordRetryLimitCache" 
+        maxEntriesLocalHeap="20000" 
+        eternal="false" 
+        timeToIdleSeconds="3600"
+        timeToLiveSeconds="0" 
+        overflowToDisk="false" 
+        statistics="false">
+    </cache>
+    
+    <!-- 基于缓存的Session容器配置 -->
+    <!-- 由marsfw-shiro-web.jar!com.ustcsoft.marsfw.shiro.web.session.mgt.WebCacheSessionManager使用 -->
+    <cache name="shiro-activeSessionCache"
+        maxElementsInMemory="10000"
+        overflowToDisk="true"
+        eternal="true"
+        timeToLiveSeconds="0"
+        timeToIdleSeconds="0"
+        diskPersistent="true"
+        diskExpiryThreadIntervalSeconds="600"/>
+     
+</ehcache>

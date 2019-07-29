@@ -1,0 +1,167 @@
+@extends(views.common.MainView, v_sTitle:"职员管理")
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.lotus.rythm.widget.bootstrapselect.*;
+@args List<Code> employeeTypeOptions
+@args Boolean bVisible
+
+@widget.ctnr.Div(sCss:"col-xs-12"){
+
+	@widget.ctnr.BtnBox(sAlign:"left"){
+	@widget.ctnr.Form("search_form"){
+		@widget.ctnr.Div(sCss:"col-xs-6"){
+			@widget.ctrl.Input({sLabel:"姓名:", sName:"", sId:"employeeName", sGroupCss:"col-6 hanzi4", sMaxLength:"20"})
+			@widget.ctrl.SelectPicker({sLabel:"职员类别:", sName:"employeeType", sId:"employeeType", sGroupCss:"col-6 hanzi4", oOptions:employeeTypeOptions})
+		}
+		}
+		@widget.ctnr.Div(sCss:"col-xs-4"){
+			@widget.ctrl.Button({sLabel:"检索", sBtncss:"btn-normal", sId:"searchEmployeeBtn"})
+			@widget.ctrl.Button({sLabel:"添加", sBtncss:"btn-normal", sOnClick:"addEmployeeBtn", sId:"addEmployeeBtn"})
+		}
+	}
+	
+	@widget.ctrl.Table(sId:"search_result", sQueryParamFunction:"createQueryParams", sUrl:"/employeeList/getEmployeeData", iPageSize:10, sSidePagination:"server"){
+		@widget.ctnr.Columns(){
+			@widget.ctnr.OptColumn(){
+					@widget.ctrl.IconLink(sLabel:"编辑职员信息", sIconCss:"fa fa-pencil",sOnClick:"editEmployee"),
+					@widget.ctrl.IconLink(sLabel:"查看职员信息", sIconCss:"fa fa-search",sOnClick:"viewEmployee"),
+		            @widget.ctrl.IconLink(sLabel:"删除职员信息", sIconCss:"fa fa-times",sOnClick:"delEmployee",sInnerType:"DEL",sPopPlace:"right")
+		        },
+      		{field: 'orgNo', title: '组织机构编号', visible:false},
+			{field: 'employeeNo', title: '职员编号', visible:false},
+			{field: 'employeeName', title: '姓名'},
+			{field: 'employeeSex', title: '性别',formatter: function (value, row, index){
+					if("1"==value){
+					return "男";
+					}
+					if("2"==value){
+					return "女";
+					}
+				}
+			},
+			{field: 'idCardNo', title: '身份证'},
+			{field: 'employeeType', title: '职员类别',formatter: function (value, row, index){
+					if("EMP_TYPE_1"==value){
+					return "主任";
+					}
+					if("EMP_TYPE_2"==value){
+					return "专家";
+					}
+					if("EMP_TYPE_3"==value){
+					return "普通科员";
+					}
+					if("EMP_TYPE_4"==value){
+					return "医师";
+					}
+					if("EMP_TYPE_5"==value){
+					return "护士";
+					}
+					if("EMP_TYPE_6"==value){
+					return "工程师";
+					}
+				}
+			},
+			{field: 'workStart', title: '工作开始日期'},
+			{field: 'titleName', title: '职称'},
+			{field: 'employeeTel', title: '电话'},
+			{field: 'isCheck', title: '是否参与评分',formatter: function (value, row, index){
+					if("0"==value){
+					return "是";
+					}
+					if("1"==value){
+					return "否";
+					}
+				}},
+			{field: 'isParttime', title: '是否兼职',formatter: function (value, row, index){
+					if("0"==value){
+					return "是";
+					}
+					if("1"==value){
+					return "否";
+					}
+				}},
+			{title: '职员资料',visible:@bVisible, formatter: function (value, row, index){
+				return "<div><input type='button' style='margin-left: 5px' onclick='employeeMaterial(\""+row.employeeNo+"\")' value='查看职员资料' title='查看职员资料' /></div>";
+				}
+      		},
+		}
+	}
+}
+
+
+<!-- 脚本 -->
+<script>
+//查询
+$("#searchEmployeeBtn").on('click',function(){
+	freshtable();
+})
+// 刷新表格
+function freshtable(){
+	$('#search_result').bootstrapTable('refresh');
+}
+//列表检索参数
+function createQueryParams(params) {
+    return buildQueryParam('#search_form', params);
+}
+// 添加职员
+function addEmployeeBtn(){
+	operateEmployee(0,'');
+}
+
+// 查看职员
+function viewEmployee(row){
+	var employeeNo = row.employeeNo;
+	operateEmployee(1,employeeNo);    
+}
+
+// 编辑职员
+function editEmployee(row){
+	var employeeNo = row.employeeNo;
+	operateEmployee(2,employeeNo);    
+}
+// 删除职员
+function delEmployee(row){
+	var employeeNo = row.employeeNo;
+    MsgBox.confirm("确认删除吗？", function(isConfirm) {
+        if (isConfirm) {
+            Ajax.ajax({
+                url : '@url("/employeeList/deleteEmployee")',
+                data : {
+                	employeeNo : employeeNo
+                },
+                success : function(data) {
+                    if (data.successCount > 0) {
+                        MsgBox.success(data.retMsg);
+                        $("#search_result").bootstrapTable('refresh');
+                    } else {
+                        MsgBox.warning(data.retMsg);
+                    }
+                }
+            })
+        }
+    });
+}
+//职员操作
+function operateEmployee(editflag,employeeNo){
+    var title = "";
+    if(editflag == 0){
+        title = "添加职员";
+    }else if(editflag == 1){
+        title = "查看职员";
+    }else if(editflag == 2){
+        title = "编辑职员";
+    }
+	Dialog.open('@url("/employeeList/operateEmployee")'+ '?editflag=' + editflag + '&employeeNo=' + employeeNo,{
+		iframeHeight : 500,
+		iframeWidth : 300,
+    	title: title
+	});
+}
+//查看职员资料
+function employeeMaterial(employeeNo){
+	Dialog.open('@url("/employeeList/employeeMaterial")'+ '?employeeNo=' + employeeNo,{
+		iframeHeight : 500,
+		iframeWidth : 300,
+    	title: "职员资料"
+	});
+}
+</script>

@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PatientListMapper">
+    <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.web.patient.form.PatientRstForm">
+        <result column="hospitalName" jdbcType="VARCHAR" property="hospitalName" />
+        <result column="patientId" jdbcType="VARCHAR" property="patientId" />
+        <result column="patientName" jdbcType="VARCHAR" property="patientName" />
+        <result column="cardNo" jdbcType="VARCHAR" property="cardNo" />
+        <result column="primaryDisease" jdbcType="VARCHAR" property="primaryDisease" />
+        <result column="firstDialsysDate" jdbcType="TIMESTAMP" property="firstDialsysDate" />
+        <result column="infectionDisease" jdbcType="VARCHAR" property="infectionDisease" />
+        <result column="patientType" jdbcType="VARCHAR" property="patientType" />
+		<result column="outComeDate" jdbcType="TIMESTAMP" property="outComeDate" />
+        <result column="rowVersion" jdbcType="VARCHAR" property="rowVersion" />
+    </resultMap>
+	<resultMap type="com.ustcsoft.pdqc.web.patient.form.PatientOutComeRstForm" 
+    				id="BaseResultMap1">
+    	<result column="id" jdbcType="VARCHAR" property="id" />
+    	<result column="patientName" jdbcType="VARCHAR" property="patientName" />
+    	<result column="patientId" jdbcType="VARCHAR" property="patientId" />
+    	<result column="tdate" jdbcType="TIMESTAMP" property="tdate" />
+    	<result column="outComeType" jdbcType="VARCHAR" property="outComeType" />
+    	<result column="reason" jdbcType="VARCHAR" property="reason" />
+    </resultMap>
+    <resultMap type="com.ustcsoft.pdqc.web.patient.form.CatheterOperationPatientForm" 
+                    id="BaseResultMap2">
+        <result column="patientId" jdbcType="VARCHAR" property="patientId" />
+        <result column="patientName" jdbcType="VARCHAR" property="patientName" />
+        <result column="outComeDate" jdbcType="TIMESTAMP" property="outComeDate" />
+    </resultMap>
+    <resultMap type="com.ustcsoft.pdqc.web.patient.form.CatheterOperationForm" 
+                    id="BaseResultMap3">
+        <result column="patientName" jdbcType="VARCHAR" property="patientName" />
+        <result column="patientId" jdbcType="VARCHAR" property="patientId" />
+        <result column="catheterdate" jdbcType="TIMESTAMP" property="catheterdate" />
+        <result column="catheterhospital" jdbcType="VARCHAR" property="catheterhospital" />
+        <result column="catheterdoctor" jdbcType="VARCHAR" property="catheterdoctor" />
+        <result column="operationtype" jdbcType="VARCHAR" property="operationtype" />
+        <result column="catheterway" jdbcType="VARCHAR" property="catheterway" />
+        <result column="reason" jdbcType="VARCHAR" property="reason" />
+        <result column="anesthesiamethod" jdbcType="VARCHAR" property="anesthesiamethod" />
+        <result column="dialysissystems" jdbcType="VARCHAR" property="dialysissystems" />
+        <result column="dialysisstage" jdbcType="VARCHAR" property="dialysisstage" />
+    </resultMap>
+    <resultMap type="com.ustcsoft.pdqc.web.patient.form.FollowUpSolutionForm" 
+                id="FollowUpResultMap">
+	    <result column="id" jdbcType="VARCHAR" property="id" />
+	    <result column="patientId" jdbcType="VARCHAR" property="patientId" />
+	    <result column="hpId" jdbcType="TIMESTAMP" property="hpId" />
+	    <result column="outComeType" jdbcType="VARCHAR" property="outComeType" />
+	    <result column="patientName" jdbcType="VARCHAR" property="patientName" />
+	    <result column="tDate" jdbcType="TIMESTAMP" property="tDate" />
+	    <result column="emergency" jdbcType="VARCHAR" property="emergency" />
+	    <result column="emergencyDetail" jdbcType="VARCHAR" property="emergencyDetail" />
+	    <result column="illnessChange" jdbcType="VARCHAR" property="illnessChange" />
+	    <result column="illnessChangeDetail" jdbcType="VARCHAR" property="illnessChangeDetail" />
+	    <result column="appelity" jdbcType="VARCHAR" property="appelity" />
+	    <result column="sleepQuality" jdbcType="VARCHAR" property="sleepQuality" />
+	    <result column="activityAmount" jdbcType="VARCHAR" property="activityAmount" />
+	    <result column="emotion" jdbcType="VARCHAR" property="emotion" />
+	    <result column="bloodPressure" jdbcType="VARCHAR" property="bloodPressure" />
+	    <result column="weight" jdbcType="VARCHAR" property="weight" />
+	    <result column="ultrafiltration" jdbcType="VARCHAR" property="ultrafiltration" />
+	    <result column="unwellChiefComplaint" jdbcType="VARCHAR" property="unwellChiefComplaint" />
+	    <result column="followupProblem" jdbcType="VARCHAR" property="followupProblem" />
+	    <result column="publicityEducationFocus" jdbcType="VARCHAR" property="publicityEducationFocus" />
+	    <result column="bloodGlucose" jdbcType="VARCHAR" property="bloodGlucose" />
+	    <result column="urinaryProduction" jdbcType="VARCHAR" property="urinaryProduction" />
+    </resultMap>
+    <resultMap type="com.ustcsoft.pdqc.web.patient.form.PatientEvalRstForm" id="BaseResultMap4">
+    	<result column="patientName" jdbcType="VARCHAR" property="patientName" />
+    	<result column="id" jdbcType="VARCHAR" property="id" />
+    	<result column="patientId" jdbcType="VARCHAR" property="patientId" />
+    	<result column="patientEvalDate" jdbcType="VARCHAR" property="patientEvalDate" />
+    	<result column="patientTDate" jdbcType="TIMESTAMP" property="patientTDate" />
+    	<result column="weight" jdbcType="VARCHAR" property="weight" />
+    	<result column="bmi" jdbcType="VARCHAR" property="bmi" />
+    	<result column="bloodPressure" jdbcType="VARCHAR" property="bloodPressure" />
+    	<result column="ultrafiltration" jdbcType="VARCHAR" property="ultrafiltration" />
+    	<result column="urinaryProduction" jdbcType="VARCHAR" property="urinaryProduction" />
+    	<result column="cardiacFunctionLevel" jdbcType="VARCHAR" property="cardiacFunctionLevel" />
+    	<result column="edemaGrade" jdbcType="VARCHAR" property="edemaGrade" />
+    	<result column="alimentarySymptoms" jdbcType="VARCHAR" property="alimentarySymptoms" />
+    	<result column="otherSymptoms" jdbcType="VARCHAR" property="otherSymptoms" />
+    	<result column="catheterOutAssessment" jdbcType="VARCHAR" property="catheterOutAssessment" />
+    	<result column="catheterOutScore" jdbcType="VARCHAR" property="catheterOutScore" />
+    	<result column="weightChange" jdbcType="VARCHAR" property="weightChange" />
+    	<result column="dietChange" jdbcType="VARCHAR" property="dietChange" />
+    	<result column="gastrointestinalSymptoms" jdbcType="VARCHAR" property="gastrointestinalSymptoms" />
+    </resultMap>
+    <resultMap type="com.ustcsoft.pdqc.web.patient.form.PatientPeritonealDialysisRstForm" id="BaseResultMap5">
+    	<result column="id" jdbcType="VARCHAR" property="id" />
+    	<result column="patientName" jdbcType="VARCHAR" property="patientName" />
+    	<result column="patientId" jdbcType="VARCHAR" property="patientId" />
+    	<result column="tDate" jdbcType="VARCHAR" property="tDate"/>
+    	<result column="tDialysisDate" jdbcType="TIMESTAMP" property="tDialysisDate"/>
+    	<result column="height" jdbcType="VARCHAR" property="height" />
+    	<result column="weight" jdbcType="VARCHAR" property="weight" />
+    	<result column="urineVolume" jdbcType="VARCHAR" property="urineVolume" />
+    	<result column="urineBUN" jdbcType="VARCHAR" property="urineBUN" />
+    	<result column="urineCr" jdbcType="VARCHAR" property="urineCr" />
+    	<result column="drainageAmount" jdbcType="VARCHAR" property="drainageAmount" />
+    	<result column="drainageBUN" jdbcType="VARCHAR" property="drainageBUN"/>
+    	<result column="drainageCr" jdbcType="VARCHAR" property="drainageCr"/>
+    	<result column="SerumBUN" jdbcType="VARCHAR" property="SerumBUN"/>
+    	<result column="SerumCr" jdbcType="VARCHAR" property="SerumCr"/>
+    </resultMap>
+    <select id="searchPatients" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap">
+        SELECT
+            d2.pd_center_name AS hospitalName,
+            d1.id AS patientId,
+            d1.row_version as rowVersion,
+            d1. NAME AS patientName,
+            d1.card_no AS cardNo,
+            d1.primary_disease AS primaryDisease,
+            DATE_FORMAT(
+                d1.first_dialsys_date,
+                '%Y-%c-%d'
+            ) as firstDialsysDate,
+            d1.infection_diseases AS infectionDisease,
+            d1.outcome_type AS patientType
+        FROM
+            pd_d_patient_info d1
+        LEFT JOIN pd_d_center d2 ON d1.hp_id = d2.pd_center_no
+        WHERE  d1.del_flag='0' and d2.del_flag='0'
+        <if test="hospitalNo !=null and hospitalNo !=''">
+            and d1.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+        </if>
+        <if test="patientName !=null and patientName !=''">
+            and d1.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+        </if>
+        <if test="outComeType !=null and outComeType !=''">
+            and d1.outcome_type in 
+            <foreach collection="outComeTypes" item="item" index="index"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+        </if>
+        order by d1.date_created desc
+    </select>
+	<select id="getPatientData" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap">
+    	 SELECT d1.id as patientId,d1.name as patientName,t1.maxDate as outComeDate  from pd_d_patient_info d1
+    	 		left join (SELECT max(a1.tdate) as maxDate,a1.pt_id as pntId FROM PD_D_PATIENT_OUTCOME a1 
+    	 			WHERE a1.del_flag='0' GROUP BY a1.pt_id) t1
+    	 		on d1.id=t1.pntId
+    			where d1.del_flag='0'
+    			<if test="hospitalNo !=null and hospitalNo !=''">
+    				and d1.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+	    		</if>
+	    		<if test="patientName !=null and patientName !=''">
+	    			and d1.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+	    		</if>
+	    		order by d1.date_created desc
+    </select>
+    
+    <select id="getOutPatientData" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap">
+    	SELECT d1.id as patientId,d1.name as patientName,t1.maxDate as outComeDate  from pd_d_patient_info d1
+    	 		left join (SELECT max(a1.tdate) as maxDate,a1.pt_id as pntId FROM PD_D_PATIENT_OUTPATIENT_EVALUATION a1 
+    	 			WHERE a1.del_flag='0' GROUP BY a1.pt_id) t1
+    	 		on d1.id=t1.pntId
+    			where d1.del_flag='0'
+    			<if test="hospitalNo !=null and hospitalNo !=''">
+    				and d1.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+	    		</if>
+	    		<if test="patientName !=null and patientName !=''">
+	    			and d1.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+	    		</if>
+	    		order by d1.date_created desc
+    </select>
+    
+    <select id="getPeritonealDialysisData" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap">
+    	SELECT d1.id as patientId,d1.name as patientName,t1.maxDate as outComeDate  from pd_d_patient_info d1
+    	 		left join (SELECT max(a1.tdate) as maxDate,a1.pt_id as pntId FROM pd_d_patient_dialysis_adequacy a1 
+    	 			WHERE a1.del_flag='0' GROUP BY a1.pt_id) t1
+    	 		on d1.id=t1.pntId
+    			where d1.del_flag='0'
+    			<if test="hospitalNo !=null and hospitalNo !=''">
+    				and d1.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+	    		</if>
+	    		<if test="patientName !=null and patientName !=''">
+	    			and d1.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+	    		</if>
+	    		order by d1.date_created desc
+    </select>
+    
+    <select id="getOutComes" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap1">
+    	SELECT d1.id as id,d2.name as patientName,d1.pt_id as patientId,d1.tdate as tdate,d1.outcome_type as outComeType,
+    		d1.reason as reason  from PD_D_PATIENT_OUTCOME d1 left join PD_D_PATIENT_INFO d2 
+    			on d1.pt_id=d2.id where d1.del_flag='0' and d2.del_flag='0'
+    			<if test="patientId !=null">
+    				and d1.pt_id = #{patientId}
+    			</if>
+    			order by d1.tdate desc
+    </select>
+    
+    <select id="getPatientEvals" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap4">
+    	SELECT d1.id as id,d2.name as patientName,d1.pt_id as patientId,d1.tdate as patientTDate,d1.weight as weight,
+    		d1.bmi as bmi,d1.blood_pressure as bloodPressure,d1.ultrafiltration as ultrafiltration,d1.urunary_production as urinaryProduction,
+    		d1.cardiac_function_level as cardiacFunctionLevel,d1.edema_grade as edemaGrade,d1.alimentary_symptoms as alimentarySymptoms,
+    		d1.other_symptoms as otherSymptoms,d1.cather_out_assessment as catheterOutAssessment,d1.cather_out_score as catheterOutScore,
+    		d1.weight_change as weightChange,d1.diet_change as dietChange,d1.gastrointestinal_symptoms as gastrointestinalSymptoms     
+    		from PD_D_PATIENT_OUTPATIENT_EVALUATION d1 left join PD_D_PATIENT_INFO d2
+    		on d1.pt_id=d2.id where d1.del_flag='0' and d2.del_flag='0'
+    		<if test="patientId !=null">
+   				and d1.pt_id = #{patientId}
+   			</if>
+   			order by d1.tdate desc
+    </select>
+    
+    <select id="getPatientPeritonealDialysis" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap5">
+    	SELECT d1.id as id,d2.name as patientName,d1.pt_id as patientId,d1.tdate as tDialysisDate,d1.height as height,d1.weight as weight,
+    		d1.urine_volume as urineVolume,d1.urine_bun as urineBUN,d1.urine_cr as urineCr,d1.drainage_amount as drainageAmount,d1.drainage_bun
+    		as drainageBUN,d1.drainage_cr as drainageCr,d1.serum_bun as SerumBUN,d1.serum_cr as SerumCr 
+    		from PD_D_PATIENT_DRUG_TAKEN d1 left join PD_D_PATIENT_INFO d2
+    		on d1.pt_id=d2.id where d1.del_flag='0' and d2.del_flag='0'
+    		<if test="patientId !=null">
+   				and d1.pt_id = #{patientId}
+   			</if>
+   			order by d1.tdate desc
+    </select>
+    <!-- 查询置管患者列表 -->
+    <select id="getCatheterOperationPatient" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap2">
+    SELECT  A.id AS patientId,A.NAME AS patientName,C.OutComeDate AS OutComeDate  FROM  pd_d_patient_info A
+    LEFT JOIN (SELECT max(B.tdate) AS OutComeDate,B.pt_id AS pt_id FROM
+	pd_d_patient_tube_operation B
+	WHERE
+		B.del_flag = '0' GROUP BY B.pt_id
+    ) C ON A.id = C.pt_id WHERE A.del_flag = '0'																				
+                 <if test="hospitalNo !=null and hospitalNo !=''">
+                    and A.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+                </if>
+                <if test="patientName !=null and patientName !=''">
+                    and A.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+                </if>
+                order by A.name desc
+    </select>
+    
+    <!-- 查询置管列表 -->
+    <select id="catheterOperation" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap3">
+         SELECT A.id as id, B.name as patientName,A.pt_id as patientId,A.tdate as catheterdate,A.card_no as catheterhospital,A.doctor as catheterdoctor,A.operation_type as operationtype,A.operation_way as catheterway,A.way_choice_reason as reason,
+         A.type_of_anesthesia as anesthesiamethod,A.dialysis_system as dialysissystems,A.initial_dialysis as dialysisstage
+          FROM pd_d_patient_tube_operation A INNER JOIN pd_d_patient_info B
+         ON A.pt_id=B.id WHERE A.del_flag='0' AND B.del_flag='0'
+    			<if test="patientId !=null">
+    				and A.pt_id = #{patientId}
+    			</if>
+    </select>
+        <!-- 根据ID查询置管患者信息 -->
+    <select id="getPatientMassage" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm"  resultType="com.ustcsoft.pdqc.web.patient.form.CatheterOperationReportForm">
+         SELECT A.id as id, B.name as patientName,A.pt_id as patientId,A.tdate as catheterdate,A.card_no as catheterhospital,A.doctor as catheterdoctor,A.operation_type as operationtype,A.operation_way as catheterway,A.way_choice_reason as reason,
+         A.type_of_anesthesia as anesthesiamethod,A.dialysis_system as dialysissystems,A.initial_dialysis as dialysisstage
+          FROM pd_d_patient_tube_operation A INNER JOIN pd_d_patient_info B
+         ON A.pt_id=B.id WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>
+    
+    <!-- 根据患者id查询出所属医院、患者姓名、患者类型-->
+    <select id="getPatientInfoById" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.PatientRstForm">
+    	SELECT
+    		a.id AS patientId,
+    		a.hp_id AS hospitalNo,
+			a.`name` AS patientName,
+			b.pd_center_name AS hospitalName,
+			c.`value` AS patientType
+		FROM
+			pd_d_patient_info a
+		LEFT JOIN pd_d_center b ON a.hp_id = b.pd_center_no
+		AND b.del_flag = '0'
+		LEFT JOIN pd_m_code c ON a.outcome_type = c.`code`
+		AND c.del_flag = '0'
+		WHERE a.del_flag = '0'
+		AND a.id = #{patientId}
+    </select>
+    
+    <!-- 查询用户列表（用药处方 ）-->
+    <select id="getMedicationPatient" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap">
+    	SELECT
+			a.id AS patientId,
+			a. NAME AS patientName,
+			c.reportDate AS reportDate
+		FROM
+			pd_d_patient_info a
+		
+		LEFT JOIN 
+		(
+			SELECT
+				pt_id,
+				max(tdate) AS reportDate
+			FROM
+				pd_d_patient_drug_taken
+			WHERE
+				del_flag = '0'
+			GROUP BY
+				pt_id
+		) c ON a.id = c.pt_id
+		WHERE a.del_flag = '0' 
+        <if test="hospitalNo !=null and hospitalNo !=''">
+  			and a.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+   		</if>
+   		<if test="patientName !=null and patientName !=''">
+   			and a.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+   		</if>
+        order by a.date_created desc
+    </select>
+    
+    <!-- ID查询用药处方 -->
+    <select id="getMedicationList" parameterType="com.ustcsoft.pdqc.web.patient.form.MedicationCondForm"
+        resultType="com.ustcsoft.pdqc.web.patient.form.MedicationResultForm">
+        SELECT
+        	a.id AS id,
+        	b.pd_center_no AS hpId,
+        	a.pt_id AS ptId,
+			b.pd_center_name AS hospitalName,
+			c.`name` AS patientName,
+			d.`value` AS patientOutcome,
+			a.tdate AS tdate,
+			a.type AS type,
+			a.type2 AS type2,
+			a.type3 AS type3,
+			a.drug_name AS drugName,
+			a.frequency AS frequency,
+			a.method AS method,
+			a.single_dose AS singleDose,
+			a.unit_name AS unitName
+		FROM
+			pd_d_patient_drug_taken a
+		LEFT JOIN pd_d_center b ON b.pd_center_no = a.hp_id
+		AND b.del_flag = '0'
+		LEFT JOIN pd_d_patient_info c ON c.id = a.pt_id
+		AND c.del_flag = '0'
+		LEFT JOIN pd_m_code d ON d.`code` = c.outcome_type
+		AND d.del_flag = '0'
+		WHERE
+			a.del_flag = '0'
+		<if test="patientId !=null and patientId != '' ">
+			AND a.pt_id = #{patientId}
+		</if>
+		<if test="medicationId !=null and medicationId != '' ">
+			AND a.id = #{medicationId}
+		</if>
+		ORDER BY c.`name`
+    </select>
+    
+    <!-- 查询透析方案患者列表 -->
+    <select id="getDialysisPatient" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap2">
+    SELECT  A.id AS patientId,A.NAME AS patientName,C.OutComeDate AS OutComeDate  FROM  pd_d_patient_info A
+    LEFT JOIN (SELECT max(B.tdate) AS OutComeDate,B.pt_id AS pt_id FROM
+	pd_d_patient_dialsys_solution B
+	WHERE
+		B.del_flag = '0' GROUP BY B.pt_id
+    ) C ON A.id = C.pt_id WHERE A.del_flag = '0'                                                                         
+                <if test="hospitalNo !=null and hospitalNo !=''">
+                    and A.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+                </if>
+                <if test="patientName !=null and patientName !=''">
+                    and A.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+                </if>
+                order by A.name desc
+    </select>
+    
+    <!-- 查询透析方案列表 -->
+    <select id="getDialysisSolution" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.DialysisSolutionListForm">
+        SELECT A.id as id, B.name as patientName,A.pt_id as patientId,A.tdate as tdate,A.type as type,A.amount1 AS amount1,A.amount2 AS amount2,A.amount3 AS amount3
+        FROM pd_d_patient_dialsys_solution A INNER JOIN pd_d_patient_info B
+        ON A.pt_id=B.id WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+    </select>
+    
+    <!-- 根据ID查询透析方案列表 -->
+    <select id="getDialysisSolutionMessage" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.DialysisSolutionForm">
+        SELECT A.id as id, B.name as patientName,A.pt_id as patientId,A.tdate as tdate,A.type as type,A.amount1 AS amount1,A.amount2 AS amount2,A.amount3 AS amount3
+        FROM pd_d_patient_dialsys_solution A INNER JOIN pd_d_patient_info B
+        ON A.pt_id=B.id WHERE A.del_flag='0' AND B.del_flag='0'
+                  <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>
+    
+    <!-- 获得腹膜平衡实验患者列表 -->
+    <select id="getExperimentPatient" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap2">
+            SELECT  A.id AS patientId,A.NAME AS patientName,C.OutComeDate AS OutComeDate  FROM  pd_d_patient_info A
+            LEFT JOIN (SELECT max(B.tdate) AS OutComeDate,B.pt_id AS pt_id FROM
+        	PD_D_PATIENT_PET B
+        	WHERE
+        		B.del_flag = '0' GROUP BY B.pt_id
+            ) C ON A.id = C.pt_id WHERE A.del_flag = '0'                                                                                
+                <if test="hospitalNo !=null and hospitalNo !=''">
+                    and A.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+                </if>
+                <if test="patientName !=null and patientName !=''">
+                    and A.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+                </if>
+                order by A.name desc
+    </select>
+    
+    <!-- 获得腹膜平衡实验列表 -->
+   <select id="getBalanceExperiment" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.BalanceExperimentListForm">
+        SELECT A.id as id, B.name as patientName,A.pt_id as patientId,A.tdate as tdate,A.value AS value,A.pertoneal_transport_rate AS peritonealTransportRate
+        FROM PD_D_PATIENT_PET A INNER JOIN pd_d_patient_info B
+        ON A.pt_id=B.id WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+    </select>
+    
+   <!-- 根据ID获得腹膜平衡实验数据 -->
+   <select id="getBalanceExperimentMessage" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.BalanceExperimentForm">
+        SELECT A.id as id, B.name as patientName,A.pt_id as patientId,A.tdate as tdate,A.value AS value,A.pertoneal_transport_rate AS peritonealTransportRate
+        FROM PD_D_PATIENT_PET A INNER JOIN pd_d_patient_info B
+        ON A.pt_id=B.id WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>
+    
+        <!-- 查询患者随访患者列表 -->
+    <select id="getFollowUpPatient" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap2">
+        SELECT d1.id as patientId,d1.name as patientName,t1.maxDate as outComeDate  from pd_d_patient_info d1
+    	 		left join (SELECT max(a1.tdate) as maxDate,a1.pt_id as pntId FROM pd_d_patient_followup a1 
+    	 			WHERE a1.del_flag='0' GROUP BY a1.pt_id) t1
+    	 		on d1.id=t1.pntId
+    			where d1.del_flag='0'
+    			<if test="hospitalNo !=null and hospitalNo !=''">
+    				and d1.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+	    		</if>
+	    		<if test="patientName !=null and patientName !=''">
+	    			and d1.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+	    		</if>
+	    		order by d1.date_created desc
+	    	<!-- 根据ID查患者随访列表列表 -->
+    </select>
+        <select id="getFollowUpSolutionMessage" parameterType="com.ustcsoft.pdqc.web.patient.form.FollowUpSolutionForm" resultMap="FollowUpResultMap">
+        SELECT a.id as id,a.pt_id as patientId,b.name as  patientName,a.tdate as tDate,a.emergency as emergency,a.emergency_detail as emergencyDetail,
+        a.illness_change as illnessChange,a.illness_change_detail as illnessChangeDetail,a.appelity as appelity, a.sleep_quality as sleepQuality,
+        a.activity_amount as activityAmount,a.emotion as emotion,a.blood_pressure as bloodPressure,a.blood_glucose as bloodGlucose,
+        a.weight as weight,a.ultrafiltration as ultrafiltration,a.urinary_production as urinaryProduction,a.urinary_production as urinaryProduction,
+        a.unwell_chief_complaint as unwellChiefComplaint,a.followup_problem as followupProblem,a.publicity_education_focus as publicityEducationFocus
+        FROM pd_d_patient_followup a INNER JOIN pd_d_patient_info b
+        ON a.pt_id=b.id WHERE a.del_flag='0' AND b.del_flag='0'
+                  <if test="id !=null">
+                    and a.id = #{id}
+                </if>
+                <if test="patientId !=null">
+                    and a.pt_id = #{patientId}
+                </if>
+    </select>
+    
+    <!-- 获得合并症患者列表 -->
+    <select id="getComplicationPatient" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap2">
+                SELECT  A.id AS patientId,A.NAME AS patientName,C.OutComeDate AS OutComeDate  FROM  pd_d_patient_info A
+                LEFT JOIN (SELECT max(B.tdate) AS OutComeDate,B.pt_id AS pt_id FROM
+            	PD_D_PATIENT_COMPLICATION B
+            	WHERE
+            		B.del_flag = '0' GROUP BY B.pt_id
+                ) C ON A.id = C.pt_id WHERE A.del_flag = '0'                                                                                 
+                <if test="hospitalNo !=null and hospitalNo !=''">
+                    and A.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+                </if>
+                <if test="patientName !=null and patientName !=''">
+                    and A.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+                </if>
+                order by A.name desc
+    </select>
+    
+    <!-- 查询合并症列表 -->
+    <select id="getComplication" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.ComplicationForm">
+                SELECT A.id as id,B.hp_id as hpId, B.name as patientName,A.pt_id as patientId,A.tdate as tdate,A.type AS type,A.reason as reason,
+                A.is_hpsiptalization as isHospitalization,A.antibiotic_treatment as antibioticTreatment,A.treatment as treatment,A.outcome_type as outcomeType
+                FROM PD_D_PATIENT_COMPLICATION A INNER JOIN pd_d_patient_info B
+                ON A.pt_id=B.id WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+    </select>
+    
+    <!-- 根据ID查询合并症列表 -->
+    <select id="getComplicationMessage" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.ComplicationForm">
+                SELECT A.id as id,B.hp_id as hpId, B.name as patientName,A.pt_id as patientId,A.tdate as tdate,A.type AS type,A.reason as reason,
+                A.is_hpsiptalization as isHospitalization,A.antibiotic_treatment as antibioticTreatment,A.treatment as treatment,A.outcome_type as outcomeType
+                FROM PD_D_PATIENT_COMPLICATION A INNER JOIN pd_d_patient_info B
+                ON A.pt_id=B.id WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>
+    
+    <!-- 获得检验检查患者列表 -->
+    <select id="getInspectionCheckPatient" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultMap="BaseResultMap2">
+                select A.id as patientId,A.name as patientName,max(B.tdate) as outComeDate
+                from pd_d_patient_info A LEFT JOIN
+                (SELECT pt_id,max(tdate) as tdate															
+                FROM pd_d_patient_inspection_routine_blood															
+                WHERE del_flag = '0' GROUP BY pt_id															
+                UNION															
+                SELECT pt_id,max(tdate) as tdate															
+                FROM pd_d_patient_inspection_biochemical															
+                WHERE del_flag = '0'	GROUP BY pt_id															
+                UNION															
+                SELECT pt_id,max(tdate) as tdate															
+                FROM pd_d_patient_inspection_blood_coagulation															
+                WHERE del_flag = '0'	GROUP BY pt_id															
+                UNION															
+                SELECT pt_id,max(tdate) as tdate															
+                FROM pd_d_patient_inspection_infection_diseases															
+                WHERE del_flag = '0' GROUP BY pt_id																
+                UNION															
+                SELECT pt_id,max(tdate) as tdate															
+                FROM pd_d_patient_inspection_routine_urine															
+                WHERE del_flag = '0'	GROUP BY pt_id															
+                UNION															
+                SELECT pt_id,max(tdate) as tdate														
+                FROM pd_d_patient_inspection_routine_stool															
+                WHERE del_flag = '0'	GROUP BY pt_id															
+                UNION															
+                SELECT pt_id,max(tdate) as tdate														
+                FROM pd_d_patient_inspection_renal_b_ultrasound															
+                WHERE del_flag = '0'	GROUP BY pt_id															
+                UNION															
+                SELECT pt_id,max(tdate) as tdate														
+                FROM pd_d_patient_inspection_chest_x_ray															
+                WHERE del_flag = '0'	GROUP BY pt_id										
+                UNION												
+                SELECT pt_id,max(tdate) as tdate												
+                FROM pd_d_patient_inspection_electrocardiogram															
+                WHERE del_flag = '0' 	GROUP BY pt_id	)B		on A.id = B.pt_id
+                where A.del_flag='0'	
+                <if test="hospitalNo !=null and hospitalNo !=''">
+                    and A.hp_id = #{hospitalNo,jdbcType=VARCHAR}
+                </if>
+                <if test="patientName !=null and patientName !=''">
+                    and A.name like CONCAT ('%', #{patientName,jdbcType=VARCHAR} ,'%')
+                </if>
+                 GROUP BY A.name    
+                order by A.name desc
+    </select>
+    
+   <!-- 获得检验检查列表 -->
+   <select id="getInspectionCheckList" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckListForm">
+              SELECT
+            	A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '血常规' AS inspectionCheck,
+            	CONCAT('白细胞:',A.wbc,';红细胞:',A.rbc,';血红蛋白:',A.hb,';红细胞压积:',A.hct,';红细胞平均体积:',A.mcv,';平均血红蛋白量:',A.mch,';平均血红蛋白浓度:',A.mchc,';红细胞分布体积分布宽度:',A.rdw,';红细胞分布体积分布宽度SD:',A.rdwsd,
+                     ';血小板总数:',A.plt,';血小板平均体积:',A.mpv,';血小板体积分布宽度:',A.pdw,';血小板压积:',A.pct,';大血小板比率:',A.plcr,';中性粒细胞百分比:',A.neutrophil_percentage,';淋巴细胞百分比:',A.lymphocyte_percentage,';单核细胞百分比:',A.monocyte_percentage,
+                     ';嗜酸细胞百分比:',A.eosinophil_percentage,';嗜碱细胞百分比:',A.basophil_percentage,';中性粒细胞绝对值:',A.neutrophil_absolute_value,';淋巴细胞绝对值:',A.lymphocyte_absolute_value,';单核细胞绝对值:',A.monocyte_absolute_value,
+                     ';嗜酸细胞绝对值:',A.eosinophil_absolute_value,';嗜碱细胞绝对值:',A.basophil_absolute_value) AS detail 
+            	FROM pd_d_patient_inspection_routine_blood A 
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+            UNION ALL
+              SELECT 
+              A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '生化指标' AS inspectionCheck,
+              CONCAT('丙氨酸氨基转移酶:',A.alt,';天门冬氨酸氨基转移酶 :',A.ast,';血清总蛋白:',A.tp,';血清白蛋白:',A.alb,';血清球蛋白:',A.seroglobulin,';白/球比值:',A.ag,';总胆红素:',A.tbil,';直接胆红素:',A.dbil,';间接胆红素:',A.ibil,';总胆汁酸:',A.tba,
+                     ';血糖:',A.glu,';尿素氮:',A.bun,';肌酐(酶法):',A.cre,';尿酸:',A.ua,';总二氧化碳:',A.co2,';碱性磷酸酶:',A.alp,';γ谷氨酰转肽酶:',A.ggt,';钾:',A.k,';钠:',A.na,';氯:',A.cl,';钙:',A.ca,';磷:',A.p,';血清镁:',A.mg,';肌酸激酶:',A.ck,
+                     ';乳酸脱氢酶:',A.ldh,';α-羟丁酸脱氢酶:',A.ahbdh,';肌酸激酶同工酶:',A.creatine_kinase_isoenzyme,';总胆固醇:',A.tc,';甘油三酯:',A.tg,';高密度脂蛋白胆固醇:',A.hdlc,';低密度脂蛋白胆固醇:',A.ldlc,';载脂蛋白A1:',A.apolipoprotein_a1,
+                     ';载脂蛋白B:',A.apolipoprotein_b,';脂蛋白(a):',A.lpa,';载脂蛋白E:',A.apolipoprotein_e,';前白蛋白:',A.pa,';腺苷脱氨酶:',A.ada,';β2微球蛋白:',A.microglobulin_b2,';血清α-L-岩藻糖苷酶:',A.afu,';血清胱抑素:',A.cystatin,
+                     ';5核苷酸酶:',A.nt5,';超敏C反应蛋白:',A.hscrp,';β羟丁酸:',A.bhb,';单胺氧化酶:',A.mao,';唾液酸:',A.sialic_acid,';备注:',A.others) AS detail
+            	FROM pd_d_patient_inspection_biochemical A
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+            UNION ALL
+              SELECT 
+            	A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '出凝血功能' AS inspectionCheck,
+              CONCAT('纤维蛋白原:',A.fib,';活化部分凝血活酶时间:',A.aptt,';凝血酶原活动度:',A.pta,';凝血酶原时间:',A.pt,';凝血酶时间:',A.tt,';国际标准化比值:',A.inr,';纤维蛋白(原)降解产物:',A.fdp,';DD二聚体:',A.ddimer,
+                     ';血浆抗凝血酶Ⅲ活性测定:',A.at3,';α2纤溶酶抑制物活性:',A.plasminogen_inhibitor_a2,';纤溶酶原活性:',A.plga,';备注:',A.others) AS detail
+            	FROM pd_d_patient_inspection_blood_coagulation A
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+            UNION ALL
+              SELECT 
+            	A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '传染性疾病筛选' AS inspectionCheck,
+              CONCAT('乙肝表面抗原（HBsAg）:',A.hbsag,';乙型肝炎表面抗体（HBsAb）:',A.hbsab,';乙型肝炎E抗原（HBeAg）:',A.hbeag,';乙型肝炎E抗体（HBeAb）:',A.hbeab,';乙肝核心抗体（HBcAb）:',A.hbcab,';乙型肝炎病毒DNA拷贝数（HBV-DNAse）:',
+                     A.hbvdnase,';甲型肝炎病毒 (HAV ):',A.hav,';HBcAb-IgM:',A.hbcabigm,';HCV-IgG:',A.hcvigg,';HCV-IgM:',A.hcvigm,';HDV:',A.hdv,';HEV:',A.hev,';HGV:',A.hgv,';HIV:',A.hiv,';梅毒螺旋体抗体:',A.tpab) AS detail
+            	FROM pd_d_patient_inspection_infection_diseases A
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+            UNION ALL
+              SELECT 
+             	A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '尿常规' AS inspectionCheck,
+              CONCAT('比重:',A.rate,';蛋白:',A.protein,';镜检红细胞:', case A.erythrocytes when '1' then '-'
+							when '2' then '±' when '3' then '+' when '4' then '++' when '5' then '+++' ELSE '++++' END
+							,';镜检白细胞:',case A.leukocyte when '1' then '-'
+							when '2' then '±' when '3' then '+' when '4' then '++' when '5' then '+++' ELSE '++++' END) AS detail
+            	FROM pd_d_patient_inspection_routine_urine A
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+            UNION ALL
+              SELECT 
+            	A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '大便常规' AS inspectionCheck,
+              CONCAT('隐血试验:',case A.protein when '1' then '-' ELSE '+' END,';红细胞:',case A.erythrocytes when '1' then '-' ELSE '+' END,
+							';白细胞:',case A.leukocyte when '1' then '-' ELSE '+' END) AS detail
+            	FROM pd_d_patient_inspection_routine_stool A
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+            UNION ALL
+              SELECT 
+            	A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '肾脏B超' AS inspectionCheck,
+              CONCAT('右肾大小（长）（cm）:',A.rlength,';右肾大小（宽）（cm）:',A.rwidth,';左肾大小（长）（cm）:',A.llength,';左肾大小（宽）（cm）:',A.lwidth,';肾脏B超其他:',A.others) AS detail
+            	FROM pd_d_patient_inspection_renal_b_ultrasound A
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+            UNION ALL
+              SELECT 
+            	A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '胸部X线' AS inspectionCheck,
+              CONCAT('诊断:',A.diagnosis,';其他:',A.others) AS detail
+            	FROM pd_d_patient_inspection_chest_x_ray A
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+            UNION ALL
+              SELECT 
+            	A.id AS id,
+            	B.hp_id AS hpId,
+            	B. NAME AS patientName,
+            	A.pt_id AS patientId,
+            	A.tdate AS tdate,
+              '心电图' AS inspectionCheck,
+              CONCAT('诊断:',A.diagnosis,';其他:',A.others) AS detail
+            	FROM pd_d_patient_inspection_electrocardiogram A
+            	LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="patientId !=null">
+                    and A.pt_id = #{patientId}
+                </if>
+    </select>
+    
+   <!-- 根据ID获得检验检查数据 -->
+   <select id="getInspectionCheckMessage" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckListForm">
+              SELECT
+                A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '血常规' AS inspectionCheck,
+                CONCAT('白细胞:',A.wbc,';红细胞:',A.rbc,';血红蛋白:',A.hb,';红细胞压积:',A.hct,';红细胞平均体积:',A.mcv,';平均血红蛋白量:',A.mch,';平均血红蛋白浓度:',A.mchc,';红细胞分布体积分布宽度:',A.rdw,';红细胞分布体积分布宽度SD:',A.rdwsd,
+                     ';血小板总数:',A.plt,';血小板平均体积:',A.mpv,';血小板体积分布宽度:',A.pdw,';血小板压积:',A.pct,';大血小板比率:',A.plcr,';中性粒细胞百分比:',A.neutrophil_percentage,';淋巴细胞百分比:',A.lymphocyte_percentage,';单核细胞百分比:',A.monocyte_percentage,
+                     ';嗜酸细胞百分比:',A.eosinophil_percentage,';嗜碱细胞百分比:',A.basophil_percentage,';中性粒细胞绝对值:',A.neutrophil_absolute_value,';淋巴细胞绝对值:',A.lymphocyte_absolute_value,';单核细胞绝对值:',A.monocyte_absolute_value,
+                     ';嗜酸细胞绝对值:',A.eosinophil_absolute_value,';嗜碱细胞绝对值:',A.basophil_absolute_value) AS detail 
+                FROM pd_d_patient_inspection_routine_blood A 
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+            UNION ALL
+              SELECT 
+              A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '生化指标' AS inspectionCheck,
+              CONCAT('丙氨酸氨基转移酶:',A.alt,';天门冬氨酸氨基转移酶 :',A.ast,';血清总蛋白:',A.tp,';血清白蛋白:',A.alb,';血清球蛋白:',A.seroglobulin,';白/球比值:',A.ag,';总胆红素:',A.tbil,';直接胆红素:',A.dbil,';间接胆红素:',A.ibil,';总胆汁酸:',A.tba,
+                     ';血糖:',A.glu,';尿素氮:',A.bun,';肌酐(酶法):',A.cre,';尿酸:',A.ua,';总二氧化碳:',A.co2,';碱性磷酸酶:',A.alp,';γ谷氨酰转肽酶:',A.ggt,';钾:',A.k,';钠:',A.na,';氯:',A.cl,';钙:',A.ca,';磷:',A.p,';血清镁:',A.mg,';肌酸激酶:',A.ck,
+                     ';乳酸脱氢酶:',A.ldh,';α-羟丁酸脱氢酶:',A.ahbdh,';肌酸激酶同工酶:',A.creatine_kinase_isoenzyme,';总胆固醇:',A.tc,';甘油三酯:',A.tg,';高密度脂蛋白胆固醇:',A.hdlc,';低密度脂蛋白胆固醇:',A.ldlc,';载脂蛋白A1:',A.apolipoprotein_a1,
+                     ';载脂蛋白B:',A.apolipoprotein_b,';脂蛋白(a):',A.lpa,';载脂蛋白E:',A.apolipoprotein_e,';前白蛋白:',A.pa,';腺苷脱氨酶:',A.ada,';β2微球蛋白:',A.microglobulin_b2,';血清α-L-岩藻糖苷酶:',A.afu,';血清胱抑素:',A.cystatin,
+                     ';5核苷酸酶:',A.nt5,';超敏C反应蛋白:',A.hscrp,';β羟丁酸:',A.bhb,';单胺氧化酶:',A.mao,';唾液酸:',A.sialic_acid,';备注:',A.others) AS detail
+                FROM pd_d_patient_inspection_biochemical A
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+            UNION ALL
+              SELECT 
+                A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '出凝血功能' AS inspectionCheck,
+              CONCAT('纤维蛋白原:',A.fib,';活化部分凝血活酶时间:',A.aptt,';凝血酶原活动度:',A.pta,';凝血酶原时间:',A.pt,';凝血酶时间:',A.tt,';国际标准化比值:',A.inr,';纤维蛋白(原)降解产物:',A.fdp,';DD二聚体:',A.ddimer,
+                     ';血浆抗凝血酶Ⅲ活性测定:',A.at3,';α2纤溶酶抑制物活性:',A.plasminogen_inhibitor_a2,';纤溶酶原活性:',A.plga,';备注:',A.others) AS detail
+                FROM pd_d_patient_inspection_blood_coagulation A
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+            UNION ALL
+              SELECT 
+                A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '传染性疾病筛选' AS inspectionCheck,
+              CONCAT('乙肝表面抗原（HBsAg）:',A.hbsag,';乙型肝炎表面抗体（HBsAb）:',A.hbsab,';乙型肝炎E抗原（HBeAg）:',A.hbeag,';乙型肝炎E抗体（HBeAb）:',A.hbeab,';乙肝核心抗体（HBcAb）:',A.hbcab,';乙型肝炎病毒DNA拷贝数（HBV-DNAse）:',
+                     A.hbvdnase,';甲型肝炎病毒 (HAV ):',A.hav,';HBcAb-IgM:',A.hbcabigm,';HCV-IgG:',A.hcvigg,';HCV-IgM:',A.hcvigm,';HDV:',A.hdv,';HEV:',A.hev,';HGV:',A.hgv,';HIV:',A.hiv,';梅毒螺旋体抗体:',A.tpab) AS detail
+                FROM pd_d_patient_inspection_infection_diseases A
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+            UNION ALL
+              SELECT 
+                A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '尿常规' AS inspectionCheck,
+              CONCAT('比重:',A.rate,';蛋白:',A.protein,';镜检红细胞:',A.erythrocytes,';镜检白细胞:',A.leukocyte) AS detail
+                FROM pd_d_patient_inspection_routine_urine A
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+            UNION ALL
+              SELECT 
+                A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '大便常规' AS inspectionCheck,
+              CONCAT('隐血试验:',A.protein,';红细胞:',A.erythrocytes,';白细胞:',A.leukocyte) AS detail
+                FROM pd_d_patient_inspection_routine_stool A
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                 <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+            UNION ALL
+              SELECT 
+                A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '肾脏B超' AS inspectionCheck,
+              CONCAT('右肾大小（长）（cm）:',A.rlength,';右肾大小（宽）（cm）:',A.rwidth,';左肾大小（长）（cm）:',A.llength,';左肾大小（宽）（cm）:',A.lwidth,';肾脏B超其他:',A.others) AS detail
+                FROM pd_d_patient_inspection_renal_b_ultrasound A
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+            UNION ALL
+              SELECT 
+                A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '胸部X线' AS inspectionCheck,
+              CONCAT('诊断:',A.diagnosis,';其他:',A.others) AS detail
+                FROM pd_d_patient_inspection_chest_x_ray A
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+            UNION ALL
+              SELECT 
+                A.id AS id,
+                B.hp_id AS hpId,
+                B. NAME AS patientName,
+                A.pt_id AS patientId,
+                A.tdate AS tdate,
+              '心电图' AS inspectionCheck,
+              CONCAT('诊断:',A.diagnosis,';其他:',A.others) AS detail
+                FROM pd_d_patient_inspection_electrocardiogram A
+                LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+              WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>
+    
+   <!-- 根据ID查询血常规数据 -->
+   <select id="getInspectionCheckMessage1" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+        SELECT
+		A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate1,
+		A.wbc as wbc,A.rbc as rbc,A.hb as hb,A.hct as hct,A.mcv as mcv,A.mch as mch,A.mchc as mchc,A.rdw as rdw,A.rdwsd as rdwsd,A.plt as plt,A.mpv as mpv,A.pdw as pdw,A.pct as pct,A.plcr as plcr,A.neutrophil_percentage as neutrophil_percentage,
+		A.lymphocyte_percentage as lymphocyte_percentage,A.monocyte_percentage as monocyte_percentage,A.eosinophil_percentage as eosinophil_percentage,A.basophil_percentage as basophil_percentage,A.neutrophil_absolute_value as neutrophil_absolute_value,
+		A.lymphocyte_absolute_value as lymphocyte_absolute_value,A.monocyte_absolute_value as monocyte_absolute_value,A.eosinophil_absolute_value as eosinophil_absolute_value,A.basophil_absolute_value as basophil_absolute_value
+		FROM pd_d_patient_inspection_routine_blood A 
+		LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+	    WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>
+    
+   <!-- 根据ID查询生化指标数据 -->
+   <select id="getInspectionCheckMessage2" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+		SELECT 
+	    A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate2,
+	    A.alt as alt,A.ast as ast,A.tp as tp,A.alb as alb,A.seroglobulin as seroglobulin,A.ag as ag,A.tbil as tbil,A.dbil as dbil,A.ibil as ibil,A.tba as tba,
+	    A.glu as glu,A.bun as bun,A.cre as bun,A.ua as ua,A.co2 as co2,A.alp as alp,A.ggt as ggt,A.k as k,A.na AS na,A.cl as cl,A.ca as ca,A.p as p,A.mg as mg,A.ck as ck,
+	    A.ldh as ldh,A.ahbdh as ahbdh,A.creatine_kinase_isoenzyme as creatine_kinase_isoenzyme,A.tc as tc,A.tg as tg,A.hdlc as hdlc,A.ldlc as ldlc,A.apolipoprotein_a1 as apolipoprotein_a1,
+	    A.apolipoprotein_b as apolipoprotein_b,A.lpa as lpa,A.apolipoprotein_e as apolipoprotein_e,A.pa as pa,A.ada as ada,A.microglobulin_b2 as microglobulin_b2,A.afu as afu,A.cystatin as cystatin,
+	    A.nt5 as nt5,A.hscrp as hscrp,A.bhb as bhb,A.mao as mao,A.sialic_acid as sialic_acid,A.others as others2
+	    FROM pd_d_patient_inspection_biochemical A
+	    LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+		WHERE A.del_flag='0' AND B.del_flag='0'
+                 <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+   </select>
+   
+   <!-- 根据ID查询出凝血功能数据 -->
+   <select id="getInspectionCheckMessage3" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+		SELECT 
+        A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate3,
+        A.fib as fib,A.aptt as aptt,A.pta as pta,A.pt as pt,A.tt as tt,A.inr as inr,A.fdp as fdp,A.ddimer as ddimer,
+        A.at3 as at3,A.plasminogen_inhibitor_a2 as plasminogen_inhibitor_a2,A.plga as plga,A.others as others3
+        FROM pd_d_patient_inspection_blood_coagulation A
+        LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+        WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>
+    
+   <!-- 根据ID查询传染性疾病筛选数据 -->
+   <select id="getInspectionCheckMessage4" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+		SELECT 
+		A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate4,
+		A.hbsag as hbsag,A.hbsab as hbsab,A.hbeag as hbeag,A.hbeab as hbeab,A.hbcab as hbcab,A.hbvdnase as hbvdnase,A.hav as hav,
+		A.hbcabigm as hbcabigm,A.hcvigg as hcvigg,A.hcvigm as hcvigm,A.hdv as hdv,A.hev as hev,A.hgv as hgv,A.hiv as hiv,A.tpab as tpab
+		FROM pd_d_patient_inspection_infection_diseases A
+		LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+		WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>  
+    
+   <!-- 根据ID查询尿常规数据 -->
+   <select id="getInspectionCheckMessage5" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+        SELECT 
+        A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate5,
+        A.rate as rate,A.protein as protein,A.erythrocytes as erythrocytes,A.leukocyte as leukocyte
+        FROM pd_d_patient_inspection_routine_urine A
+        LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+        WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>  
+ 
+   <!-- 根据ID查询大便常规数据 -->
+   <select id="getInspectionCheckMessage6" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+        SELECT 
+        A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate6,
+        A.protein as protein6,A.erythrocytes as erythrocytes6,A.leukocyte as leukocyte6
+        FROM pd_d_patient_inspection_routine_stool A
+        LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+        WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>  
+ 
+   <!-- 根据ID查询肾脏B超数据 -->
+   <select id="getInspectionCheckMessage7" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+		SELECT 
+		A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate7,
+		A.rlength as rlength,A.rwidth as rwidth,A.llength as llength,A.lwidth as lwidth,A.others as others7
+		FROM pd_d_patient_inspection_renal_b_ultrasound A
+		LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+		WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>   
+ 
+   <!-- 根据ID查询胸部X线数据 -->
+   <select id="getInspectionCheckMessage8" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+		SELECT 
+		A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate8,
+		A.diagnosis as diagnosis8,A.others as others8
+		FROM pd_d_patient_inspection_chest_x_ray A
+		LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+		WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>   
+ 
+   <!-- 根据ID查询心电图数据 -->
+   <select id="getInspectionCheckMessage9" parameterType="com.ustcsoft.pdqc.web.patient.form.PatientForm" resultType="com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm">
+		SELECT 
+		A.id AS id,B.hp_id AS hpId,B.NAME AS patientName,A.pt_id AS patientId,A.tdate AS tdate9,
+		A.diagnosis as diagnosis9,A.others as others9
+		FROM pd_d_patient_inspection_electrocardiogram A
+		LEFT JOIN pd_d_patient_info B ON A.pt_id=B.id
+		WHERE A.del_flag='0' AND B.del_flag='0'
+                <if test="id !=null">
+                    and A.id = #{id}
+                </if>
+    </select>   
+    
+</mapper>

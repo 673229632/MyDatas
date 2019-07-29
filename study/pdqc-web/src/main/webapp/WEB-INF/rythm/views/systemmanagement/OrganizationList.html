@@ -1,0 +1,424 @@
+@extends(views.common.MainView, v_sTitle:"组织机构")
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@args String topOrgNo
+@args List<Code> txParentList
+
+@widget.ctnr.Div(sCss:"col-xs-4"){
+	@widget.ctnr.Form("form1"){
+		@widget.ctrl.ZTree(sId:"tree", bShowIcon:true, bExpendTree:true, bShowFilter:false, sDataUrl:"/organizationList/getTree")
+	}
+	@widget.ctnr.BtnBox(sAlign:"right"){
+		@widget.ctrl.Button({sLabel:"刷新", sBtncss:"btn-normal", sOnClick:"refresh", sId:"refreshBtn"})
+	}
+}
+
+
+@widget.ctrl.Hidden(sLabel:"topOrgNo", sName:"topOrgNo", sId:"topOrgNo",oValue:topOrgNo)
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"qcCenterDiv"){
+	@widget.ctnr.Form("qcform"){
+		@widget.ctnr.FormTitle(sTitle :"质控中心"){
+			@widget.ctnr.Div(sCss:"col-xs-12"){
+				@widget.ctrl.Hidden(sLabel:"qcOrgNo", sName:"qcOrgNo", sId:"qcOrgNo")
+				@widget.ctrl.Input({sLabel:"组织名称:", sName:"qcCenterName", sId:"qcCenterName", sGroupCss:"col-6", sMaxLength:"20", bRequired:true, bDisabled:true})
+				@widget.ctrl.Input({sLabel:"组织类型:", sName:"qcCenterType", sId:"qcCenterType", sGroupCss:"col-6", sMaxLength:"20", oValue:"质控中心", bDisabled:true})
+				@widget.ctrl.SelectPicker({sLabel:"上级组织名称:", sName:"qcParentNo", sId:"qcParentNo", sGroupCss:"col-6", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"负责人:", sName:"qcCenterManager", sId:"qcCenterManager", sGroupCss:"col-6", sMaxLength:"20", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"联系电话:", sName:"qcCenterTel", sId:"qcCenterTel", sGroupCss:"col-6", sMaxLength:"15", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"邮编:", sName:"qcCenterPostcode", sId:"qcCenterPostcode", sGroupCss:"col-6", sMaxLength:"6", sType:"number", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"传真:", sName:"qcCenterFax", sId:"qcCenterFax", sGroupCss:"col-6", sMaxLength:"30", sType:"number", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"email:", sName:"qcCenterEmail", sId:"qcCenterEmail", sGroupCss:"col-6", sMaxLength:"30", bDisabled:true})
+				@widget.ctrl.TextArea(sLabel:"单位地址:", sId:"qcCenterAddress", sName:"qcCenterAddress", sGroupCss:"col-12", sValue:"", sMaxLength:"120", bDisabled:true)
+				
+				@widget.ctnr.BtnBox(bBorder:true){
+					@widget.ctnr.Div(sCss:"col-xs-6"){
+						@widget.ctrl.Button({sLabel:"新增质控中心", sBtncss:"btn-normal", sOnClick:"addQcCenter", sId:"qcChangeQcBtn"})
+						@widget.ctrl.Button({sLabel:"新增透析中心", sBtncss:"btn-normal", sOnClick:"addTxCenter", sId:"qcChangeTxBtn"})
+					}
+					@widget.ctnr.Div(sCss:"col-xs-6"){
+						@widget.ctrl.Button({sLabel:"修改", sBtncss:"btn-normal", sOnClick:"qcEditTrue" , sId:"qcUpdateBtn"})
+						@widget.ctrl.Button({sLabel:"保存", sBtncss:"btn-normal", sOnClick:"saveQcCenter", sId:"qcSaveBtn"})
+						@widget.ctrl.Button({sLabel:"删除", sBtncss:"btn-normal", sOnClick:"qcDelete", sId:"qcDeleteBtn"})
+					}
+				}
+			}
+		}
+	}
+}
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"txCenterDiv"){
+	@widget.ctnr.Form("txform"){
+		@widget.ctnr.FormTitle(sTitle :"透析中心"){
+			@widget.ctnr.Div(sCss:"col-xs-12"){
+				@widget.ctrl.Hidden(sLabel:"txOrgNo", sName:"txOrgNo", sId:"txOrgNo")
+				@widget.ctrl.Input({sLabel:"组织名称:", sName:"pdCenterName", sId:"pdCenterName", sGroupCss:"col-6", sMaxLength:"20", bRequired:true, bDisabled:true})
+				@widget.ctrl.Input({sLabel:"组织类型:", sName:"txCenterType", sId:"txCenterType", sGroupCss:"col-6", sMaxLength:"20", oValue:"透析中心", bDisabled:true})
+				@widget.ctrl.SelectPicker({sLabel:"上级组织名称:", sName:"txParentNo", sId:"txParentNo", sGroupCss:"col-6", oOptions:txParentList, bDisabled:true})
+				
+				@widget.ctrl.Input({sLabel:"负责人:", sName:"pdCenterManager", sId:"pdCenterManager", sGroupCss:"col-6", sMaxLength:"20", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"联系电话:", sName:"pdCenterTel", sId:"pdCenterTel", sGroupCss:"col-6", sMaxLength:"15", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"邮编:", sName:"pcCenterPostcode", sId:"pcCenterPostcode", sGroupCss:"col-6", sMaxLength:"6", sType:"number", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"传真:", sName:"pdCenterFax", sId:"pdCenterFax", sGroupCss:"col-6", sMaxLength:"30", sType:"number", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"email:", sName:"pdCenterEmail", sId:"pdCenterEmail", sGroupCss:"col-6", sMaxLength:"30", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"透析中心面积:", sName:"pdCenterArea", sId:"pdCenterArea", sGroupCss:"col-6", sMaxLength:"25", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"调整评分机构:", sName:"adjustOrg", sId:"adjustOrg", sGroupCss:"col-6", sMaxLength:"16", bDisabled:true})
+				@widget.ctrl.Input({sLabel:"评分权重:", sName:"scoreWeight", sId:"scoreWeight", sGroupCss:"col-6", sMaxLength:"5", sType:"number", bDisabled:true})
+				@widget.ctrl.TextArea(sLabel:"单位地址:", sId:"pdCenterAddress", sName:"pdCenterAddress", sGroupCss:"col-12", sValue:"", sMaxLength:"120", bDisabled:true)
+				
+				@widget.ctnr.BtnBox(bBorder:true){
+					@widget.ctnr.Div(sCss:"col-xs-6"){
+						@widget.ctrl.Button({sLabel:"新增质控中心", sBtncss:"btn-normal", sOnClick:"addQcCenter", sId:"txChangeQcBtn"})
+						@widget.ctrl.Button({sLabel:"新增透析中心", sBtncss:"btn-normal", sOnClick:"addTxCenter", sId:"txChangeTxBtn"})
+					}
+					@widget.ctnr.Div(sCss:"col-xs-6"){
+						@widget.ctrl.Button({sLabel:"修改", sBtncss:"btn-normal", sOnClick:"txEditTrue" ,sId:"txUpdateBtn"})
+						@widget.ctrl.Button({sLabel:"保存", sBtncss:"btn-normal", sOnClick:"saveTxCenter",sId:"txSaveBtn"})
+						@widget.ctrl.Button({sLabel:"删除", sBtncss:"btn-normal", sOnClick:"txDelete",sId:"txDeleteBtn"})
+					}
+				}
+			}
+		}
+	}
+}
+
+<!-- 脚本 -->
+<script>
+
+$(function(){
+	$("#qcCenterDiv").prop('style', 'display: none;');
+	$("#txCenterDiv").prop('style', 'display: none;');
+	changeSelectPickerNotContainsTop();
+})
+
+// 刷新
+function refresh() {
+	location.reload();
+}
+
+// 点击树结构的项目获取对应的明细
+$("#tree").on('ztree.click', function(event, treeNode) {
+	// 禁用质控、血透选项
+	qcEditFalse();
+	txEditFalse();
+	var orgType = treeNode.orgType;
+	var orgNo = treeNode.id;
+	var topOrgNo = $('#topOrgNo').val();
+	if (orgNo == topOrgNo) {
+		changeSelectPickerContainsTop();
+	} else {
+		changeSelectPickerNotContainsTop();
+	}
+	if (orgType == "1") {
+		$("#qcCenterDiv").prop('style', 'display: block;');
+		$("#txCenterDiv").prop('style', 'display: none;');
+		var pdDQcCenter = null;
+		var fnSuccess = function(data) {
+    		if (data.data !=null) {
+    			pdDQcCenter = data.data;
+    			$('#qcOrgNo').val(pdDQcCenter.qcOrgNo);
+    			$('#qcCenterName').val(pdDQcCenter.qcCenterName);
+    			$('#qcCenterManager').val(pdDQcCenter.qcCenterManager);
+    			$('#qcCenterTel').val(pdDQcCenter.qcCenterTel);
+    			$('#qcCenterPostcode').val(pdDQcCenter.qcCenterPostcode);
+    			$('#qcCenterFax').val(pdDQcCenter.qcCenterFax);
+    			$('#qcCenterEmail').val(pdDQcCenter.qcCenterEmail);
+    			$('#qcCenterAddress').val(pdDQcCenter.qcCenterAddress);
+    			var qcParentNo = pdDQcCenter.qcParentNo;
+    			$('#qcParentNo select').selectpicker('val', qcParentNo);
+    		} else {
+    			MsgBox.warning("获取信息失败");
+    		}
+    	}
+		Ajax.ajax({
+			url : '@url("/organizationList/selectQcCenterByOrgNo")', //通过id找出明细
+			data : {orgNo : orgNo}, 
+			type:"post", 
+			success: fnSuccess
+		});
+		
+		
+	} else if (orgType == "2") {
+		$("#qcCenterDiv").prop('style', 'display: none;');
+		$("#txCenterDiv").prop('style', 'display: block;');
+		var pdDCenter = null;
+		var fnSuccess = function(data) {
+    		if (data.data !=null) {
+    			pdDCenter = data.data;
+    			$('#txOrgNo').val(pdDCenter.txOrgNo);
+    			$('#pdCenterName').val(pdDCenter.pdCenterName);
+    			$('#pdCenterManager').val(pdDCenter.pdCenterManager);
+    			$('#pdCenterTel').val(pdDCenter.pdCenterTel);
+    			$('#pcCenterPostcode').val(pdDCenter.pcCenterPostcode);
+    			$('#pdCenterFax').val(pdDCenter.pdCenterFax);
+    			$('#pdCenterEmail').val(pdDCenter.pdCenterEmail);
+    			$('#pdCenterArea').val(pdDCenter.pdCenterArea);
+    			$('#adjustOrg').val(pdDCenter.adjustOrg);
+    			$('#scoreWeight').val(pdDCenter.scoreWeight);
+    			$('#pdCenterAddress').val(pdDCenter.pdCenterAddress);
+    			$('#txParentNo select').selectpicker('val', pdDCenter.txParentNo);
+    		} else {
+    			MsgBox.warning("获取信息失败");
+    		}
+    	}
+		Ajax.ajax({
+			url : '@url("/organizationList/selectTxCenterByOrgNo")', //通过id找出明细
+			data : {orgNo : orgNo}, 
+			type:"post", 
+			success: fnSuccess
+		});
+		
+	}
+})
+
+// 新增质控中心
+function addQcCenter(){
+	$("#qcCenterDiv").prop('style', 'display: block;');
+	$("#txCenterDiv").prop('style', 'display: none;');
+	$('#qcOrgNo').val("");
+	$('#qcCenterName').val("");
+	$('#qcCenterManager').val("");
+	$('#qcCenterTel').val("");
+	$('#qcCenterPostcode').val("");
+	$('#qcCenterFax').val("");
+	$('#qcCenterEmail').val("");
+	$('#qcCenterAddress').val("");
+	changeSelectPickerNotContainsTop();
+	qcEditTrue();
+}
+
+// 可以修改质控中心选项
+function qcEditTrue(){
+	$('#qcCenterName').attr("readonly",false); 
+	$('#qcCenterManager').attr("readonly",false); 
+	$('#qcCenterTel').attr("readonly",false); 
+	$('#qcCenterPostcode').attr("readonly",false); 
+	$('#qcCenterFax').attr("readonly",false); 
+	$('#qcCenterEmail').attr("readonly",false);
+	$('#qcCenterAddress').attr("readonly",false); 
+	var qcOrgNo = $('#qcOrgNo').val();
+	var topOrgNo = $('#topOrgNo').val();
+	// 不允许修改自己的上级组织机构
+	if (qcOrgNo == topOrgNo) {
+		changeDisabled($('#qcParentNo'),true);
+	} else {
+		changeDisabled($('#qcParentNo'),false);
+	}
+	
+}
+
+// 禁用质控中心选项
+function qcEditFalse(){
+	$('#qcCenterName').attr("readonly",true); 
+	$('#qcCenterManager').attr("readonly",true); 
+	$('#qcCenterTel').attr("readonly",true); 
+	$('#qcCenterPostcode').attr("readonly",true); 
+	$('#qcCenterFax').attr("readonly",true); 
+	$('#qcCenterEmail').attr("readonly",true);
+	$('#qcCenterAddress').attr("readonly",true); 
+	changeDisabled($('#qcParentNo'),true);
+}
+
+// 可以修改透析中心选项
+function txEditTrue(){
+	$('#pdCenterName').attr("readonly",false); 
+	$('#pdCenterManager').attr("readonly",false); 
+	$('#pdCenterTel').attr("readonly",false); 
+	$('#pcCenterPostcode').attr("readonly",false); 
+	$('#pdCenterFax').attr("readonly",false); 
+	$('#pdCenterEmail').attr("readonly",false); 
+	$('#pdCenterArea').attr("readonly",false); 
+	$('#adjustOrg').attr("readonly",false); 
+	$('#scoreWeight').attr("readonly",false); 
+	$('#pdCenterAddress').attr("readonly",false); 
+	var txOrgNo = $('#txOrgNo').val();
+	var topOrgNo = $('#topOrgNo').val();
+	// 不允许修改自己的上级组织机构
+	if (txOrgNo == topOrgNo) {
+		changeDisabled($('#txParentNo'),true);
+	} else {
+		changeDisabled($('#txParentNo'),false);
+	}
+}
+
+// 禁用透析中心选项
+function txEditFalse(){
+	$('#pdCenterName').attr("readonly",true); 
+	$('#pdCenterManager').attr("readonly",true); 
+	$('#pdCenterTel').attr("readonly",true); 
+	$('#pcCenterPostcode').attr("readonly",true); 
+	$('#pdCenterFax').attr("readonly",true); 
+	$('#pdCenterEmail').attr("readonly",true); 
+	$('#pdCenterArea').attr("readonly",true); 
+	$('#adjustOrg').attr("readonly",true); 
+	$('#scoreWeight').attr("readonly",true); 
+	$('#pdCenterAddress').attr("readonly",true); 
+	changeDisabled($('#txParentNo'),true);
+}
+
+//新增透析中心
+function addTxCenter(){
+	$("#qcCenterDiv").prop('style', 'display: none;');
+	$("#txCenterDiv").prop('style', 'display: block;');
+	$('#txOrgNo').val("");
+	$('#pdCenterName').val("");
+	$('#pdCenterManager').val("");
+	$('#pdCenterTel').val("");
+	$('#pcCenterPostcode').val("");
+	$('#pdCenterFax').val("");
+	$('#pdCenterEmail').val("");
+	$('#pdCenterArea').val("");
+	$('#adjustOrg').val("");
+	$('#scoreWeight').val("");
+	$('#pdCenterAddress').val("");
+	changeSelectPickerNotContainsTop();
+	txEditTrue();
+}
+
+//保存质控中心
+function saveQcCenter(){
+	var detail = $('#qcform').serializeObject();
+	Ajax.ajax({
+		url : '@url("/organizationList/saveQcCenter")',
+		data : detail,
+		success : function(data) {
+			if (data.successCount > 1) {
+				parent.MsgBox.success(data.retMsg,function(){
+					location.reload();
+				});
+				
+			} else {
+				parent.MsgBox.warning(data.retMsg,function(){
+					location.reload();
+				});
+			}
+		}
+	});
+}
+
+//保存透析中心
+function saveTxCenter(){
+	var detail = $('#txform').serializeObject();
+	Ajax.ajax({
+		url : '@url("/organizationList/saveTxCenter")',
+		data : detail,
+		success : function(data) {
+			if (data.successCount > 1) {
+				parent.MsgBox.success(data.retMsg,function(){
+					location.reload();
+				});
+			} else {
+				parent.MsgBox.warning(data.retMsg,function(){
+					location.reload();
+				});
+			}
+		}
+	});
+}
+
+// 删除质控中心
+function qcDelete(){
+	var orgNo = $('#qcOrgNo').val();
+	delCenter(orgNo);
+}
+
+// 删除透析中心
+function txDelete(){
+	var orgNo = $('#txOrgNo').val();
+	delCenter(orgNo);
+}
+
+// 根据orgNo删除质控/透析中心
+function delCenter(orgNo) {
+	var fnSuccess = function(data) {
+		if (data.successCount > 1) {
+			parent.MsgBox.success(data.retMsg,function(){
+				location.reload();
+			});
+		} else if( data.successCount == 1){
+			parent.MsgBox.warning(data.retMsg,function(){
+				location.reload();
+			});
+		} else {
+			MsgBox.warning(data.retMsg);
+		}
+	}
+	Ajax.ajax({
+		url : '@url("/organizationList/delCenter")', //通过id找出明细
+		data : {orgNo : orgNo}, 
+		type:"post", 
+		async: false, 
+		success: fnSuccess
+	});
+}
+
+// 改变ParentNo下拉框的选项（包含顶级节点的父节点选项）
+function changeSelectPickerContainsTop(){
+	var topOrgNo = $('#topOrgNo').val();
+	Ajax.ajax({
+		url : '@url("/organizationList/getSelectPickerContainsTop")',
+		data : {
+			orgNo:topOrgNo
+		},
+		type:"post", 
+		async: false, 
+		success : function(data) {
+		    $("#qcParentNo").find("select").empty();
+		    $("#txParentNo").find("select").empty();
+            $.each(data.data,function(i,code){ 
+            	$("#qcParentNo select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            	$("#txParentNo select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            }); 
+		    $('#qcParentNo select').selectpicker('refresh');//刷新操作
+		    $("#qcParentNo select").trigger("change");
+		    $('#txParentNo select').selectpicker('refresh');//刷新操作
+		    $("#txParentNo select").trigger("change");
+		}
+	});
+}
+
+// 改变ParentNo下拉框的选项（不包含顶级节点的父节点选项）
+function changeSelectPickerNotContainsTop(){
+	var topOrgNo = $('#topOrgNo').val();
+	Ajax.ajax({
+		url : '@url("/organizationList/getSelectPickerNotContainsTop")',
+		data : {
+			orgNo:topOrgNo
+		},
+		type:"post", 
+		async: false, 
+		success : function(data) {
+		    $("#qcParentNo").find("select").empty();
+		    $("#txParentNo").find("select").empty();
+            $.each(data.data,function(i,code){ 
+            	$("#qcParentNo select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            	$("#txParentNo select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            }); 
+		    $('#qcParentNo select').selectpicker('refresh');//刷新操作
+		    $("#qcParentNo select").trigger("change");
+		    $('#txParentNo select').selectpicker('refresh');//刷新操作
+		    $("#txParentNo select").trigger("change");
+		}
+	});
+}
+
+function changeDisabled($widget, disabled) {
+    // 顶层容器
+    var $div = $widget;
+    // 容器
+    var $bootstrapselect = $div.find("div.bootstrap-select");
+    // 按钮
+    var $btn = $bootstrapselect.find(".btn.dropdown-toggle");
+    // 下拉框
+    var $select = $div.find("select.selectpicker");
+    if (disabled) {
+        $bootstrapselect.addClass("disabled");
+        $btn.addClass("disabled");
+    } else {
+        $bootstrapselect.removeClass("disabled");
+        $btn.removeClass("disabled");
+    }
+    // Select本身
+    $select.prop("disabled", disabled);
+}
+
+
+
+</script>

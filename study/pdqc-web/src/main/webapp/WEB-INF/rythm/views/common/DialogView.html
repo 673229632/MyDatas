@@ -1,0 +1,31 @@
+@* 弹出页面的模版页 *@
+@extends(TopView,v_bEnableLodopFuncs:false,v_bEnableEcharts:false)
+@import com.ustcsoft.pdqc.web.common.util.SecurityUtil
+@import com.ustcsoft.pdqc.web.common.security.LoginPrincipal
+
+@* 参数：是否拥有底部固定按钮 *@
+@args Boolean  v_bFixedBottomButton = false
+@* 参数：是否拥有顶部固定按钮 *@
+@args Boolean  v_bFixedTopButton = false
+
+@args String  browser ="Chrome"
+
+@args String  addClass =""
+@{
+    // 是否显示线条
+    final String l_sFixedBtmBtn = fnNval(v_bFixedBottomButton, "with-fixed-bottom-btnbox");
+    final String l_sFixedTopBtn = fnNval(v_bFixedTopButton, "with-fixed-top-btnbox");
+}
+@{LoginPrincipal principal = SecurityUtil.getPrincipal();
+      if(principal != null){
+      	browser = principal.getBrowser();
+      	if( browser == "Mobile Safari" || browser == "Chrome Mobile"){
+      		addClass = "inpad";
+      	}
+      }
+}
+<body class="rythm-dialog @l_sFixedBtmBtn @l_sFixedTopBtn @addClass">
+	<div class="rythm-dialog-content">
+	@render()
+	</div>
+</body>

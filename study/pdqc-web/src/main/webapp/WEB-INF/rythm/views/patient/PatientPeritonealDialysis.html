@@ -1,0 +1,111 @@
+@extends(views.common.DialogView,  v_sTitle:"腹透充分性上报/编辑")
+@import com.ustcsoft.pdqc.web.patient.form.PatientPeritonealDialysisRstForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+@args PatientPeritonealDialysisRstForm dialysisRstForm
+@widget.ctnr.Row() {
+	@widget.ctnr.Column(sCss:"col-8") {
+		@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi7",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+		@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi7",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+		@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi7",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+	}
+}
+@widget.ctnr.Form("patientPeritoneal_form"){
+	@widget.ctrl.Hidden(sLabel:"id:",sId:"id",sName:"id",oValue:dialysisRstForm.getId())
+	@widget.ctrl.Hidden(sLabel:"病人id:",sId:"patientId",sName:"patientId",oValue:dialysisRstForm.getPatientId())
+	@widget.ctrl.Hidden(sLabel:"医院id:",sId:"hpId",sName:"hpId",oValue:dialysisRstForm.getHpId())
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"日期:",sGroupCss:"col-md-4 hanzi7",sName:"tDate",
+				sId:"tDate",sFormat:"YYYY-MM-DD",bRequired:true,oValue:dialysisRstForm.gettDate())
+		@widget.ctrl.Input(sLabel:"身高:", sGroupCss:"col-md-4 hanzi7",sUnitString:"cm",sId:"height", 
+								sName:"height",oValue:dialysisRstForm.getHeight(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.Input(sLabel:"体重:", sGroupCss:"col-md-4 hanzi7",sUnitString:"Kg",sId:"weight", 
+								sName:"weight",oValue:dialysisRstForm.getWeight(),sMaxLength:"5",sType:"float")
+	}
+
+	@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"24h尿量:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"urineVolume", 
+								sName:"urineVolume",oValue:dialysisRstForm.getUrineVolume(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.Input(sLabel:"24h尿尿素氮:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"urineBUN", 
+								sName:"urineBUN",oValue:dialysisRstForm.getUrineBUN(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.Input(sLabel:"24h尿肌酐:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"urineCr", 
+								sName:"urineCr",oValue:dialysisRstForm.getUrineCr(),sMaxLength:"5",sType:"float")
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"24h透出液量:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"drainageAmount", 
+								sName:"drainageAmount",oValue:dialysisRstForm.getDrainageAmount(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.Input(sLabel:"24h透出液尿素氮:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"drainageBUN", 
+								sName:"drainageBUN",oValue:dialysisRstForm.getDrainageBUN(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.Input(sLabel:"24h透出液肌酐:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"drainageCr", 
+								sName:"drainageCr",oValue:dialysisRstForm.getDrainageCr(),sMaxLength:"5",sType:"float")
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"血清尿素氮:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"serumBUN", 
+								sName:"serumBUN",oValue:dialysisRstForm.getSerumBUN(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.Input(sLabel:"血清肌酐:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"serumCr", 
+								sName:"serumCr",oValue:dialysisRstForm.getSerumCr(),sMaxLength:"5",sType:"float")
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"残肾Kt/V:", sGroupCss:"col-md-4 hanzi7",sId:"residualRenalKt",
+							sName:"residualRenalKt",oValue:dialysisRstForm.getResidualRenalKt(),sMaxLength:"5")
+		@widget.ctrl.Input(sLabel:"透析Kt/V:", sGroupCss:"col-md-4 hanzi7",sId:"peritonealDialysisKt",
+							sName:"peritonealDialysisKt",oValue:dialysisRstForm.getPeritonealDialysisKt(),sMaxLength:"5")
+		@widget.ctrl.Input(sLabel:"总Kt/V:", sGroupCss:"col-md-4 hanzi7",sId:"totalCcr",
+							sName:"totalCcr",oValue:dialysisRstForm.getTotalCcr(),sMaxLength:"5")
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"残肾Ccr:", sGroupCss:"col-md-4 hanzi7",sId:"residualRenalCcr",
+							sName:"residualRenalCcr",oValue:dialysisRstForm.getResidualRenalCcr(),sMaxLength:"5")
+		@widget.ctrl.Input(sLabel:"透析Ccr:", sGroupCss:"col-md-4 hanzi7",sId:"peritonealDialysisCcr",
+							sName:"peritonealDialysisCcr",oValue:dialysisRstForm.getPeritonealDialysisCcr(),sMaxLength:"5")
+		@widget.ctrl.Input(sLabel:"总Ccr:", sGroupCss:"col-md-4 hanzi7",sId:"totalCcr",
+							sName:"totalCcr",oValue:dialysisRstForm.getTotalCcr(),sMaxLength:"5")
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"eGFR:", sGroupCss:"col-md-4 hanzi7",sId:"eGFR",
+							sName:"eGFR",oValue:dialysisRstForm.geteGFR(),sMaxLength:"5")
+		@widget.ctrl.Input(sLabel:"nPCR:", sGroupCss:"col-md-4 hanzi7",sId:"nPCR",
+							sName:"nPCR",oValue:dialysisRstForm.getnPCR(),sMaxLength:"5")
+	
+	}
+	
+	@widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"editSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+ 	}
+}
+<script type="text/javascript">
+	//保存
+	function editSave(){
+		var patientId=$("#patientId").val();
+		$('#patientPeritoneal_form').bootstrapValidator('validate');
+		var isValid = $('#patientPeritoneal_form').data('bootstrapValidator').isValid();
+		if(!isValid){
+	    	return;
+	    }
+		var sConidtion = $('#patientPeritoneal_form').serialize();
+		Ajax.ajax({
+			url : '@url("/patientOverView/patientPeritonealSave")',
+			data : sConidtion,
+			success : function(data) {
+				if(data.successCount > 0){
+					parent.MsgBox.success(data.retMsg,function(){
+						parent.$("#peritonealDialysis").bootstrapTable('refresh');
+						parent.$("#peritonealDialysis2").bootstrapTable('refresh', {query: {patientId : patientId}});
+						Dialog.closeSelf();
+					});
+				}else{
+					MsgBox.warning(data.retMsg);
+				}
+			}
+		});
+		
+	}
+</script>

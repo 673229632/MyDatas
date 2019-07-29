@@ -1,0 +1,65 @@
+@extends(views.common.MainView, v_sTitle:"透析机构")
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+
+@widget.ctnr.Div(sCss:"col-xs-12"){
+	
+	
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-4"){
+			@widget.ctrl.Input({sLabel:"透析中心名称:", sName:"", sId:"dialysateCenterName", sGroupCss:"hanzi6", sMaxLength:"20"})
+		}
+		@widget.ctnr.Div(sCss:"col-xs-8"){
+			@widget.ctrl.Button({sLabel:"检索", sBtncss:"btn-normal", sId:"searchDialysisBtn"})
+			@widget.ctrl.Button({sLabel:"发布", sBtncss:"btn-normal", sOnClick:"addDialysis", sId:"addDialysisBtn"})
+			@widget.ctrl.Button({sLabel:"导出评分汇总", sBtncss:"btn-normal", sOnClick:"exportData", sId:"exportDataBtn"})
+		}
+	}
+	
+	@widget.ctrl.Table(sId:"search_result", sQueryParamFunction:"createQueryParams", sUrl:"/dialysisMechanism/getDialysisData", iPageSize:10, sSidePagination:"server"){
+		@widget.ctnr.Columns(){
+			{field: 'sno', align:'center', title: 'No', formatter: function (value, row, index){
+					return index+1;
+				}
+			},
+      		{field: 'id', title: 'id',visible:false},
+			{field: 'hospitalName', title: '医院名称'},
+			{field: 'dialysateCenterName', title: '透析中心名称'},
+			{field: 'haedOfDialysisCenter', title: '透析中心负责人'},
+			{field: 'currentScore', title: '当前得分'},
+			{title: '评分	', formatter: function (value, row, index){
+				return "<div><input type='button' style='margin-left: 5px' onclick='viewScore(\""+ row.id +"\")' value='评分' title='评分' /></div>";
+				}
+      		},
+			{field: 'releaseTime', title: '发布时间'},
+			{title: '历史记录', formatter: function (value, row, index){
+				return "<div><input type='button' style='margin-left: 5px' onclick='Historical(\""+ row.id +"\")' value='查看' title='查看' /></div>";
+				}
+      		},
+		}
+	}
+}
+
+
+<script>
+function addDialysis() {
+	parent.MsgBox.success("发布成功",function(){
+		location.reload();
+	});
+}
+//评分
+function viewScore(val) {
+	var id = "" + val;
+	parent.MsgBox.warning("当前时间不允许评分或者您已经发布过了",function(){
+		location.reload();
+	});
+}
+//历史记录
+function Historical(val) {
+	var id = "" + val;
+	Dialog.open('@url("/dialysisMechanism/ScoringDetails")' + '?id=' + id, {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:'查看历史记录'
+	});
+}
+</script>

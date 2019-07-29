@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SQL填充</title>
+</head>
+<style>
+    .css {
+        font-size: 15px;
+        height: 100%;
+        width: 100%
+    }
+	.tablecss {
+		height: 450px;
+        width: 90%;
+		margin-left: 5%;
+	}
+	
+	textarea {
+		border: 5px #ebebeb solid;
+	}
+	
+	td {
+		padding: 20px;
+	}
+	
+	button {
+		background-color: #4CAF50; /* Green */
+		border: none;
+		color: white;
+		padding: 5px 10px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		cursor: pointer;
+		border-radius: 8px;
+	}
+	
+	.biaoti {
+		width: 100%;
+		text-align: left;
+		padding-left: 5%;
+		font-size: 22px;
+		margin-bottom: 20px;
+		margin-top: 20px;
+	}
+</style>
+<body align="center">
+<div class="biaoti">SQL填充  v1.0</div>
+<table class="tablecss" border="1" cellspacing="0">
+	<tr>
+		<td style="height: 250px;">
+			<textarea id="sql" class="css" placeholder="粘贴sql语句"></textarea>
+		</td>
+		<td rowspan="2" style="width: 40%;">
+			<textarea id="result" class="css" placeholder="结果" style="height: 380px;"></textarea>
+			<div>
+				<button id="clear">清空</button>
+				<button id="btn">确定</button>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<textarea id="parameters" class="css"  
+				placeholder="粘贴Parameters语句,格式: Parameters: xxx(String), xxx(String)..."></textarea>
+		</td>
+	</tr>
+</table>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+    $(function(){
+        $("#btn").click(function(){
+		
+            var sql= $("#sql").val();
+			var parameters= $("#parameters").val();
+			if(parameters == ""){
+				return;
+			}
+			parameters = parameters.trim();
+			parameters = parameters.replace(/Parameters:/g,"");
+			
+			var canshu = parameters.split(",");
+			$.each(canshu ,function(index,value){
+				var str;
+                if(value.indexOf("(String)") > 0){
+					str = value.replace(/\(String\)/g,"");
+					str = "'" + str + "'";
+				}else if(value.indexOf("(Integer)") > 0){
+					str = value.replace(/\(Integer\)/g,"");
+				}else{
+					str = value;
+				}
+				str = str.replace(/ /,"");
+				sql = sql.replace(/\?/,str);
+            });
+			$("#result").val(sql);        
+        });
+		
+		$("#clear").click(function(){
+			$("#sql").val("");
+			$("#parameters").val("");
+			$("#result").val("");   
+		});
+    });
+</script>
+</html>
+
+

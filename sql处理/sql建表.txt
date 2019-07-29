@@ -1,0 +1,26 @@
+-- SQL½¨±íµÄ¸ñÊ½:
+CREATE TABLE [dbo].[±íÃû] (
+	[ID] VARCHAR (15) NOT NULL,
+	-- 
+	-- Ìæ»»Îª¸Ã±íËùÐèÒªµÄ±í×Ö¶Î:
+	-- {¸ù¾Ý±í½á¹¹ÎÄµµ(Êý¾Ý½á¹¹£¨ÐÂ¾É¶Ô±È£©.xlsx),ÀûÓÃÏÂÃæ¹«Ê½Éú³ÉÂú×ãÐèÇóµÄ×Ö¶Î.}
+	-- Excelµ¥Ôª¸ñÆ´½Ó¹«Ê½(¸ö±ðÌØÊâÒªÇóµÄÊÖ¶¯ÐÞ¸Ä):
+	-- = "[" & C3 & "]   " & D3 & "(" & E3 & ")" & "    NULL ,"
+	-- 
+	-- Ò»°ã×Ö¶Î¸ñÊ½ÈçÏÂ:
+	-- [×Ö¶ÎÃû] datetime NOT NULL ,
+	-- [×Ö¶ÎÃû] date NULL ,
+	-- [×Ö¶ÎÃû] CHAR (15) NOT NULL,
+	-- [×Ö¶ÎÃû] VARCHAR (15) NOT NULL,
+	-- [×Ö¶ÎÃû] numeric(7,3) NULL ,
+	-- 
+	[DeleteFlag] VARCHAR (1) NOT NULL,
+	[EntryId] VARCHAR (15) NOT NULL,
+	[EntryDate] datetime NOT NULL,
+	[ModifyId] VARCHAR (15) NOT NULL,
+	[ModifyDate] datetime NOT NULL,
+	[ScreenId] VARCHAR (36) NULL
+);
+
+-- ÉèÖÃÖ÷¼ü(¸ö±ðÌØÊâÒªÇóµÄÊÖ¶¯ÐÞ¸Ä):
+ALTER TABLE [dbo].[±íÃû] ADD PRIMARY KEY ([ID]);

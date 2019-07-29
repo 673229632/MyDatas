@@ -1,0 +1,60 @@
+@extends(views.common.MainView, v_sTitle:"腹透门诊图页面")
+@widget.ctnr.Form("search-form"){
+	@widget.ctnr.FormTitle(sTitle :"查询条件"){
+		@widget.ctrl.DatePicker(sLabel:"门诊日期:",sId:"date",GroupCss:"col-4",oValue:"",sName:"date",sFormat:"YYYY-MM-DD",sGroupCss:"col-4 hanzi4")
+		@widget.ctrl.Label(sLabel:"",sId:"",sValue:"",sPopPlace:"right",sGroupCss:"col-6 hanzi2")
+	}
+	
+}
+<div class="huanzhe" style="position:relative;">
+    <ul id="append">
+    </ul>
+</div>
+
+<style type="text/css"> 
+	.huanzhe { padding:1px;}
+	.huanzhe ul { margin:0 -6px;}
+	.huanzhe ul li { float:left; width:250px; height:250px; margin:19px 10px; position:relative;list-style-type:none;}
+	/*div边框*/
+	.dborder{float:left;width: 250px; height: 200px;border: #13b5b1; border-style: solid; border-top-width: 2px;border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px;margin: 0px 0px 20px 20px;}
+	.abiaoqian{float:left;height:30px;width:14.2%;text-align:center;color:#22CCFF;cursor:pointer;font-size:16px;}
+	.avalue{float:left;height:30px;width:33.3%;text-align:center;cursor:pointer;}
+	.afoot{float:left;height:20px;width:50%;text-align:center;cursor:pointer;}
+	.astate{height:20px;font-size:13px;text-align:center;}
+	.aname{float:left;width:45%;margin:2px 0px;font-size:27px;text-align:right;line-height:35px;}
+	.sdiv{float:left;width:10%;margin:2px 5px;}
+	.adiv20{width:100%;height:20px;margin-top:10px;line-height:20px;}
+	.adiv30{width:100%;height:30px;margin-top:10px;line-height:30px;}
+	.zhuyuan{margin-top:20px;font-size:13px;text-align:center;}
+	.arighthead{float:left;width:15%;margin:2px 5px;}
+	.ared{color:red;}
+	.ablue{color:#22CCFF;}
+</style>
+
+<script>
+$(function(){
+	searchdata();
+});
+
+function searchdata(){
+    var date = $("#date").find(".datepickerinput").val();
+    var masterinfoHtml = [];
+    Ajax.ajax({
+		url : '@url("/pdoutpatientindex/getdatainfo")',
+		data : {
+		    date : date  
+		},
+		type : "post",
+		async: false,
+		success : function(data) {
+		    debugger
+			var result = data.data;
+			for(var i=0; i< result.length ; i++){
+			    masterinfoHtml.push(result[i].result);
+			}
+			$("#append").append(masterinfoHtml);
+		}
+	}); 
+    
+}
+</script>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>日程安排 v.2.2</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style>
+    .css {
+        font-size: 15px;
+        height: 100%;
+        width: 100%
+    }
+	.tablecss {
+        width: 90%;
+		margin-left: 5%;
+	}
+	.biaoti {
+		width: 100%;
+		text-align: left;
+		padding-left: 5%;
+		font-size: 22px;
+		margin-bottom: 20px;
+		margin-top: 20px;
+	}
+
+	.changeweek {
+		width: 100%;
+		text-align: right;
+		padding-right: 5%;
+		font-size: 18px;
+		display: flex;
+	    padding-left: 75%;
+        white-space: nowrap;
+	}
+
+	.weipi{
+	    background-color: darkgray;
+	    border: 1px solid darkgray;
+	    cursor:pointer;
+	}
+	.yipi{
+	    background-color: palegreen;
+	    border: 1px solid palegreen;
+	    cursor:pointer;
+	}
+	.falsepi{
+	    background-color: coral;
+	    border: 1px solid coral;
+	    cursor:pointer;
+	}
+
+</style>
+<body align="center"> 
+
+<div class="biaoti">日程安排  v2.2</div>
+<div class="changeweek">
+	<div style="width: 100px;cursor:pointer;" id="previousweek"><<前一周</div>
+	<div style="width: 100px;cursor:pointer;" id="nowdate"></div>
+	<div style="width: 100px;cursor:pointer;" id="afterweek">后一周>></div>
+</div>
+
+<input type="hidden" id="date_first" value="value"> 
+
+<table id="table" class="tablecss" border="1" cellspacing="0">
+
+</table>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+			</div>
+			<div class="modal-body">
+				<pre style="text-align:  left;">
+所属部门	国际事业分公司  产品研发部  医疗健康事业部
+用户名	zhangrui
+真实姓名	张瑞
+职位	研发
+权限	研发
+源代码帐号	
+邮箱	zhangruiidea@foxmail.com
+入职日期	0000-00-00
+访问次数	180
+最后IP	192.168.50.184
+最后登录	2018-02-24 12:38:03
+Skype	
+QQ	673229632
+雅虎通	
+GTalk	
+旺旺	
+手机	18010911042
+电话	
+通讯地址	
+邮编	
+				</pre>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+</body>
+
+<script src="http://cdn.static.runoob.com/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(function(){
+		shownowdate();
+
+		$("#previousweek").click(function(){
+		  getweekDate(-1);
+		});
+		$("#afterweek").click(function(){
+		  getweekDate(1);
+		});
+		$("#nowdate").click(function(){
+		  getweekDate(0);
+		});
+
+	    // 在调用 show 方法后触发。	
+		$('#myModal').on('show.bs.modal', function (e) {
+            // 关键代码，如没将modal设置为 block，则$modala_dialog.height() 为零
+            $(this).css('display', 'block');
+            var modalHeight=$(window).height() / 2 - $('#myModal .modal-dialog').height() / 2;
+            $(this).find('.modal-dialog').css({
+                'margin-top': modalHeight
+            });
+        });
+
+        // --------以下为测试数据-------
+			setvalue("1","80",0);
+			setvalue("1","81",0);
+
+			setvalue("2","100",1);
+			setvalue("2","101",1);
+			setvalue("2","110",1);
+			setvalue("2","111",1);
+
+			setvalue("4","100",2);
+			setvalue("4","101",2);
+			setvalue("4","110",2);
+		// ----------------------------
+    });
+
+    // 根据后台的数据(时间点,日期(星期))生成表格,每一个td有唯一的id
+    function gettable(){
+    	var trs = [];
+    	for (var i = 8; i <=18; i++) {
+    		var tds = [];
+
+    		tds.push("<td>"+ i + ":00"+"</td>");
+    		for (var j = 1; j <= 7; j++){
+    			tds.push("<td id='td_" + i + "0_" + j + "'></td>");
+    		}
+    		trs.push("<tr>" + tds.join("") + "</tr>");
+
+    		tds = [];
+
+    		tds.push("<td>"+ i + ":30"+"</td>");
+    		for (var j = 1; j <= 7; j++){
+    			tds.push("<td id='td_" + i + "1_" + j + "'></td>");
+    		}
+			trs.push("<tr>" + tds.join("") + "</tr>");
+    	}
+    	$("#table").append(trs.join(""));
+
+    	// --------以下为测试数据-------
+			/*setvalue("1","80",0);
+			setvalue("1","81",0);
+
+			setvalue("2","100",1);
+			setvalue("2","101",1);
+			setvalue("2","110",1);
+			setvalue("2","111",1);
+
+			setvalue("4","100",2);
+			setvalue("4","101",2);
+			setvalue("4","110",2);*/
+		// ----------------------------
+    }
+
+	// 根据后台的预约记录设置颜色,具体参数根据需求确定
+	function setvalue(date,time,type){
+		if (type==0) {
+			//$("#td_"+ time +"_" +date).html("未审批");
+			$("#td_"+ time +"_" +date).addClass("weipi");
+		}else if (type==1) {
+			$("#td_"+ time +"_" +date).addClass("yipi");
+		}else if (type=2) {
+			//$("#td_"+ time +"_" +date).html("审批未通过");
+			$("#td_"+ time +"_" +date).addClass("falsepi");		
+		}
+
+		$("#td_"+ time +"_" +date).attr("data-toggle","modal");
+		$("#td_"+ time +"_" +date).attr("data-target","#myModal");
+	}
+
+    // 当前日期
+	function shownowdate(){
+		var mydate = new Date();
+		var str = "" + mydate.getFullYear() + "/";
+		str += (mydate.getMonth()+1) + "/";
+		str += mydate.getDate();
+		$("#nowdate").html(str);
+		getFirstDay(mydate);
+		getweekDate(0);
+	}
+
+	// 前一周与后一周的计算
+	function getweekDate(type){
+		var date = $("#date_first").val();    
+		var now = new Date(date); 
+		if (type > 0) {
+			now = new Date(now.getTime() + 86400000*7); 
+			$("#date_first").val(now);
+		}else if (type < 0) {
+			now = new Date(now.getTime() - 86400000*7); 
+			$("#date_first").val(now);
+		}else if (type == 0) {
+			now = new Date(); 
+			getFirstDay(now);
+		}
+
+		var tds = [];
+    	tds.push("<td>时间</td>");
+		for (var j = 0; j <= 6; j++){
+			var val = getDate(j);
+			tds.push("<td>"+ val +"</td>");
+		}
+		var trs = "<tr>" + tds.join("") + "</tr>";
+		$("#table tr").remove();
+		$("#table").append(trs);
+
+		gettable();
+	}
+
+	// 获取周一
+	function getFirstDay(now){
+		var nowTime = now.getTime() ; 
+		var day = now.getDay();
+		var oneDayLong = 24*60*60*1000 ; 
+
+		var MondayTime = nowTime - (day-1)*oneDayLong  ; 
+		// var SundayTime =  nowTime + (7-day)*oneDayLong ; 
+
+		var monday = new Date(MondayTime);
+		// var sunday = new Date(SundayTime);
+		$("#date_first").val(monday);
+	}
+
+
+	function getDate(days){
+		var today = new Array('星期日','星期一','星期二','星期三','星期四','星期五','星期六');  
+
+		var date = $("#date_first").val();    
+		var now = new Date(date);  
+
+		if(days>=1){
+			now = new Date(now.getTime()+86400000*days);
+		}   
+		var yyyy=now.getFullYear(),mm=(now.getMonth()+1).toString(),dd=now.getDate().toString();   
+		if(mm.length==1){
+			mm='0'+mm;
+		} 
+		if(dd.length==1){
+			dd='0'+dd;
+		}
+
+		var week = today[now.getDay()]; 
+		return (week + "<br>" + mm + '月' + dd);        
+	}
+</script>
+</html>
+
+

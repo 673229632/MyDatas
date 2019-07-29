@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- 本XML是用来自动生成MyBatis所使用的DAO类、Model类以及SqlMap文件的配置文件 -->
+<!-- 生成的时候，请在Project的目录执行 mvn mybatis-generator:generate -->
+<generatorConfiguration>
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<!-- 属性 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+		
+		<!-- 插件 -->
+		<!-- 本插件的作用是覆盖之前的SqlMap文件 -->
+		<plugin type="com.ustcsoft.mybatis.autogen.generator.SqlMapXmlOverridePlugin"></plugin>
+		<!-- 本插件的作用是处理更新时间-插入者-插入时间的SQL语句 
+		<plugin type="com.ustcsoft.mybatis.autogen.generator.SqlMapXmlCmnDateAndUserPlugin">
+			<property name="createUserColumn" value="EntryId" />
+			<property name="createDateColumn" value="EntryDate" />
+		</plugin>
+		-->
+		<plugin type="com.ustcsoft.mybatis.autogen.generator.SqlMapXmlSystemDatePlugin">
+		</plugin>
+		<plugin type="com.ustcsoft.mybatis.autogen.generator.SqlMapXmlUpdateIgnorePlugin">
+			<property name="ignoreColumns" value="EntryDate,EntryId" />
+		</plugin>
+		<plugin type="com.ustcsoft.mybatis.autogen.generator.UpdateSelectivePlusEnhancePlugin">
+		</plugin>
+		<!-- 本插件的作用是在生成的Mapper,Entity,Example类中增加相应的接口，以便统一封装调用 -->
+		<plugin type="com.ustcsoft.mybatis.autogen.generator.AutoGenInterfacePlugin">
+			<property name="addDeletable" value="true" />
+			<property name="addInsertable" value="true" />
+			<property name="addUpdatable" value="true" />
+			<property name="addUpdatableSelective" value="true" />
+		</plugin>
+		<!-- 本插件的作用是生成一个列定义枚举，并在Example提供一个方法获得 -->
+		<plugin type="com.ustcsoft.mybatis.autogen.generator.ModelColumnEnumPlugin"></plugin>
+
+		<!-- 注释 -->
+		<commentGenerator type="com.ustcsoft.mybatis.autogen.generator.CommentGenerator">
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<!-- 数据库连接 -->
+		<!-- <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://172.17.1.115:3306/lqtest"
+			userId="qc" password="qc"></jdbcConnection> -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://172.17.1.115:3306/lqtest?useUnicode=true&amp;characterEncoding=utf-8" 
+			userId="qc" password="qc"></jdbcConnection>
+
+		<!-- 使用BigDecimal替代DECIMAL or NUMERIC型列 -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 生成实体类 -->
+		<javaModelGenerator targetPackage="com.ustcsoft.pdqc.core.autogen.entity"
+			targetProject="src/main/java">
+			<property name="rootClass" value="com.ustcsoft.pdqc.core.autogen.entity.BaseEntity" />
+		</javaModelGenerator>
+
+		<!-- 生成SQLMAP文件 -->
+		<sqlMapGenerator targetPackage="com.ustcsoft.pdqc.core.autogen.dao.sqlmap"
+			targetProject="src/main/java">
+		</sqlMapGenerator>
+
+		<!-- 生成DAO文件 -->
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.ustcsoft.pdqc.core.autogen.dao" 
+			targetProject="src/main/java">
+		</javaClientGenerator>
+
+		<!-- 导出的数据表定义 -->
+		<!-- 以下是表 -->
+		<!-- <table tableName="pd_d_center" modelType="hierarchical"></table> -->
+		<!--<table tableName="M_PD_TAKEN_FREQUENCY" modelType="hierarchical"></table>-->
+		<!-- <table tableName="PD_M_EMPLOYEE" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_M_ROLE" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_M_USER_ROLE" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_M_ROLE_FUNC" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_D_CENTER" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_D_PATIENT_INFO" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_M_CODE" modelType="hierarchical"></table> -->
+		<!-- <table tableName="pd_d_patient_tube_operation" modelType="hierarchical"></table> -->
+		<table tableName="pd_m_kpiseg" modelType="hierarchical"></table>
+		<!-- <table tableName="PD_M_SYS_FUNC" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_D_QC_CENTER" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_M_USER" modelType="hierarchical"></table> -->
+		<!-- <table tableName="PD_M_ROLE_FUNC" modelType="hierarchical"></table> -->
+ 		<!-- 以下是视图 --> 
+		<!--<table tableName="V_IRESULTS" modelType="hierarchical" enableInsert="false" enableUpdateByPrimaryKey="false" enableDeleteByPrimaryKey="false" enableDeleteByExample="false" enableUpdateByExample="false"></table> -->
+		
+	</context>
+</generatorConfiguration>

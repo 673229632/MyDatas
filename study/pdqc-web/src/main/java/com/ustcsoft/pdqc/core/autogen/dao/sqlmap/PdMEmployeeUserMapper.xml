@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdMEmployeeUserMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUser">
+    <id column="user_no" jdbcType="VARCHAR" property="userNo" />
+    <result column="employee_no" jdbcType="VARCHAR" property="employeeNo" />
+    <result column="order_index" jdbcType="BIGINT" property="orderIndex" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    user_no, employee_no, order_index, del_flag, date_created, date_modified, created_by, 
+    modified_by
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_m_employee_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUserKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_m_employee_user
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUserKey">
+    delete from pd_m_employee_user
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUserExample">
+    delete from pd_m_employee_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUser">
+    insert into pd_m_employee_user (user_no, employee_no, order_index, 
+      del_flag, date_created, date_modified, 
+      created_by, modified_by)
+    values (#{userNo,jdbcType=VARCHAR}, #{employeeNo,jdbcType=VARCHAR}, #{orderIndex,jdbcType=BIGINT}, 
+      #{delFlag,jdbcType=VARCHAR}, #{dateCreated,jdbcType=TIMESTAMP}, #{dateModified,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{modifiedBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUser">
+    insert into pd_m_employee_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userNo != null">
+        user_no,
+      </if>
+      <if test="employeeNo != null">
+        employee_no,
+      </if>
+      <if test="orderIndex != null">
+        order_index,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userNo != null">
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeNo != null">
+        #{employeeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderIndex != null">
+        #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUserExample" resultType="java.lang.Integer">
+    select count(*) from pd_m_employee_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_m_employee_user
+    <set>
+      <if test="record._selectiveMark.userNo != null">
+        user_no = #{record.userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.employeeNo != null">
+        employee_no = #{record.employeeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orderIndex != null">
+        order_index = #{record.orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_m_employee_user
+    set user_no = #{record.userNo,jdbcType=VARCHAR},
+      employee_no = #{record.employeeNo,jdbcType=VARCHAR},
+      order_index = #{record.orderIndex,jdbcType=BIGINT},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUser">
+    update pd_m_employee_user
+    <set>
+      <if test="_selectiveMark.employeeNo != null">
+        employee_no = #{employeeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.orderIndex != null">
+        order_index = #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMEmployeeUser">
+    update pd_m_employee_user
+    set employee_no = #{employeeNo,jdbcType=VARCHAR},
+      order_index = #{orderIndex,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR}
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

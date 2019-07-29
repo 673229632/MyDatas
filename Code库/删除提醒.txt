@@ -1,0 +1,7 @@
+
+//删除弹窗提示
+MsgBox.confirm("确认删除吗？", function(isConfirm) {
+	if (isConfirm) {
+		
+	}
+});

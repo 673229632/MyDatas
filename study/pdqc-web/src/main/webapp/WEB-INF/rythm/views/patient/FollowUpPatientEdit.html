@@ -1,0 +1,78 @@
+@extends(views.common.DialogView,  v_sTitle:"患者随访上报/编辑")
+@import com.ustcsoft.pdqc.web.common.entity.Code
+@import com.ustcsoft.pdqc.web.patient.form.FollowUpSolutionForm
+@args FollowUpSolutionForm  condForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+
+@widget.ctnr.Row() {
+	@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi7",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi7",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi7",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+}
+@widget.ctnr.Form("followUpPatirnt_form"){
+	@widget.ctrl.Hidden(sLabel:"id:",sId:"id",sName:"id",oValue:condForm.getId())
+	@widget.ctrl.Hidden(sLabel:"病人id:",sId:"patientId",sName:"patientId",oValue:condForm.getPatientId())
+	@widget.ctrl.Hidden(sLabel:"医院id:",sId:"hpId",sName:"hpId",oValue:condForm.getHpId())
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"日期:",sGroupCss:"col-md-4 hanzi7",sName:"tDate",sId:"tDate",oValue:condForm.gettDate(),
+	  				sFormat:"YYYY-MM-DD",bRequired:true)
+	  	@widget.ctrl.Input(sLabel:"突发事件:", sGroupCss:"col-md-8 hanzi7",sId:"emergencyDetail", sName:"emergencyDetail",oValue:condForm.getEmergencyDetail(),sMaxLength:"50")
+	  	@widget.ctrl.Input(sLabel:"病情变化:", sGroupCss:"col-md-8 hanzi7",sId:"illnessChangeDetail", sName:"illnessChangeDetail",oValue:condForm.getIllnessChangeDetail(),sMaxLength:"50")
+	  	@widget.ctrl.SelectPicker(sLabel:"睡眠情况:", sName:"sleepQuality", sInitValue:condForm.getSleepQuality(),sId:"sleepQuality",bShowEmptyOption:true,oOptions:
+	  	"{'0':'不变','1':'变好','2':'变差'}",sGroupCss:"col-md-4 hanzi7")
+	  	@widget.ctrl.SelectPicker(sLabel:"情绪:", sName:"emotion", sId:"emotion",sInitValue:condForm.getEmotion(),bShowEmptyOption:true,oOptions:
+	  	"{'0':'不变','1':'变好','2':'变差'}",sGroupCss:"col-md-4 hanzi7")
+	  	@widget.ctrl.SelectPicker(sLabel:"食欲及饮食情况:", sName:"appelity", sId:"appelity",sInitValue:condForm.getAppelity(),bShowEmptyOption:true,oOptions:
+	  	"{'0':'不变','1':'变好','2':'变差'}",sGroupCss:"col-md-4 hanzi7")
+	  	@widget.ctrl.SelectPicker(sLabel:"活动量:", sName:"activityAmount", sId:"activityAmount",sInitValue:condForm.getActivityAmount(),bShowEmptyOption:true,oOptions:
+	  	"{'0':'不变','1':'变好','2':'变差'}",sGroupCss:"col-md-4 hanzi7")
+	  	@widget.ctrl.Input(sLabel:"空腹血糖:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"fasting", sName:"fasting",oValue:condForm.getFasting(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"早餐后血糖:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"afterBreakfast", sName:"afterBreakfast",oValue:condForm.getAfterBreakfast(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"午餐前血糖:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"beforeLunch", sName:"beforeLunch",oValue:condForm.getBeforeLunch(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"午餐后血糖:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"afterLunch", sName:"afterLunch",oValue:condForm.getAfterLunch(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"晚餐前血糖:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"beforeDinner", sName:"beforeDinner",oValue:condForm.getBeforeDinner(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"晚餐后血糖:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"afterDinner", sName:"afterDinner",oValue:condForm.getAfterDinner(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"睡前血糖:", sGroupCss:"col-md-4 hanzi7",sUnitString:"mmol/L",sId:"beforeSlepp", sName:"beforeSlepp",oValue:condForm.getBeforeSlepp(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.NumberFT(sLabel:"血压:",sGroupCss:"xueya col-sm-4 hanzi7",sFromId:"prebphigh",sToId:"prebplow",oFromValue:condForm.getPrebphigh(),oToValue:condForm.getPrebplow(),sDelimiter:"/",sAddOnLabel:"mmHg",iAddOnWidth:45,bBvRelativeCheck:false)
+	  	@widget.ctrl.Input(sLabel:"体重:", sGroupCss:"col-md-4 hanzi7",sUnitString:"Kg",sId:"weight", sName:"weight",oValue:condForm.getWeight(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"超滤量:", sGroupCss:"col-md-4 hanzi7",sUnitString:"ml/d",sId:"ultrafiltration", sName:"ultrafiltration",oValue:condForm.getUltrafiltration(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"尿量:", sGroupCss:"col-md-4 hanzi7",sUnitString:"L",sId:"urinaryProduction", sName:"urinaryProduction",oValue:condForm.getUrinaryProduction(),sMaxLength:"5",sType:"float")
+	  	@widget.ctrl.Input(sLabel:"突出不适主诉:", sGroupCss:"col-md-12 hanzi7",sId:"unwellChiefComplaint", sName:"unwellChiefComplaint",oValue:condForm.getUnwellChiefComplaint(),sMaxLength:"200")
+	  	@widget.ctrl.Input(sLabel:"随访主要问题:", sGroupCss:"col-md-12 hanzi7",sId:"followupProblem", sName:"followupProblem",oValue:condForm.getFollowupProblem(),sMaxLength:"200")
+	  	@widget.ctrl.Input(sLabel:"宣教重点:", sGroupCss:"col-md-12 hanzi7",sId:"publicityEducationFocus", sName:"publicityEducationFocus",oValue:condForm.getPublicityEducationFocus(),sMaxLength:"250")
+	}
+	@widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"editSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+ 	}
+ }
+ <script type="text/javascript">
+		//保存
+		function editSave(){
+			debugger
+			var patientId=$("#patientId").val();
+			$('#followUpPatirnt_form').bootstrapValidator('validate');
+			var isValid = $('#followUpPatirnt_form').data('bootstrapValidator').isValid();
+			if(!isValid){
+		    	return;
+		    }
+			var sConidtion = $('#followUpPatirnt_form').serialize();
+			Ajax.ajax({
+				url : '@url("/patientOverView/followUpPatientSave")',
+				data : sConidtion,
+				success : function(data) {
+					if (data.retCode == 0) {
+						parent.MsgBox.success(data.retMsg,function(){
+		                    parent.freshtable(patientId);
+		                    parent.freshtable2();
+		                    Dialog.closeSelf();
+		                });
+					} else {
+						MsgBox.warning(data.retMsg);
+					}
+				}
+			});
+		}
+	 </script>

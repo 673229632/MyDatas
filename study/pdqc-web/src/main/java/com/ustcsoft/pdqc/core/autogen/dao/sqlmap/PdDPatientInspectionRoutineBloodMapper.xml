@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdDPatientInspectionRoutineBloodMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBlood">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="hp_id" jdbcType="VARCHAR" property="hpId" />
+    <result column="pt_id" jdbcType="VARCHAR" property="ptId" />
+    <result column="tdate" jdbcType="TIMESTAMP" property="tdate" />
+    <result column="wbc" jdbcType="VARCHAR" property="wbc" />
+    <result column="rbc" jdbcType="VARCHAR" property="rbc" />
+    <result column="hb" jdbcType="VARCHAR" property="hb" />
+    <result column="hct" jdbcType="VARCHAR" property="hct" />
+    <result column="mcv" jdbcType="VARCHAR" property="mcv" />
+    <result column="mch" jdbcType="VARCHAR" property="mch" />
+    <result column="mchc" jdbcType="VARCHAR" property="mchc" />
+    <result column="rdw" jdbcType="VARCHAR" property="rdw" />
+    <result column="rdwsd" jdbcType="VARCHAR" property="rdwsd" />
+    <result column="plt" jdbcType="VARCHAR" property="plt" />
+    <result column="mpv" jdbcType="VARCHAR" property="mpv" />
+    <result column="pdw" jdbcType="VARCHAR" property="pdw" />
+    <result column="pct" jdbcType="VARCHAR" property="pct" />
+    <result column="plcr" jdbcType="VARCHAR" property="plcr" />
+    <result column="neutrophil_percentage" jdbcType="VARCHAR" property="neutrophilPercentage" />
+    <result column="lymphocyte_percentage" jdbcType="VARCHAR" property="lymphocytePercentage" />
+    <result column="monocyte_percentage" jdbcType="VARCHAR" property="monocytePercentage" />
+    <result column="eosinophil_percentage" jdbcType="VARCHAR" property="eosinophilPercentage" />
+    <result column="basophil_percentage" jdbcType="VARCHAR" property="basophilPercentage" />
+    <result column="neutrophil_absolute_value" jdbcType="VARCHAR" property="neutrophilAbsoluteValue" />
+    <result column="lymphocyte_absolute_value" jdbcType="VARCHAR" property="lymphocyteAbsoluteValue" />
+    <result column="monocyte_absolute_value" jdbcType="VARCHAR" property="monocyteAbsoluteValue" />
+    <result column="eosinophil_absolute_value" jdbcType="VARCHAR" property="eosinophilAbsoluteValue" />
+    <result column="basophil_absolute_value" jdbcType="VARCHAR" property="basophilAbsoluteValue" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="INTEGER" property="rowVersion" />
+    <result column="screen_id" jdbcType="VARCHAR" property="screenId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, hp_id, pt_id, tdate, wbc, rbc, hb, hct, mcv, mch, mchc, rdw, rdwsd, plt, mpv, 
+    pdw, pct, plcr, neutrophil_percentage, lymphocyte_percentage, monocyte_percentage, 
+    eosinophil_percentage, basophil_percentage, neutrophil_absolute_value, lymphocyte_absolute_value, 
+    monocyte_absolute_value, eosinophil_absolute_value, basophil_absolute_value, del_flag, 
+    created_by, date_created, modified_by, date_modified, row_version, screen_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBloodExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_d_patient_inspection_routine_blood
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBloodKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_d_patient_inspection_routine_blood
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBloodKey">
+    delete from pd_d_patient_inspection_routine_blood
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBloodExample">
+    delete from pd_d_patient_inspection_routine_blood
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBlood">
+    insert into pd_d_patient_inspection_routine_blood (id, hp_id, pt_id, 
+      tdate, wbc, rbc, 
+      hb, hct, mcv, mch, 
+      mchc, rdw, rdwsd, plt, 
+      mpv, pdw, pct, plcr, 
+      neutrophil_percentage, lymphocyte_percentage, 
+      monocyte_percentage, eosinophil_percentage, 
+      basophil_percentage, neutrophil_absolute_value, 
+      lymphocyte_absolute_value, monocyte_absolute_value, 
+      eosinophil_absolute_value, basophil_absolute_value, 
+      del_flag, created_by, date_created, 
+      modified_by, date_modified, row_version, 
+      screen_id)
+    values (#{id,jdbcType=VARCHAR}, #{hpId,jdbcType=VARCHAR}, #{ptId,jdbcType=VARCHAR}, 
+      #{tdate,jdbcType=TIMESTAMP}, #{wbc,jdbcType=VARCHAR}, #{rbc,jdbcType=VARCHAR}, 
+      #{hb,jdbcType=VARCHAR}, #{hct,jdbcType=VARCHAR}, #{mcv,jdbcType=VARCHAR}, #{mch,jdbcType=VARCHAR}, 
+      #{mchc,jdbcType=VARCHAR}, #{rdw,jdbcType=VARCHAR}, #{rdwsd,jdbcType=VARCHAR}, #{plt,jdbcType=VARCHAR}, 
+      #{mpv,jdbcType=VARCHAR}, #{pdw,jdbcType=VARCHAR}, #{pct,jdbcType=VARCHAR}, #{plcr,jdbcType=VARCHAR}, 
+      #{neutrophilPercentage,jdbcType=VARCHAR}, #{lymphocytePercentage,jdbcType=VARCHAR}, 
+      #{monocytePercentage,jdbcType=VARCHAR}, #{eosinophilPercentage,jdbcType=VARCHAR}, 
+      #{basophilPercentage,jdbcType=VARCHAR}, #{neutrophilAbsoluteValue,jdbcType=VARCHAR}, 
+      #{lymphocyteAbsoluteValue,jdbcType=VARCHAR}, #{monocyteAbsoluteValue,jdbcType=VARCHAR}, 
+      #{eosinophilAbsoluteValue,jdbcType=VARCHAR}, #{basophilAbsoluteValue,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{dateCreated,jdbcType=TIMESTAMP}, 
+      #{modifiedBy,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, #{rowVersion,jdbcType=INTEGER}, 
+      #{screenId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBlood">
+    insert into pd_d_patient_inspection_routine_blood
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hpId != null">
+        hp_id,
+      </if>
+      <if test="ptId != null">
+        pt_id,
+      </if>
+      <if test="tdate != null">
+        tdate,
+      </if>
+      <if test="wbc != null">
+        wbc,
+      </if>
+      <if test="rbc != null">
+        rbc,
+      </if>
+      <if test="hb != null">
+        hb,
+      </if>
+      <if test="hct != null">
+        hct,
+      </if>
+      <if test="mcv != null">
+        mcv,
+      </if>
+      <if test="mch != null">
+        mch,
+      </if>
+      <if test="mchc != null">
+        mchc,
+      </if>
+      <if test="rdw != null">
+        rdw,
+      </if>
+      <if test="rdwsd != null">
+        rdwsd,
+      </if>
+      <if test="plt != null">
+        plt,
+      </if>
+      <if test="mpv != null">
+        mpv,
+      </if>
+      <if test="pdw != null">
+        pdw,
+      </if>
+      <if test="pct != null">
+        pct,
+      </if>
+      <if test="plcr != null">
+        plcr,
+      </if>
+      <if test="neutrophilPercentage != null">
+        neutrophil_percentage,
+      </if>
+      <if test="lymphocytePercentage != null">
+        lymphocyte_percentage,
+      </if>
+      <if test="monocytePercentage != null">
+        monocyte_percentage,
+      </if>
+      <if test="eosinophilPercentage != null">
+        eosinophil_percentage,
+      </if>
+      <if test="basophilPercentage != null">
+        basophil_percentage,
+      </if>
+      <if test="neutrophilAbsoluteValue != null">
+        neutrophil_absolute_value,
+      </if>
+      <if test="lymphocyteAbsoluteValue != null">
+        lymphocyte_absolute_value,
+      </if>
+      <if test="monocyteAbsoluteValue != null">
+        monocyte_absolute_value,
+      </if>
+      <if test="eosinophilAbsoluteValue != null">
+        eosinophil_absolute_value,
+      </if>
+      <if test="basophilAbsoluteValue != null">
+        basophil_absolute_value,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+      <if test="screenId != null">
+        screen_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="hpId != null">
+        #{hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="ptId != null">
+        #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="tdate != null">
+        #{tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wbc != null">
+        #{wbc,jdbcType=VARCHAR},
+      </if>
+      <if test="rbc != null">
+        #{rbc,jdbcType=VARCHAR},
+      </if>
+      <if test="hb != null">
+        #{hb,jdbcType=VARCHAR},
+      </if>
+      <if test="hct != null">
+        #{hct,jdbcType=VARCHAR},
+      </if>
+      <if test="mcv != null">
+        #{mcv,jdbcType=VARCHAR},
+      </if>
+      <if test="mch != null">
+        #{mch,jdbcType=VARCHAR},
+      </if>
+      <if test="mchc != null">
+        #{mchc,jdbcType=VARCHAR},
+      </if>
+      <if test="rdw != null">
+        #{rdw,jdbcType=VARCHAR},
+      </if>
+      <if test="rdwsd != null">
+        #{rdwsd,jdbcType=VARCHAR},
+      </if>
+      <if test="plt != null">
+        #{plt,jdbcType=VARCHAR},
+      </if>
+      <if test="mpv != null">
+        #{mpv,jdbcType=VARCHAR},
+      </if>
+      <if test="pdw != null">
+        #{pdw,jdbcType=VARCHAR},
+      </if>
+      <if test="pct != null">
+        #{pct,jdbcType=VARCHAR},
+      </if>
+      <if test="plcr != null">
+        #{plcr,jdbcType=VARCHAR},
+      </if>
+      <if test="neutrophilPercentage != null">
+        #{neutrophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="lymphocytePercentage != null">
+        #{lymphocytePercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="monocytePercentage != null">
+        #{monocytePercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="eosinophilPercentage != null">
+        #{eosinophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="basophilPercentage != null">
+        #{basophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="neutrophilAbsoluteValue != null">
+        #{neutrophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="lymphocyteAbsoluteValue != null">
+        #{lymphocyteAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="monocyteAbsoluteValue != null">
+        #{monocyteAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="eosinophilAbsoluteValue != null">
+        #{eosinophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="basophilAbsoluteValue != null">
+        #{basophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="screenId != null">
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBloodExample" resultType="java.lang.Integer">
+    select count(*) from pd_d_patient_inspection_routine_blood
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_d_patient_inspection_routine_blood
+    <set>
+      <if test="record._selectiveMark.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.hpId != null">
+        hp_id = #{record.hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ptId != null">
+        pt_id = #{record.ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tdate != null">
+        tdate = #{record.tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.wbc != null">
+        wbc = #{record.wbc,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.rbc != null">
+        rbc = #{record.rbc,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.hb != null">
+        hb = #{record.hb,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.hct != null">
+        hct = #{record.hct,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.mcv != null">
+        mcv = #{record.mcv,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.mch != null">
+        mch = #{record.mch,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.mchc != null">
+        mchc = #{record.mchc,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.rdw != null">
+        rdw = #{record.rdw,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.rdwsd != null">
+        rdwsd = #{record.rdwsd,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.plt != null">
+        plt = #{record.plt,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.mpv != null">
+        mpv = #{record.mpv,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.pdw != null">
+        pdw = #{record.pdw,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.pct != null">
+        pct = #{record.pct,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.plcr != null">
+        plcr = #{record.plcr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.neutrophilPercentage != null">
+        neutrophil_percentage = #{record.neutrophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.lymphocytePercentage != null">
+        lymphocyte_percentage = #{record.lymphocytePercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.monocytePercentage != null">
+        monocyte_percentage = #{record.monocytePercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.eosinophilPercentage != null">
+        eosinophil_percentage = #{record.eosinophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.basophilPercentage != null">
+        basophil_percentage = #{record.basophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.neutrophilAbsoluteValue != null">
+        neutrophil_absolute_value = #{record.neutrophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.lymphocyteAbsoluteValue != null">
+        lymphocyte_absolute_value = #{record.lymphocyteAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.monocyteAbsoluteValue != null">
+        monocyte_absolute_value = #{record.monocyteAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.eosinophilAbsoluteValue != null">
+        eosinophil_absolute_value = #{record.eosinophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.basophilAbsoluteValue != null">
+        basophil_absolute_value = #{record.basophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="record._selectiveMark.screenId != null">
+        screen_id = #{record.screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_d_patient_inspection_routine_blood
+    set id = #{record.id,jdbcType=VARCHAR},
+      hp_id = #{record.hpId,jdbcType=VARCHAR},
+      pt_id = #{record.ptId,jdbcType=VARCHAR},
+      tdate = #{record.tdate,jdbcType=TIMESTAMP},
+      wbc = #{record.wbc,jdbcType=VARCHAR},
+      rbc = #{record.rbc,jdbcType=VARCHAR},
+      hb = #{record.hb,jdbcType=VARCHAR},
+      hct = #{record.hct,jdbcType=VARCHAR},
+      mcv = #{record.mcv,jdbcType=VARCHAR},
+      mch = #{record.mch,jdbcType=VARCHAR},
+      mchc = #{record.mchc,jdbcType=VARCHAR},
+      rdw = #{record.rdw,jdbcType=VARCHAR},
+      rdwsd = #{record.rdwsd,jdbcType=VARCHAR},
+      plt = #{record.plt,jdbcType=VARCHAR},
+      mpv = #{record.mpv,jdbcType=VARCHAR},
+      pdw = #{record.pdw,jdbcType=VARCHAR},
+      pct = #{record.pct,jdbcType=VARCHAR},
+      plcr = #{record.plcr,jdbcType=VARCHAR},
+      neutrophil_percentage = #{record.neutrophilPercentage,jdbcType=VARCHAR},
+      lymphocyte_percentage = #{record.lymphocytePercentage,jdbcType=VARCHAR},
+      monocyte_percentage = #{record.monocytePercentage,jdbcType=VARCHAR},
+      eosinophil_percentage = #{record.eosinophilPercentage,jdbcType=VARCHAR},
+      basophil_percentage = #{record.basophilPercentage,jdbcType=VARCHAR},
+      neutrophil_absolute_value = #{record.neutrophilAbsoluteValue,jdbcType=VARCHAR},
+      lymphocyte_absolute_value = #{record.lymphocyteAbsoluteValue,jdbcType=VARCHAR},
+      monocyte_absolute_value = #{record.monocyteAbsoluteValue,jdbcType=VARCHAR},
+      eosinophil_absolute_value = #{record.eosinophilAbsoluteValue,jdbcType=VARCHAR},
+      basophil_absolute_value = #{record.basophilAbsoluteValue,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=INTEGER},
+      screen_id = #{record.screenId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBlood">
+    update pd_d_patient_inspection_routine_blood
+    <set>
+      <if test="_selectiveMark.hpId != null">
+        hp_id = #{hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ptId != null">
+        pt_id = #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tdate != null">
+        tdate = #{tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.wbc != null">
+        wbc = #{wbc,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.rbc != null">
+        rbc = #{rbc,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.hb != null">
+        hb = #{hb,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.hct != null">
+        hct = #{hct,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.mcv != null">
+        mcv = #{mcv,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.mch != null">
+        mch = #{mch,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.mchc != null">
+        mchc = #{mchc,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.rdw != null">
+        rdw = #{rdw,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.rdwsd != null">
+        rdwsd = #{rdwsd,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.plt != null">
+        plt = #{plt,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.mpv != null">
+        mpv = #{mpv,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.pdw != null">
+        pdw = #{pdw,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.pct != null">
+        pct = #{pct,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.plcr != null">
+        plcr = #{plcr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.neutrophilPercentage != null">
+        neutrophil_percentage = #{neutrophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.lymphocytePercentage != null">
+        lymphocyte_percentage = #{lymphocytePercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.monocytePercentage != null">
+        monocyte_percentage = #{monocytePercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.eosinophilPercentage != null">
+        eosinophil_percentage = #{eosinophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.basophilPercentage != null">
+        basophil_percentage = #{basophilPercentage,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.neutrophilAbsoluteValue != null">
+        neutrophil_absolute_value = #{neutrophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.lymphocyteAbsoluteValue != null">
+        lymphocyte_absolute_value = #{lymphocyteAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.monocyteAbsoluteValue != null">
+        monocyte_absolute_value = #{monocyteAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.eosinophilAbsoluteValue != null">
+        eosinophil_absolute_value = #{eosinophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.basophilAbsoluteValue != null">
+        basophil_absolute_value = #{basophilAbsoluteValue,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="_selectiveMark.screenId != null">
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionRoutineBlood">
+    update pd_d_patient_inspection_routine_blood
+    set hp_id = #{hpId,jdbcType=VARCHAR},
+      pt_id = #{ptId,jdbcType=VARCHAR},
+      tdate = #{tdate,jdbcType=TIMESTAMP},
+      wbc = #{wbc,jdbcType=VARCHAR},
+      rbc = #{rbc,jdbcType=VARCHAR},
+      hb = #{hb,jdbcType=VARCHAR},
+      hct = #{hct,jdbcType=VARCHAR},
+      mcv = #{mcv,jdbcType=VARCHAR},
+      mch = #{mch,jdbcType=VARCHAR},
+      mchc = #{mchc,jdbcType=VARCHAR},
+      rdw = #{rdw,jdbcType=VARCHAR},
+      rdwsd = #{rdwsd,jdbcType=VARCHAR},
+      plt = #{plt,jdbcType=VARCHAR},
+      mpv = #{mpv,jdbcType=VARCHAR},
+      pdw = #{pdw,jdbcType=VARCHAR},
+      pct = #{pct,jdbcType=VARCHAR},
+      plcr = #{plcr,jdbcType=VARCHAR},
+      neutrophil_percentage = #{neutrophilPercentage,jdbcType=VARCHAR},
+      lymphocyte_percentage = #{lymphocytePercentage,jdbcType=VARCHAR},
+      monocyte_percentage = #{monocytePercentage,jdbcType=VARCHAR},
+      eosinophil_percentage = #{eosinophilPercentage,jdbcType=VARCHAR},
+      basophil_percentage = #{basophilPercentage,jdbcType=VARCHAR},
+      neutrophil_absolute_value = #{neutrophilAbsoluteValue,jdbcType=VARCHAR},
+      lymphocyte_absolute_value = #{lymphocyteAbsoluteValue,jdbcType=VARCHAR},
+      monocyte_absolute_value = #{monocyteAbsoluteValue,jdbcType=VARCHAR},
+      eosinophil_absolute_value = #{eosinophilAbsoluteValue,jdbcType=VARCHAR},
+      basophil_absolute_value = #{basophilAbsoluteValue,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=INTEGER},
+      screen_id = #{screenId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

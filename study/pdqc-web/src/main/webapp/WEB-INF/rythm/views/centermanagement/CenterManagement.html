@@ -1,0 +1,63 @@
+@extends(views.common.MainView, v_sTitle:"透析中心信息")
+@import com.ustcsoft.pdqc.core.autogen.entity.PdDCenter;
+@args PdDCenter pdDCenter
+
+@widget.ctnr.Div(sCss:"col-xs-12", sId:"txCenterDiv"){
+	@widget.ctnr.Form("center_form"){
+			@widget.ctnr.BtnBox(sAlign:"left"){
+			@widget.ctnr.Div(sCss:"col-xs-12"){
+					@widget.ctrl.Button({sLabel:"重置", sBtncss:"btn-normal", sOnClick:"refresh" ,sId:"resetBtn"})
+					@widget.ctrl.Button({sLabel:"保存", sBtncss:"btn-normal", sOnClick:"saveCenter",sId:"SaveBtn"})
+				}
+			}
+				@widget.ctrl.Hidden({sLabel:"组织机构编号", sName:"orgNo", sId:"orgNo",sGroupCss:"col-6", oValue:pdDCenter.getOrgNo()})
+				@widget.ctrl.Hidden({sLabel:"透析中心编号", sName:"pdCenterNo", sId:"pdCenterNo",sGroupCss:"col-6", oValue:pdDCenter.getPdCenterNo()})
+				@widget.ctrl.Input({sLabel:"负责人:", sName:"pdCenterManager", sId:"pdCenterManager", sGroupCss:"col-6", oValue:pdDCenter.getPdCenterManager(),sMaxLength:"10",bRequired:true})
+				@widget.ctrl.Input({sLabel:"透析中心名称:", sName:"pdCenterName", sId:"pdCenterName", sGroupCss:"col-6", sMaxLength:"20", oValue:pdDCenter.getPdCenterName(),bRequired:true})
+				@widget.ctrl.Input({sLabel:"联系电话:", sName:"pdCenterTel", sId:"pdCenterTel", sGroupCss:"col-6", oValue:pdDCenter.getPdCenterTel(),sType:"phone"})
+				@widget.ctrl.Input({sLabel:"邮编:", sName:"pdCenterPostcode", sId:"pdCenterPostcode", sGroupCss:"col-6",oValue:pdDCenter.getPdCenterPostcode(), sType:"number",sMaxLength:"6"})
+				@widget.ctrl.Input({sLabel:"传真:", sName:"pdCenterFax", sId:"pdCenterFax", sGroupCss:"col-6", sMaxLength:"15",oValue:pdDCenter.getPdCenterFax()})
+				@widget.ctrl.Input({sLabel:"email:", sName:"pdCenterEmail", sId:"pdCenterEmail", sGroupCss:"col-6", sMaxLength:"30",oValue:pdDCenter.getPdCenterEmail()})
+				@widget.ctrl.Input({sLabel:"透析中心面积:", sName:"pdCenterArea", sId:"pdCenterArea", sGroupCss:"col-6", sMaxLength:"25",oValue:pdDCenter.getPdCenterArea()})
+				@widget.ctrl.TextArea(sLabel:"透析中心说明:", sId:"pdCenterMeno", sName:"pdCenterMeno", sGroupCss:"col-12", sMaxLength:"1200",sValue:pdDCenter.getPdCenterMeno())
+			}
+		}
+<!-- 脚本 -->
+<script>
+// 重置
+function refresh() {
+ 	$('#pdCenterTel').val("");
+	$('#pdCenterPostcode').val("");
+	$('#pdCenterFax').val("");
+	$('#pdCenterEmail').val("");
+	$('#pdCenterArea').val("");
+	$('#pdCenterMeno').val("");
+}
+//刷新表格
+
+//保存,编辑
+function saveCenter(){
+	$('#center_form').bootstrapValidator('validate');
+	var isValid = $('#center_form').data('bootstrapValidator').isValid();
+    if(!isValid){
+    	return;
+    }
+    var sConidtion = $("#center_form").serializeObject();
+    Ajax.ajax({
+		url : '@url("/centerManagement/addOrEditCenter")',
+		data : sConidtion,
+		success : function(data) {
+			if(data.retCode != -1){
+				if (data.successCount > 0) {
+				    parent.MsgBox.success("保存成功",function(){
+                        parent.$("#center_form").bootstrapTable('refresh');
+                        Dialog.closeSelf();
+                    });
+				} else {
+					MsgBox.warning("保存失败");
+				}
+			}
+		}
+	});
+}
+</script>

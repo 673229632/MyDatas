@@ -1,0 +1,50 @@
+<!-- this, preferably, goes inside head element: https://github.com/willowsystems/jSignature-->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="flashcanvas.js"></script>
+
+<![endif]-->
+
+<div id="signature" ></div>
+
+<button onclick="getData()">确定</button>
+
+<img id="image"  style="
+    width: 300px;
+    height: 150px;
+    border: 1px solid;
+	padding: 1%;
+"><img>
+<!-- you load jquery somewhere before jSignature ... -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="jSignature.min.js"></script>
+<script type="text/javascript" src="flashcanvas.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#signature").jSignature()
+    });	
+	
+	function getData(){
+	
+		var $sigdiv = $("#signature");
+		var datapair = $sigdiv.jSignature("getData", "svgbase64");
+		var src = "data:" + datapair[0] + "," + datapair[1];		
+		$("#image").attr("src",src);
+		// $sigdiv.jSignature(); // inits the jSignature widget.
+		// after some doodling...
+		// $sigdiv.jSignature("reset"); // clears the canvas and rerenders the decor on it.
+		// Getting signature as SVG and rendering the SVG within the browser. 
+		// (!!! inline SVG rendering from IMG element does not work in all browsers !!!)
+		// this export plugin returns an array of [mimetype, base64-encoded string of SVG of the signature strokes]
+		
+		// var i = new Image();
+		// i.src = "data:" + datapair[0] + "," + datapair[1]; 
+		// $(i).appendTo($("#someelement")); // append the image (SVG) to DOM.
+
+		// Getting signature as "base30" data pair
+		// array of [mimetype, string of jSIgnature"s custom Base30-compressed format]
+		// datapair = $sigdiv.jSignature("getData","base30"); 
+		// reimporting the data into jSignature.
+		// import plugins understand data-url-formatted strings like "data:mime;encoding,data"
+		// $sigdiv.jSignature("setData", "data:" + datapair.join(",")); 				
+	}
+</script>

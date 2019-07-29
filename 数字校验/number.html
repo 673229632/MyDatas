@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>数字校验</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<input oninput=checkNum(this,3,3)>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+
+	// 输入校验
+function checkNum(obj, intNum, decNum) {
+    var value = obj.value;
+
+    // 当前输入框数值类型
+    var val_type = "";
+
+    // 输入为"-"
+    if (value === "-") {
+        val_type = "-1";
+    }
+
+    // 当前数值为(如: "-12-")
+    if (value.length > 1 && value.indexOf("-") == 0) {
+        val_type = "-2";
+        value = value.replace(/-/,'');
+    }
+
+    // 小于0为负数
+    if (value < 0) {
+        val_type = "0";
+        value = value.replace(/-/,'');
+    }
+
+    var changeValue, t1, t2;
+    switch (decNum) {
+        case 0:
+            value = value.replace(/[^\d]/g, '');//去除数字以外的字符;
+            value = value.replace(/^0\d+/g, '0');//防止整数位出现'00'的情况
+            if (intNum != 0) {
+                value = value.substr(0, intNum);
+            }
+            break;
+        default:
+            value = value.replace(/[^\d.]/g, '');//去除数字和小数点以外的字符;
+            value = value.replace(/^[^\d]/g, '');//保证第一个字符是数字
+            value = value.replace(/\.{2}/g, '.');//去除第二个小数点
+            value = value.replace(/^0\d+/g, '0');
+            changeValue = value.split('.');
+            if (changeValue.length > 1) {//表示用户输入的既有整数又有小数
+                if (intNum == 0) {
+                    t1 = changeValue[0];
+                } else {
+                    t1 = changeValue[0].substr(0, intNum);
+                }
+                t2 = changeValue[1].substr(0, decNum);
+                value = t1 + '.' + t2;
+            } else {
+                if (intNum != 0) {
+                    value = value.substr(0, intNum);
+                }
+            }
+            break;
+    }
+    if (obj.value != value) {
+        obj.value = value;
+        if(val_type === "-1"){
+            obj.value = "-";
+        }
+        if(val_type === "-2"){
+            obj.value = "-" + value;
+        }
+        if(val_type === "0"){
+            obj.value = (0 - value);
+        }
+    }
+    return obj.value;
+}
+</script>
+</html>

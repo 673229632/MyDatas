@@ -1,0 +1,89 @@
+2018-03-22 15:03:27.604 1911 [nioEventLoopGroup-2-1] INFO  WebSocket Client connected!
+2018-03-22 15:03:59.895 34202 [nioEventLoopGroup-2-1] INFO  WebSocket Client disconnected!
+2018-03-22 15:04:39.136 1486 [nioEventLoopGroup-2-1] INFO  WebSocket Client connected!
+2018-03-22 15:08:39.136 241486 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:08:39.157 241507 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:08:47.729 250079 [nioEventLoopGroup-2-1] INFO  WebSocket Client disconnected!
+2018-03-22 15:11:29.551 1497 [nioEventLoopGroup-2-1] INFO  WebSocket Client connected!
+2018-03-22 15:15:29.546 241492 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:15:29.556 241502 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:19:29.546 481492 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:19:29.548 481494 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:23:29.538 721484 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:23:29.540 721486 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:27:29.530 961476 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:27:29.532 961478 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:31:29.522 1201468 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:31:29.524 1201470 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:35:29.514 1441460 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:35:29.516 1441462 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:39:29.506 1681452 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:39:29.508 1681454 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:43:29.498 1921444 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:43:29.500 1921446 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:47:29.549 2161495 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:47:29.551 2161497 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:51:29.619 2401565 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:51:29.621 2401567 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:55:29.657 2641603 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:55:29.658 2641604 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 15:59:29.673 2881619 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 15:59:29.675 2881621 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:03:29.689 3121635 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:03:29.691 3121637 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:07:29.705 3361651 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:07:29.707 3361653 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:11:29.712 3601658 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:11:29.714 3601660 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:15:29.704 3841650 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:15:29.706 3841652 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:19:29.696 4081642 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:19:29.698 4081644 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:23:29.688 4321634 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:23:29.690 4321636 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:27:29.680 4561626 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:27:29.682 4561628 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:31:29.672 4801618 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:31:29.674 4801620 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:35:29.664 5041610 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:35:29.689 5041635 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:39:29.679 5281625 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:39:29.682 5281628 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:43:29.672 5521618 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:43:29.674 5521620 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:47:29.664 5761610 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:47:29.666 5761612 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:51:29.656 6001602 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:51:29.657 6001603 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:55:29.648 6241594 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:55:29.650 6241596 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 16:59:29.640 6481586 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 16:59:29.642 6481588 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:03:29.632 6721578 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:03:29.633 6721579 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:07:29.624 6961570 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:07:29.626 6961572 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:11:29.616 7201562 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:11:29.618 7201564 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:15:29.608 7441554 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:15:29.610 7441556 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:19:29.600 7681546 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:19:29.602 7681548 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:23:29.592 7921538 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:23:29.594 7921540 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:27:29.584 8161530 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:27:29.585 8161531 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:31:29.576 8401522 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:31:29.578 8401524 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:35:29.568 8641514 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:35:29.570 8641516 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:39:29.560 8881506 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:39:29.562 8881508 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:43:29.552 9121498 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:43:29.554 9121500 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:47:29.544 9361490 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:47:29.545 9361491 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:51:29.536 9601482 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:51:29.538 9601484 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong
+2018-03-22 17:55:29.528 9841474 [nioEventLoopGroup-2-1] INFO  WebSocket client send a ping message to keeping connection
+2018-03-22 17:55:29.530 9841476 [nioEventLoopGroup-2-1] INFO  WebSocket Client received pong

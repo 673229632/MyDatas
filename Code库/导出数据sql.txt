@@ -1,0 +1,612 @@
+--导出患者基本信息sql
+SELECT
+	*
+FROM
+	(
+		SELECT
+			ROW_NUMBER () OVER (
+				PARTITION BY bpp.Name
+				ORDER BY
+					nl.ResultDate DESC,
+					epo.OrderTime DESC,
+					tj.OrderTime DESC
+			) AS rownumber,
+			bpp.Name,
+			CONVERT (
+				VARCHAR (20),
+				bpi.Birthday,
+				23
+			) AS Birthday,
+			bpi.Sex,
+			bpi.Height,
+			bpi.Weight,
+			DATEDIFF(
+				mm,
+				bpp.BeginPDialysisDate,
+				GETDATE()
+			) + 1 AS BeginPDialysisDate,
+			bpmh.PriRenalDisease,
+			bpmh.CardiovascularDiseases,
+			bpmh.NervousDiseases,
+			bpmh.EndocrinologyAndMetabolismDiseases,
+			bpmh.OtherDiseases,
+			nl.LabResult AS nl,
+			epo.medicname AS epo,
+			tj.medicname AS tj
+		FROM
+			B_PATIENT_PDINFOR bpp
+		INNER JOIN B_PATIENT_INFO bpi ON bpp.ID = bpi.ID
+		LEFT JOIN B_PATIENT_MEDICAL_HISTORY bpmh ON bpp.ID = bpmh.PatientID
+		AND bpmh.DeleteFlag = '0'
+		LEFT JOIN (
+			SELECT
+				PatientId,
+				LabResult,
+				ResultDate
+			FROM
+				I_RESULTS
+			WHERE
+				SubCode = 'B2011'
+			AND ResultDate >= '2017-06-05'
+			AND ResultDate <= '2018-01-05'
+			AND DeleteFlag = '0'
+		) nl ON nl.PatientId = bpp.ID
+		LEFT JOIN (
+			SELECT
+				isnull(bpppd.TreatmentName, '') + ',' + isnull(bpppd.SingleDose, '') + ',' + isnull(mtm.Cycle, '') + ',' + isnull(mtf.Cycle, '') AS medicname,
+				bppp.OrderTime,
+				bppp.PatientId
+			FROM
+				B_PATIENT_PD_PRESCRIPTION bppp
+			INNER JOIN B_PATIENT_PD_PRESCRIPTION_DETAIL bpppd ON bppp.ID = bpppd.PrescriptionId
+			LEFT JOIN M_PD_DRUG_TYPE_SET mpdts ON mpdts.DrugName = ltrim(rtrim(bpppd.TreatmentName))
+			AND mpdts.DeleteFlag = '0'
+			LEFT JOIN M_PD_TAKEN_METHOD mtm ON mtm.Code = bpppd.Direction
+			AND mtm.DeleteFlag = '0'
+			LEFT JOIN M_PD_TAKEN_FREQUENCY mtf ON mtf.Code = bpppd.Frequency
+			AND mtf.DeleteFlag = '0'
+			WHERE
+				bpppd.DeleteFlag = '0'
+			AND bppp.DeleteFlag = '0'
+			AND mpdts.type2 LIKE '%PDYY01%'
+			AND bppp.OrderTime >= '2017-06-05'
+			AND bppp.OrderTime <= '2018-01-05'
+		) epo ON epo.PatientId = bpp.ID
+		LEFT JOIN (
+			SELECT
+				isnull(bpppd.TreatmentName, '') + ',' + isnull(bpppd.SingleDose, '') + ',' + isnull(mtm.Cycle, '') + ',' + isnull(mtf.Cycle, '') AS medicname,
+				bppp.OrderTime,
+				bppp.PatientId
+			FROM
+				B_PATIENT_PD_PRESCRIPTION bppp
+			INNER JOIN B_PATIENT_PD_PRESCRIPTION_DETAIL bpppd ON bppp.ID = bpppd.PrescriptionId
+			LEFT JOIN M_PD_DRUG_TYPE_SET mpdts ON mpdts.DrugName = ltrim(rtrim(bpppd.TreatmentName))
+			AND mpdts.DeleteFlag = '0'
+			LEFT JOIN M_PD_TAKEN_METHOD mtm ON mtm.Code = bpppd.Direction
+			AND mtm.DeleteFlag = '0'
+			LEFT JOIN M_PD_TAKEN_FREQUENCY mtf ON mtf.Code = bpppd.Frequency
+			AND mtf.DeleteFlag = '0'
+			WHERE
+				bpppd.DeleteFlag = '0'
+			AND bppp.DeleteFlag = '0'
+			AND mpdts.type2 LIKE '%PDYY02%'
+			AND bppp.OrderTime >= '2017-06-05'
+			AND bppp.OrderTime <= '2018-01-05'
+		) tj ON tj.PatientId = bpp.ID
+		WHERE
+			bpp.DeleteFlag = '0'
+		AND bpi.deleteflag = '0'
+		AND bpi.TreatMentType IN ('1', '2')
+		AND bpp.StatusFlag = 'PD_OUT_1'
+	) a
+WHERE
+	a.rownumber = '1'
+
+
+--根据编号导出患者最近一次检查记录
+SELECT
+	b.Name,
+	b.MedicalRecordNo,
+	b1.LabResult
+FROM
+	(
+SELECT
+	Name,
+	MedicalRecordNo,
+	ID
+FROM
+	(
+		SELECT
+			ROW_NUMBER () OVER (
+				PARTITION BY bpp.Id
+				ORDER BY
+					bpmr.MedicalRecordNo DESC
+			) AS rownumber,
+			bpp.Name,
+			bpp.ID,
+			bpmr.MedicalRecordNo
+		FROM
+			B_PATIENT_PDINFOR bpp
+		INNER JOIN B_PATIENT_INFO bpi ON bpp.ID = bpi.ID
+		LEFT JOIN B_PATIENT_MEDICAL_RECORD bpmr ON bpmr.PatientId = bpp.Id
+		AND bpmr.DeleteFlag = '0'
+		WHERE
+			bpp.DeleteFlag = '0'
+		AND bpi.deleteflag = '0'
+		AND bpi.TreatMentType IN ('1', '2')
+		AND bpp.StatusFlag = 'PD_OUT_1'
+	) a
+WHERE
+	a.rownumber = '1'
+order by name
+) b
+left join (SELECT
+			PatientID,
+			LabResult
+		FROM
+			(
+				SELECT
+					ROW_NUMBER () OVER (
+						PARTITION BY ir.PatientID
+						ORDER BY
+							ir.ResultDate DESC
+					) AS rownumber,
+					CONVERT (
+						VARCHAR (20),
+						ir.ResultDate,
+						20
+					) AS ResultDate,
+					ir.LabResult,
+					ir.PatientID
+				FROM
+					I_RESULTS ir
+				INNER JOIN B_PATIENT_PD_OEDER_ITEM bppoi ON ir.SubCode = bppoi.SubId
+				WHERE
+					ir.DeleteFlag = '0'
+				AND bppoi.DeleteFlag = '0'
+				AND bppoi.Code = '3'
+				AND bppoi. NO = '12'
+				AND ir.ResultDate >= '2017-06-05'
+				AND ir.ResultDate <= '2018-01-05'
+			) x
+		WHERE
+			x.rownumber = 1
+) b1 ON b1.PatientID = b.ID
+order by name
+
+--导出需要计算的
+SELECT
+	b.Name,
+	b.MedicalRecordNo,
+	b1.LabResult,
+	b2.LabResult,
+	round((CAST(b1.LabResult as float)/CAST(b2.LabResult as float)),2)
+FROM
+	(
+		SELECT
+			Name,
+			MedicalRecordNo,
+			ID
+		FROM
+			(
+				SELECT
+					ROW_NUMBER () OVER (
+						PARTITION BY bpp.Id
+						ORDER BY
+							bpmr.MedicalRecordNo DESC
+					) AS rownumber,
+					bpp.Name,
+					bpp.ID,
+					bpmr.MedicalRecordNo
+				FROM
+					B_PATIENT_PDINFOR bpp
+				INNER JOIN B_PATIENT_INFO bpi ON bpp.ID = bpi.ID
+				LEFT JOIN B_PATIENT_MEDICAL_RECORD bpmr ON bpmr.PatientId = bpp.Id
+				AND bpmr.DeleteFlag = '0'
+				WHERE
+					bpp.DeleteFlag = '0'
+				AND bpi.deleteflag = '0'
+				AND bpi.TreatMentType IN ('1', '2')
+				AND bpp.StatusFlag = 'PD_OUT_1'
+			) a
+		WHERE
+			a.rownumber = '1'
+	) b
+LEFT JOIN (
+	SELECT
+		PatientID,
+		LabResult
+	FROM
+		(
+			SELECT
+				ROW_NUMBER () OVER (
+					PARTITION BY ir.PatientID
+					ORDER BY
+						ir.ResultDate DESC
+				) AS rownumber,
+				CONVERT (
+					VARCHAR (20),
+					ir.ResultDate,
+					20
+				) AS ResultDate,
+				ir.LabResult,
+				ir.PatientID
+			FROM
+				I_RESULTS ir
+			INNER JOIN B_PATIENT_PD_OEDER_ITEM bppoi ON ir.SubCode = bppoi.SubId
+			WHERE
+				ir.DeleteFlag = '0'
+			AND bppoi.DeleteFlag = '0'
+			AND bppoi.Code = '3'
+			AND bppoi. NO = '13'
+			AND ir.ResultDate >= '2017-06-05'
+			AND ir.ResultDate <= '2018-01-05'
+		) x
+	WHERE
+		x.rownumber = 1
+) b1 ON b1.PatientID = b.ID
+LEFT JOIN (
+	SELECT
+		PatientID,
+		LabResult
+	FROM
+		(
+			SELECT
+				ROW_NUMBER () OVER (
+					PARTITION BY ir.PatientID
+					ORDER BY
+						ir.ResultDate DESC
+				) AS rownumber,
+				CONVERT (
+					VARCHAR (20),
+					ir.ResultDate,
+					20
+				) AS ResultDate,
+				ir.LabResult,
+				ir.PatientID
+			FROM
+				I_RESULTS ir
+			INNER JOIN B_PATIENT_PD_OEDER_ITEM bppoi ON ir.SubCode = bppoi.SubId
+			WHERE
+				ir.DeleteFlag = '0'
+			AND bppoi.DeleteFlag = '0'
+			AND bppoi.Code = '3'
+			AND bppoi. NO = '11'
+			AND ir.ResultDate >= '2017-06-05'
+			AND ir.ResultDate <= '2018-01-05'
+		) x
+	WHERE
+		x.rownumber = 1
+) b2 ON b2.PatientID = b.ID
+order by b.Name
+
+
+--导出详细记录
+SELECT
+	DISTINCT
+	b.Name,
+	b.MedicalRecordNo,
+	b1.ResultDate,
+	b1.LabResult
+FROM
+	(
+		SELECT
+			Name,
+			MedicalRecordNo,
+			ID
+		FROM
+			(
+				SELECT
+					ROW_NUMBER () OVER (
+						PARTITION BY bpp.Id
+						ORDER BY
+							bpmr.MedicalRecordNo DESC
+					) AS rownumber,
+					bpp.Name,
+					bpp.ID,
+					bpmr.MedicalRecordNo
+				FROM
+					B_PATIENT_PDINFOR bpp
+				INNER JOIN B_PATIENT_INFO bpi ON bpp.ID = bpi.ID
+				LEFT JOIN B_PATIENT_MEDICAL_RECORD bpmr ON bpmr.PatientId = bpp.Id
+				AND bpmr.DeleteFlag = '0'
+				WHERE
+					bpp.DeleteFlag = '0'
+				AND bpi.deleteflag = '0'
+				AND bpi.TreatMentType IN ('1', '2')
+				AND bpp.StatusFlag = 'PD_OUT_1'
+			) a
+		WHERE
+			a.rownumber = '1'
+	) b
+inner JOIN (
+			SELECT
+				CONVERT (
+					VARCHAR (20),
+					ir.ResultDate,
+					20
+				) AS ResultDate,
+				ir.LabResult,
+				ir.PatientID
+			FROM
+				I_RESULTS ir
+			INNER JOIN B_PATIENT_PD_OEDER_ITEM bppoi ON ir.SubCode = bppoi.SubId
+			WHERE
+				ir.DeleteFlag = '0'
+			AND bppoi.DeleteFlag = '0'
+			AND bppoi.Code = '3'
+			AND bppoi. NO = '61'
+			AND ir.ResultDate >= '2017-06-05'
+			AND ir.ResultDate <= '2018-01-05'
+)b1 ON b1.PatientID = b.ID
+order by b.name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select b.Name,b.MedicalRecordNo,b1.LabResult from (
+
+SELECT
+	Name,
+	MedicalRecordNo,
+	ID
+FROM
+	(
+		SELECT
+			ROW_NUMBER () OVER (
+				PARTITION BY bpp.Id
+				ORDER BY
+					bpmr.MedicalRecordNo DESC
+			) AS rownumber,
+			bpp.Name,
+			bpp.ID,
+			bpmr.MedicalRecordNo
+		FROM
+			B_PATIENT_PDINFOR bpp
+		INNER JOIN B_PATIENT_INFO bpi ON bpp.ID = bpi.ID
+		LEFT JOIN B_PATIENT_MEDICAL_RECORD bpmr ON bpmr.PatientId = bpp.Id
+		AND bpmr.DeleteFlag = '0'
+		WHERE
+			bpp.DeleteFlag = '0'
+		AND bpi.deleteflag = '0'
+		AND bpi.TreatMentType IN ('1', '2')
+		AND bpp.StatusFlag = 'PD_OUT_1'
+	) a
+WHERE
+	a.rownumber = '1'
+) b
+left join (
+		SELECT
+			PatientID,
+			LabResult
+		FROM
+			(
+			SELECT
+				ROW_NUMBER () OVER (
+						PARTITION BY bppor.PatientID
+						ORDER BY
+							bppor.[Date] DESC
+					) AS rownumber,
+		bppor.PatientId,
+		bppor.[Date] as ResultDate,
+		bpsrd.Result as LabResult
+	FROM
+		B_PATIENT_PD_OEDER_RESULT bppor
+	INNER JOIN B_PD_SUFFICIENCY_RESULT_DETAIL bpsrd ON bppor.ID = bpsrd.ResultId
+	WHERE
+		bppor.code = '3'
+	AND SufficiencyId = '16'
+	AND bppor.[Date] >= '2017-06-05'
+	AND bppor.[Date] <= '2018-01-05'
+			) x
+		WHERE
+			x.rownumber = 1
+) b1 ON b1.PatientID = b.ID
+order by NAME
+
+
+SELECT
+	b.Name,
+	b.MedicalRecordNo,
+	b1.LabResult
+FROM
+	(
+		SELECT
+			Name,
+			MedicalRecordNo,
+			ID
+		FROM
+			(
+				SELECT
+					ROW_NUMBER () OVER (
+						PARTITION BY bpp.Id
+						ORDER BY
+							bpmr.MedicalRecordNo DESC
+					) AS rownumber,
+					bpp.Name,
+					bpp.ID,
+					bpmr.MedicalRecordNo
+				FROM
+					B_PATIENT_PDINFOR bpp
+				INNER JOIN B_PATIENT_INFO bpi ON bpp.ID = bpi.ID
+				LEFT JOIN B_PATIENT_MEDICAL_RECORD bpmr ON bpmr.PatientId = bpp.Id
+				AND bpmr.DeleteFlag = '0'
+				WHERE
+					bpp.DeleteFlag = '0'
+				AND bpi.deleteflag = '0'
+				AND bpi.TreatMentType IN ('1', '2')
+				AND bpp.StatusFlag = 'PD_OUT_1'
+			) a
+		WHERE
+			a.rownumber = '1'
+	) b
+LEFT JOIN (
+	SELECT
+		PatientID,
+		LabResult
+	FROM
+		(
+			SELECT
+				ROW_NUMBER () OVER (
+					PARTITION BY ir.PatientID
+					ORDER BY
+						ir.ResultDate DESC
+				) AS rownumber,
+				CONVERT (
+					VARCHAR (20),
+					ir.ResultDate,
+					20
+				) AS ResultDate,
+				ir.LabResult,
+				ir.PatientID
+			FROM
+				I_RESULTS ir
+			INNER JOIN B_PATIENT_PD_OEDER_ITEM bppoi ON ir.SubCode = bppoi.SubId
+			WHERE
+				ir.DeleteFlag = '0'
+			AND bppoi.DeleteFlag = '0'
+			AND bppoi.Code = '3'
+			AND bppoi. NO = '11'
+			AND ir.ResultDate >= '2017-06-05'
+			AND ir.ResultDate <= '2018-01-05'
+		) x
+	WHERE
+		x.rownumber = 1
+) b1 ON b1.PatientID = b.ID
+order by b.Name
+
+
+SELECT
+	bpp.Name,
+	CONVERT(varchar(20),ir.ResultDate,20),
+	ir.LabResult
+FROM
+	B_PATIENT_PDINFOR bpp
+INNER JOIN B_PATIENT_INFO bpi ON bpp.ID = bpi.ID
+INNER JOIN I_RESULTS ir ON ir.PatientID = bpp.ID
+INNER JOIN B_PATIENT_PD_OEDER_ITEM bppoi ON ir.SubCode = bppoi.SubId
+WHERE
+	bpp.DeleteFlag = '0'
+AND bpi.deleteflag = '0'
+AND bpi.TreatMentType IN ('1', '2')
+AND bpp.StatusFlag = 'PD_OUT_1'
+AND ir.DeleteFlag = '0'
+AND bppoi.DeleteFlag = '0'
+AND bppoi.Code = '3'
+AND bppoi. NO = '12'
+AND ir.ResultDate >= '2017-06-05'
+AND ir.ResultDate <= '2018-01-05'
+order by name asc,ResultDate asc
+
+
+
+
+
+
+
+SELECT
+	DISTINCT
+	b.Name,
+	b.MedicalRecordNo,
+	b1.ResultDate,
+	b1.LabResult
+FROM
+	(
+		SELECT
+			Name,
+			MedicalRecordNo,
+			ID
+		FROM
+			(
+				SELECT
+					ROW_NUMBER () OVER (
+						PARTITION BY bpp.Id
+						ORDER BY
+							bpmr.MedicalRecordNo DESC
+					) AS rownumber,
+					bpp.Name,
+					bpp.ID,
+					bpmr.MedicalRecordNo
+				FROM
+					B_PATIENT_PDINFOR bpp
+				INNER JOIN B_PATIENT_INFO bpi ON bpp.ID = bpi.ID
+				LEFT JOIN B_PATIENT_MEDICAL_RECORD bpmr ON bpmr.PatientId = bpp.Id
+				AND bpmr.DeleteFlag = '0'
+				WHERE
+					bpp.DeleteFlag = '0'
+				AND bpi.deleteflag = '0'
+				AND bpi.TreatMentType IN ('1', '2')
+				AND bpp.StatusFlag = 'PD_OUT_1'
+			) a
+		WHERE
+			a.rownumber = '1'
+	) b
+inner JOIN (
+			SELECT
+				CONVERT (
+					VARCHAR (20),
+					ir.ResultDate,
+					20
+				) AS ResultDate,
+				ir.LabResult,
+				ir.PatientID
+			FROM
+				I_RESULTS ir
+			INNER JOIN B_PATIENT_PD_OEDER_ITEM bppoi ON ir.SubCode = bppoi.SubId
+			WHERE
+				ir.DeleteFlag = '0'
+			AND bppoi.DeleteFlag = '0'
+			AND bppoi.Code = '3'
+			AND bppoi. NO = '31'
+			AND ir.ResultDate >= '2017-06-05'
+			AND ir.ResultDate <= '2018-01-05'
+)b1 ON b1.PatientID = b.ID
+order by b.name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

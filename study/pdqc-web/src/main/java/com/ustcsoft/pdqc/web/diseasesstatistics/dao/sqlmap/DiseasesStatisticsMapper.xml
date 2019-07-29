@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DiseasesStatisticsMapper">
+    <select id="selectInfectionDiseases" resultType="com.ustcsoft.pdqc.web.diseasesstatistics.form.DiseasesStatisticsForm">
+SELECT
+	a.hp_id AS hp_id,
+	'梅毒' AS infection_diseases,
+	IFNULL(b.count1, 0) AS count
+FROM
+	pd_d_patient_info a
+LEFT JOIN (
+	SELECT
+		hp_id AS hp_id,
+		COUNT(NAME) AS count1
+	FROM
+		pd_d_patient_info
+	WHERE
+		del_flag = '0'
+	AND outcome_type = 'PD_OUT_1'
+	AND infection_diseases LIKE '%梅毒%'
+	GROUP BY
+		hp_id
+) b ON a.hp_id = b.hp_id
+WHERE
+	del_flag = '0'
+AND outcome_type = 'PD_OUT_1'
+GROUP BY
+	hp_id
+UNION ALL
+	SELECT
+		a.hp_id AS hp_id,
+		'结核' AS infection_diseases,
+		IFNULL(b.count1, 0) AS count
+	FROM
+		pd_d_patient_info a
+	LEFT JOIN (
+		SELECT
+			hp_id AS hp_id,
+			COUNT(NAME) AS count1
+		FROM
+			pd_d_patient_info
+		WHERE
+			del_flag = '0'
+		AND outcome_type = 'PD_OUT_1'
+		AND infection_diseases LIKE '%结核%'
+		GROUP BY
+			hp_id
+	) b ON a.hp_id = b.hp_id
+	WHERE
+		del_flag = '0'
+	AND outcome_type = 'PD_OUT_1'
+	GROUP BY
+		hp_id
+	UNION ALL
+		SELECT
+			a.hp_id AS hp_id,
+			'艾滋' AS infection_diseases,
+			IFNULL(b.count1, 0) AS count
+		FROM
+			pd_d_patient_info a
+		LEFT JOIN (
+			SELECT
+				hp_id AS hp_id,
+				COUNT(NAME) AS count1
+			FROM
+				pd_d_patient_info
+			WHERE
+				del_flag = '0'
+			AND outcome_type = 'PD_OUT_1'
+			AND infection_diseases LIKE '%艾滋%'
+			GROUP BY
+				hp_id
+		) b ON a.hp_id = b.hp_id
+		WHERE
+			del_flag = '0'
+		AND outcome_type = 'PD_OUT_1'
+		GROUP BY
+			hp_id
+		UNION ALL
+			SELECT
+				a.hp_id AS hp_id,
+				'丙肝' AS infection_diseases,
+				IFNULL(b.count1, 0) AS count
+			FROM
+				pd_d_patient_info a
+			LEFT JOIN (
+				SELECT
+					hp_id AS hp_id,
+					COUNT(NAME) AS count1
+				FROM
+					pd_d_patient_info
+				WHERE
+					del_flag = '0'
+				AND outcome_type = 'PD_OUT_1'
+				AND infection_diseases LIKE '%丙肝%'
+				GROUP BY
+					hp_id
+			) b ON a.hp_id = b.hp_id
+			WHERE
+				del_flag = '0'
+			AND outcome_type = 'PD_OUT_1'
+			GROUP BY
+				hp_id
+			UNION ALL
+				SELECT
+					a.hp_id AS hp_id,
+					'乙肝' AS infection_diseases,
+					IFNULL(b.count1, 0) AS count
+				FROM
+					pd_d_patient_info a
+				LEFT JOIN (
+					SELECT
+						hp_id AS hp_id,
+						COUNT(NAME) AS count1
+					FROM
+						pd_d_patient_info
+					WHERE
+						del_flag = '0'
+					AND outcome_type = 'PD_OUT_1'
+					AND infection_diseases LIKE '%乙肝%'
+					GROUP BY
+						hp_id
+				) b ON a.hp_id = b.hp_id
+				WHERE
+					del_flag = '0'
+				AND outcome_type = 'PD_OUT_1'
+				GROUP BY
+					hp_id
+				ORDER BY
+					hp_id ASC
+    </select>
+    
+    <select id="diseasesStatisticsList" resultType="com.ustcsoft.pdqc.web.diseasesstatistics.form.DiseasesStatisticsForm">
+            SELECT
+                a.hp_id AS hp_id,
+                IFNULL(b.count1, 0) AS count1,
+                IFNULL(c.count2, 0) AS count2,
+                IFNULL(d.count3, 0) AS count3,
+                IFNULL(e.count4, 0) AS count4,
+                IFNULL(f.count5, 0) AS count5
+            FROM
+                pd_d_patient_info a
+            LEFT JOIN (
+                SELECT
+                    hp_id AS hp_id,
+                    COUNT(NAME) AS count1
+                FROM
+                    pd_d_patient_info
+                WHERE
+                    del_flag = '0'
+                AND outcome_type = 'PD_OUT_1'
+                AND infection_diseases LIKE '%梅毒%'
+                GROUP BY
+                    hp_id
+            ) b ON a.hp_id = b.hp_id
+            LEFT JOIN (
+                SELECT
+                    hp_id AS hp_id,
+                    COUNT(NAME) AS count2
+                FROM
+                    pd_d_patient_info
+                WHERE
+                    del_flag = '0'
+                AND outcome_type = 'PD_OUT_1'
+                AND infection_diseases LIKE '%结核%'
+                GROUP BY
+                    hp_id
+            ) c ON a.hp_id = c.hp_id
+            LEFT JOIN (
+                SELECT
+                    hp_id AS hp_id,
+                    COUNT(NAME) AS count3
+                FROM
+                    pd_d_patient_info
+                WHERE
+                    del_flag = '0'
+                AND outcome_type = 'PD_OUT_1'
+                AND infection_diseases LIKE '%艾滋%'
+                GROUP BY
+                    hp_id
+            ) d ON a.hp_id = d.hp_id
+            LEFT JOIN (
+                SELECT
+                    hp_id AS hp_id,
+                    COUNT(NAME) AS count4
+                FROM
+                    pd_d_patient_info
+                WHERE
+                    del_flag = '0'
+                AND outcome_type = 'PD_OUT_1'
+                AND infection_diseases LIKE '%丙肝%'
+                GROUP BY
+                    hp_id
+            ) e ON a.hp_id = e.hp_id
+            LEFT JOIN (
+                SELECT
+                    hp_id AS hp_id,
+                    COUNT(NAME) AS count5
+                FROM
+                    pd_d_patient_info
+                WHERE
+                    del_flag = '0'
+                AND outcome_type = 'PD_OUT_1'
+                AND infection_diseases LIKE '%乙肝%'
+                GROUP BY
+                    hp_id
+            ) f ON a.hp_id = f.hp_id
+            WHERE
+                del_flag = '0'
+            AND outcome_type = 'PD_OUT_1'
+            GROUP BY
+                hp_id
+    </select>
+    
+    <!-- 查找医院id -->
+    <select id="selectHospitalId" resultType="com.ustcsoft.pdqc.web.diseasesstatistics.form.PatientDetailForm">
+            SELECT
+                pd_center_no as hp_id
+            FROM
+                pd_d_center
+            WHERE
+                del_flag = "0"
+            AND pd_center_name = #{hospitalName}
+    </select>
+    
+    <!-- 查询患者 -->
+    <select id="selectPatientDetail" resultType="com.ustcsoft.pdqc.web.diseasesstatistics.form.PatientDetailForm">
+            SELECT
+                hp_id AS hp_id,
+                name AS name,
+                card_no AS card_no,
+                DATE_FORMAT(first_dialsys_date,'%Y-%m-%d') AS first_dialsys_date,
+                infection_diseases AS infection_diseases
+            FROM
+                pd_d_patient_info
+            WHERE
+                del_flag = "0"
+            AND hp_id = #{hp_id}
+            AND infection_diseases LIKE '%${infection_diseases}%'
+    </select>
+</mapper>

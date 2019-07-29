@@ -1,0 +1,49 @@
+﻿
+//Input输入框
+@widget.ctrl.Input(sId:"name",sLabel:"姓名:",sName:"name",oValue:"",sGroupCss:"col-12",bDisabled:true)
+		//其他重要属性
+		sMaxLength:"1000",sPlaceHolder:"请输入姓名",bRequired:true
+		
+		$("#name").val("");//清空
+		$("#name").val(data.data[0].name);//赋值
+		
+//DatePicker日期选择
+@widget.ctrl.DatePicker(sId:"trainingdate",sName:"trainingdate",sLabel:"计划培训时间:",sGroupCss:"col-6")
+		
+		$("#trainingdate").datetimepicker('date',"");//清空
+		$("#trainingdate").datetimepicker('date',data.data[0].trainingdate);//赋值
+		$("#trainingdate").find(".datepickerinput").val();//取值
+	
+//SelectPicker下拉框
+@widget.ctrl.SelectPicker(sId:"othercomplication",sName:"othercomplication",oOptions:othercomplication,sLabel:"标签:",sInitValue:"",sGroupCss:"col-6")
+
+		$("#othercomplication").find(".selectpicker").selectpicker('val','');
+		$("#othercomplication").find(".selectpicker").selectpicker('val',data.data[0].othercomplication);//赋值
+		$("#othercomplication").find(".selectpicker").selectpicker('val');//取值
+
+//check单选框
+@widget.ctrl.Check(sId:"istrainingcompletion", sLabel:"标签:",oInitValue:"",sOptionsLabelField:"label",sOptionsValueField:"value",oOptions:istrainingcompletion,sGroupCss:"col-6",sOptionWidth:"70px")
+		
+		$("input:radio[name='istrainingcompletion']:checked").val();//取值
+		$("#istrainingcompletion").find('input').icheck('unchecked');//清除所选
+		$("#istrainingcompletion").find('input[value=' + data.data[0].istrainingcompletion + ']').icheck('checked');//赋值
+
+//Label标签		
+@widget.ctrl.Label(sLabel:"标签:",sId:"inAbdomenSum",sGroupCss:"col-5")
+            
+		$("#inAbdomenSum").text("");//清空
+		$("#inAbdomenSum").text(data.data[0].pdremarks);//赋值
+		$("#inAbdomenSum").html();//取值1
+		$("#inAbdomenSum").text();//取值2
+
+//TextArea标签	
+@widget.ctrl.TextArea(sLabel:"标签:",sId:"pdremarks",sMaxLength:"200",sGroupCss:"col-12 hanzi6 Text-bottom",iRows:7)
+
+		$("#pdremarks").val("");//清空
+		$("#pdremarks").val(data.data[0].pdremarks);//赋值
+
+//隐藏		
+@widget.ctrl.Hidden({sLabel:"套餐ID",sName:"costgroupid",oValue:costgroupid})
+
+
+@widget.ctrl.Button({sLabel:"选择", sBtncss:"btn-normal", sOnClick:"showpatientlist()"})

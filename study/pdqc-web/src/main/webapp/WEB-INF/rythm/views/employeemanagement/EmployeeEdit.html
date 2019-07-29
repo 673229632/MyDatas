@@ -1,0 +1,113 @@
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.pdqc.web.employeemanagement.form.EmployeeInformationForm;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+@args String editflag
+@args EmployeeInformationForm employeeInformationForm;
+@args List<Code> employeeTypeOptions
+@args List<Code> employeeTitleOptions
+@args List<Code> employeePortOptions
+@args List<Code> employeeEducationOptions
+
+	@widget.ctnr.Form("employee_form"){
+		@widget.ctnr.Row(){
+			@widget.ctrl.Hidden({sLabel:"组织机构编号:",sGroupCss:"col-6 hanzi8",sName:"orgNo",sId:"orgNo",oValue:employeeInformationForm.getOrgNo(),sMaxLength:"20"})
+			@widget.ctrl.Hidden({sLabel:"职员编号:",sGroupCss:"col-6 hanzi8",sName:"employeeNo",sId:"employeeNo",oValue:employeeInformationForm.getEmployeeNo()})
+			@widget.ctrl.Input({sLabel:"姓名:",sGroupCss:"col-6 hanzi8",sName:"employeeName",sId:"employeeName",oValue:employeeInformationForm.getEmployeeName(),sMaxLength:"20",bRequired:true})
+  			@widget.ctrl.SelectPicker(sLabel:"性别:", sName:"employeeSex", sId:"employeeSex", sGroupCss:"col-6 hanzi8",sInitValue:employeeInformationForm.getEmployeeSex(),oOptions:"{'1':'男','2':'女'}")
+  			@widget.ctrl.SelectPicker({sLabel:"职员类别:", sName:"employeeType", sId:"employeeType", sGroupCss:"col-6 hanzi8",sInitValue:employeeInformationForm.getEmployeeType(), oOptions:employeeTypeOptions,bRequired:true})
+  			@widget.ctrl.SelectPicker({sLabel:"职称:", sName:"titleNo", sId:"titleNo", sGroupCss:"col-6 hanzi8",sInitValue:employeeInformationForm.getTitleNo(), oOptions:employeeTitleOptions,bRequired:true})
+  			@widget.ctrl.SelectPicker({sLabel:"职务:", sName:"employeePost", sId:"employeePost", sGroupCss:"col-6 hanzi8",sInitValue:employeeInformationForm.getEmployeePost(), oOptions:employeePortOptions})
+  			@widget.ctrl.Input({sLabel:"电话:",sGroupCss:"col-6 hanzi8",sName:"employeeTel",sId:"employeeTel",oValue:employeeInformationForm.getEmployeeTel(),sType:"phone"})
+  			@widget.ctrl.Input({sLabel:"身份证编号:",sGroupCss:"col-6 hanzi8",sName:"idCardNo",sId:"idCardNo",oValue:employeeInformationForm.getIdCardNo(),sType:"idcard"})
+  			@widget.ctrl.SelectPicker({sLabel:"学历:", sName:"education", sId:"education", sGroupCss:"col-6 hanzi8",sInitValue:employeeInformationForm.getEducation(), oOptions:employeeEducationOptions})
+  			@widget.ctrl.DatePicker(sLabel:"出生日期:",sGroupCss:"col-6 hanzi8",sName:"birthday",sId:"birthday",
+  				sFormat:"YYYY-MM-DD",oValue:employeeInformationForm.getBirthday())
+  			@widget.ctrl.Input({sLabel:"email:",sGroupCss:"col-6 hanzi8",sName:"employeeEmail",sId:"employeeEmail",oValue:employeeInformationForm.getEmployeeEmail(),})
+  			@widget.ctrl.DatePicker(sLabel:"工作开始日期:",sGroupCss:"col-6 hanzi8",sName:"workStart",sId:"workStart",
+  				sFormat:"YYYY-MM-DD",oValue:employeeInformationForm.getWorkStart())
+  			@widget.ctrl.Input({sLabel:"医疗行业从业年限:",sGroupCss:"col-6 hanzi8",sName:"mediYear",sId:"mediYear",oValue:employeeInformationForm.getMediYear(),sType:"float"})
+  			@widget.ctrl.SelectPicker(sLabel:"是否参与评分:", sName:"isCheck", sId:"isCheck", sGroupCss:"col-6 hanzi8",sInitValue:employeeInformationForm.getIsCheck(), oOptions:"{'0':'是','1':'否'}")
+  			@widget.ctrl.SelectPicker(sLabel:"是否兼职:", sName:"isParttime", sId:"isParttime", sGroupCss:"col-6 hanzi8",sInitValue:employeeInformationForm.getIsParttime(), oOptions:"{'0':'是','1':'否'}")
+  			@widget.ctrl.TextArea(sLabel:"住址:", sId:"employeeAddress", sName:"employeeAddress", sGroupCss:"col-12 hanzi8", sValue:employeeInformationForm.getEmployeeAddress(), sMaxLength:"120")
+		}
+		
+	}
+	@widget.ctnr.BtnBox(bBorder:true,sCss:"btnBox",sAlign:"right"){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"editSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+    }
+    
+    
+    
+    <script type="text/javascript">
+
+    $(function(){
+        var editflag = "@editflag";
+        // 查看
+        if(editflag == "1"){
+            $("textarea").attr("readonly","readonly");
+            $("input").attr("readonly","readonly");
+            $("#saveBtn").css("display","none");
+            changeDisabled($('#employeeSex'),true);
+            changeDisabled($('#employeeType'),true);
+            changeDisabled($('#employeePost'),true);
+            changeDisabled($('#titleNo'),true);
+            changeDisabled($('#isCheck'),true);
+            changeDisabled($('#isParttime'),true);
+            changeDisabled($('#education'),true);
+        }
+        // 新增
+        if(editflag == "0"){
+        	$("#isCheck").find(".selectpicker").selectpicker('val', "1");
+        	$("#isParttime").find(".selectpicker").selectpicker('val', "1");
+        }
+    });
+
+	//保存,编辑
+	function editSave(){
+		$('#employee_form').bootstrapValidator('validate');
+		var isValid = $('#employee_form').data('bootstrapValidator').isValid();
+	    if(!isValid){
+	    	return;
+	    }
+	    var sConidtion = $("#employee_form").serializeObject();
+	    Ajax.ajax({
+			url : '@url("/employeeList/addOrEditEmployee")',
+			data : sConidtion,
+			success : function(data) {
+				if(data.retCode != -1){
+					if (data.successCount > 0) {
+					    parent.MsgBox.success("保存成功",function(){
+	                        parent.$("#search_result").bootstrapTable('refresh');
+	                        Dialog.closeSelf();
+	                    });
+					} else {
+						MsgBox.warning("保存失败");
+					}
+				}
+			}
+		});
+	}
+
+	function changeDisabled($widget, disabled) {
+	    // 顶层容器
+	    var $div = $widget;
+	    // 容器
+	    var $bootstrapselect = $div.find("div.bootstrap-select");
+	    // 按钮
+	    var $btn = $bootstrapselect.find(".btn.dropdown-toggle");
+	    // 下拉框
+	    var $select = $div.find("select.selectpicker");
+	    if (disabled) {
+	        $bootstrapselect.addClass("disabled");
+	        $btn.addClass("disabled");
+	    } else {
+	        $bootstrapselect.removeClass("disabled");
+	        $btn.removeClass("disabled");
+	    }
+	    // Select本身
+	    $select.prop("disabled", disabled);
+	}
+</script>
+    

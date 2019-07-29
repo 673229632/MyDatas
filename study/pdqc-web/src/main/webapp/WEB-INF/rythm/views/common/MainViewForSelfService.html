@@ -1,0 +1,236 @@
+@import com.ustcsoft.lotus.web.common.util.*;
+@import com.ustcsoft.lotus.web.common.security.UIMenu;
+@import com.ustcsoft.lotus.web.common.security.UIMenuItem;
+@import com.ustcsoft.lotus.web.common.util.SecurityUtil;
+@import com.ustcsoft.lotus.web.common.security.LoginUser;
+@import com.ustcsoft.lotus.core.autogen.entity.SRoleInfo;
+
+@import java.util.List;
+
+@extends(FrameViewForSelfService)
+
+@* 参数：ControllerID(来自SecurityInterceptor) *@
+@args String  controllerID = ""
+
+@{
+    // 常量
+    final String SIDER_HIDE_MARGIN = "-275px";
+    final String SIDER_SHOW_MARGIN = "0px";
+    final String CONTENT_HIDE_MARGIN = "15px";
+    final String CONTENT_SHOW_MARGIN = "235px";
+    final String TOGGLE_HIDE_ICON = "fa-align-justify";
+    final String TOGGLE_SHOW_ICON = "fa-list";
+    LoginUser loginUser = SecurityUtil.getLoginUser();
+    // 左侧菜单栏是否隐藏设置 
+    boolean l_bHideLeftSide = true;
+    if (loginUser == null) {
+    	l_bHideLeftSide = true;
+    }
+    // 左侧栏的Margin
+    String l_sSiderMargin = SIDER_SHOW_MARGIN;
+    // 正文区域Margin
+    String l_sContentMargin = CONTENT_SHOW_MARGIN;
+    // 如果隐藏了
+    if (l_bHideLeftSide) {
+        l_sSiderMargin = SIDER_HIDE_MARGIN;
+        l_sContentMargin = CONTENT_HIDE_MARGIN;
+    }
+    // 折叠图标
+    String l_sSideToggleIcon = l_bHideLeftSide ? TOGGLE_HIDE_ICON : TOGGLE_SHOW_ICON;
+}
+
+@assign("homeUrl"){
+    @url("/index")
+}
+<script type="text/javascript">
+$(function() {
+    // 菜单折叠对象
+    var oSidebarLeftToggle = $("#sidebarLeftToggle");
+    // 菜单图标对象
+    var oSidebarLeftToggleIcon = $("#sidebarLeftToggle").find(".fa");
+    // 初期化图标
+    oSidebarLeftToggleIcon.addClass("@l_sSideToggleIcon");
+    // 获得左侧菜单
+    var oLeftSide = $("#left-side");
+    // 获得中间区域
+    var oMainContent = $("#mainContent");
+    // 全屏切换按钮
+    oSidebarLeftToggle.click(function(){
+        // 如果当前是隐藏的
+        if (oLeftSide.css("margin-left") == "@SIDER_HIDE_MARGIN") {
+            // 切换到可视
+            oMainContent.css('margin-left', '@CONTENT_SHOW_MARGIN');
+            oLeftSide.css('margin-left', '@SIDER_SHOW_MARGIN');
+            // 更换图标
+            oSidebarLeftToggleIcon.removeClass("@TOGGLE_HIDE_ICON").addClass("@TOGGLE_SHOW_ICON");
+        } else {
+             // 切换到隐藏
+            oMainContent.css('margin-left', '@CONTENT_HIDE_MARGIN');
+            oLeftSide.css('margin-left', '@SIDER_HIDE_MARGIN');
+             // 更换图标
+            oSidebarLeftToggleIcon.removeClass("@TOGGLE_SHOW_ICON").addClass("@TOGGLE_HIDE_ICON");
+        }
+    });
+    
+    var _isHideLeft;
+    function initialLayout(){
+        _isHideLeft = $.cookie("_isHideLeft") === '1';
+        if(_isHideLeft){
+            $('#left-side').css('margin-left', '-190px');
+            $('#mainContent').css('margin-left', '15px');
+        }else{
+            $('#left-side').css('margin-left', '0px');
+        }
+        setTimeout("resetLabelsWidth()",1000);
+    }
+    
+    //initialLayout();
+    
+    function exitFullscreen() {
+      if(document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if(document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if(document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if(document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+    
+    function launchFullscreen(){
+        var docElm = document.documentElement;
+        //W3C
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        }
+        //FireFox
+        else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        }
+        //Chrome等
+        else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+        //IE11
+        else if (docElm.msRequestFullscreen) {
+            docElm.msRequestFullscreen();
+        }
+    }
+
+    function isFullScreen(){
+        var isFs = window.fullScreen ||(window.innerWidth == screen.width&& window.innerHeight == screen.height);
+        return isFs;
+    }
+    
+    $('#fullScreenToggle').click(function(){
+        if(isFullScreen()){
+            exitFullscreen();
+        }else{
+            launchFullscreen();
+        }
+        resetLabelsWidth();
+    });
+});
+</script>
+
+<style>
+</style>
+<!-- 页面中间部分 -->
+@def _fnRenderLeftNav(UIMenuItem item){
+    @{
+        // 取得URI（不帶Content Path）
+        String uri = request.getServletPath();
+        // 如果不包含当前菜单的ID，则视为折叠
+        boolean isActive = item.containsMenuUrl(uri);
+        // 是否是叶子节点
+        boolean isLeaf = item.isLeaf();
+        //System.out.println("item:"+item.getMenuUrl()+" uri:"+uri+" isActive:"+isActive+" isLeaf:"+isLeaf);
+    }
+    @* 如果是非叶子节点 *@
+    @if (!isLeaf) {
+         @{
+            String css = isActive ? "" : "collapsed";
+            String divCss = isActive ? "in" : "";
+            String style = isActive ? "" : "style='height: 0px;'";
+            String dparent = item.getMenuLevel() == 0 ? "data-parent=#accordion" : ""; 
+         }
+        <a class="menu-item-rythm @css accordion-toggle @item.getMenuIcon() list-group-item" 
+            data-toggle="collapse" data-target="#@item.getMenuId()" @dparent >
+            @* 如果是第一层 *@
+            @if (item.getMenuLevel() == 0) {
+                <dmh2>&nbsp;@item.getMenuName()</dmh2>
+            } else {
+                <dmh1>&nbsp;@item.getMenuName()</dmh1>
+            }
+            <span class="fa" style="font-size:14px;position:absolute;top:13px;right:13px"></span>
+        </a>
+        <div id="@item.getMenuId()" class="list-group collapse @divCss" @style>
+        @for(UIMenuItem subItem : item.getSubMenu()){
+            @_fnRenderLeftNav(subItem)
+        }
+        </div>
+    } else {
+        @{String css = isActive ? "active" : "";}
+        <a href="@url(item.getMenuUrl())" class="menu-item-rythm @css @item.getMenuIcon() list-group-item ">
+            <dmh1>&nbsp;@item.getMenuName()</dmh1>
+        </a>
+    }
+}
+<!-- 左边导航 -->
+<div id="left-side" style="width:215px;margin-left:@l_sSiderMargin" class="noprint">
+    <div id="sidebar"> 
+    @render("sidebar"){
+        <div id="accordion" class="list-group top-group dm-box">
+            <a class="menu-item-rythm collapsed accordion-toggle fa fa-home list-group-item" 
+                style="color:#FFFFFF;background-color: #555960;" 
+                href="@url("/")" data-parent=#accordion >
+                <dmh2>&nbsp; 首页</dmh2>
+            </a>
+        @{ UIMenu lstMenu = SecurityUtil.getMenu(); }
+        @if(lstMenu != null){
+            @for(UIMenuItem item : lstMenu.getMenuItems()){
+                @_fnRenderLeftNav(item)
+            }
+        }
+        </div>
+    }
+    </div>
+</div>
+
+<div id="mainContent" style="margin-left:@l_sContentMargin" class="noprint">
+<!-- 页面内容 -->
+    <!-- 页面内容上部分导航 -->
+    @render("mainContent"){
+        <!-- 页面标题部分 首页和错误页面不显示 -->
+        <div id="pageContent">
+            <div id="pageTitle">
+                <h>@v_sTitle</h>
+            </div>
+            <div id="pageBody">
+                @render()
+            </div>
+            <div class="clearfix"></div>
+        </div>
+     }
+</div>
+
+<script>
+    $(document).on('click', '.accordion-toggle', function(event) {
+        event.stopPropagation();
+        var $this = $(this);
+        var parent = $this.data('parent');
+        var actives = parent && $(parent).find('>.collapse.in');
+        // From bootstrap itself
+        if (actives && actives.length) {
+            hasData = actives.data('collapse');
+            //if (hasData && hasData.transitioning) return;
+            actives.collapse('hide');
+            }
+
+        var target = $this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, ''); //strip for ie7
+        if(target && $.trim(target).indexOf("#") == 0){
+            $(target).collapse('toggle');
+         }
+    });
+</script>

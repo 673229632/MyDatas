@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SpringMvc的配置文件 -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd 
+        http://www.springframework.org/schema/context  
+        http://www.springframework.org/schema/context/spring-context.xsd 
+    ">
+
+    <!-- 占位配置 -->
+    <context:property-placeholder location="classpath:application.properties" />
+
+    <!-- 扫描所有Controller对象 -->
+    <context:component-scan base-package="com.ustcsoft.pdqc.*.*.controller"
+        use-default-filters="false">
+        <!-- 只扫描Contorller注解 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <!-- 扫描所有UI的component对象 -->
+    <context:component-scan base-package="com.ustcsoft.rythmui.spring"></context:component-scan>
+
+    <!-- 配置rythm对象 -->
+    <bean class="com.ustcsoft.rythm.spring.RythmConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/rythm" />
+        <property name="devMode" value="${rythm.devmode:false}" />
+        <property name="homeTmpDir" value="${java.io.tmpdir}__rythm\${rythm.homeTmpDirName:_rythm}" />
+        <property name="customImports">
+            <list>
+                <value>static com.ustcsoft.rythmui.api.RythmApi.*</value>
+                <value>com.ustcsoft.rythmui.util.*</value>
+                <value>com.ustcsoft.pdqc.rythm.menu.*</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Rythm视图的配置 -->
+    <bean class="com.ustcsoft.rythm.spring.web.servlet.view.RythmViewResolver">
+        <property name="prefix" value="/WEB-INF/rythm/"></property>
+        <property name="suffix" value=".html"></property>
+        <property name="order" value="1"></property>
+    </bean>
+
+    <!-- JSP视图的配置 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+        <property name="order" value="2"></property>
+    </bean>
+
+    <!-- 上传文件设定 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="utf-8"></property>
+        <!-- 最大文件大小 -->
+        <property name="maxUploadSize" value="${file.upload.limit}"></property>
+    </bean>
+
+    <!-- 提供方法的Annotation支持 -->
+    <mvc:annotation-driven>
+        <!-- 自定义的return-value-handlers -->
+        <mvc:return-value-handlers>
+            <!-- JsonResponse对象的返回类 -->
+            <bean class="com.ustcsoft.marsfw.web.servlet.method.support.JacksonResponseMethodReturnValueHandler" />
+            <!-- ImageResponse对象的返回类 -->
+            <bean class="com.ustcsoft.marsfw.web.servlet.method.support.ImageResponseMethodReturnValueHandler" />
+            <!-- FileResponse对象的返回类 -->
+            <bean class="com.ustcsoft.marsfw.web.servlet.method.support.FileResponseMethodReturnValueHandler" />
+            <!-- RythmPage对象的返回类 -->
+            <bean class="com.ustcsoft.rythm.spring.web.servlet.support.RythmViewUrlMethodReturnValueHandler" />
+        </mvc:return-value-handlers>
+        <mvc:argument-resolvers>
+            <!-- 参数转换组合对象 -->
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
+
+    <!-- Action的拦截器 -->
+    <mvc:interceptors>
+        <!-- 访问日志拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/static/**" />
+            <mvc:exclude-mapping path="/favicon.*" />
+            <bean class="com.ustcsoft.pdqc.core.common.interceptor.LoggerInterceptor" />
+        </mvc:interceptor>
+        
+        <!-- 权限拦截器 -->                
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/static/**" />
+            <mvc:exclude-mapping path="/upload/**" />
+            <mvc:exclude-mapping path="/favicon.*" />
+            <mvc:exclude-mapping path="/sample/**" />
+            <mvc:exclude-mapping path="/test/**" />
+            <bean class="com.ustcsoft.pdqc.core.common.interceptor.JurisdictionInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- 静态资源 -->
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="31556926" />
+    <mvc:resources mapping="/favicon.ico" location="/favicon.ico" cache-period="31556926" />
+    <mvc:resources mapping="/favicon.png" location="/favicon.png" cache-period="31556926" />
+
+    <!-- 默认的Action异常捕获对象 -->
+    <bean class="com.ustcsoft.marsfw.web.servlet.exception.DefaultExceptionResolver">
+        <!-- 错误码和视图的对应关系 -->
+        <property name="httpScViewMappings">
+            <map>
+                <entry key="403" value="views/error/403" />
+            </map>
+        </property>
+        <!-- 异常名和视图的对应关系 -->
+        <property name="exceptionViewMappings">
+            <props>
+                <prop key="java.lang.Exception">views/error/500</prop>
+            </props>
+        </property>
+    </bean>
+</beans>

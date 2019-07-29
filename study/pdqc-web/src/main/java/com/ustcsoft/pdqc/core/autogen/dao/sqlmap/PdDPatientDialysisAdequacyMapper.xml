@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdDPatientDialysisAdequacyMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacy">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="hp_id" jdbcType="VARCHAR" property="hpId" />
+    <result column="pt_id" jdbcType="VARCHAR" property="ptId" />
+    <result column="tdate" jdbcType="TIMESTAMP" property="tdate" />
+    <result column="height" jdbcType="VARCHAR" property="height" />
+    <result column="weight" jdbcType="VARCHAR" property="weight" />
+    <result column="urine_volume" jdbcType="VARCHAR" property="urineVolume" />
+    <result column="urine_bun" jdbcType="VARCHAR" property="urineBun" />
+    <result column="urine_cr" jdbcType="VARCHAR" property="urineCr" />
+    <result column="drainage_amount" jdbcType="VARCHAR" property="drainageAmount" />
+    <result column="drainage_bun" jdbcType="VARCHAR" property="drainageBun" />
+    <result column="drainage_cr" jdbcType="VARCHAR" property="drainageCr" />
+    <result column="serum_bun" jdbcType="VARCHAR" property="serumBun" />
+    <result column="serum_cr" jdbcType="VARCHAR" property="serumCr" />
+    <result column="residual_renal_ccr" jdbcType="VARCHAR" property="residualRenalCcr" />
+    <result column="peritoneal_dialysis_ccr" jdbcType="VARCHAR" property="peritonealDialysisCcr" />
+    <result column="total_ccr" jdbcType="VARCHAR" property="totalCcr" />
+    <result column="residual_renal_kt" jdbcType="VARCHAR" property="residualRenalKt" />
+    <result column="peritoneal_dialysis_kt" jdbcType="VARCHAR" property="peritonealDialysisKt" />
+    <result column="total_kt" jdbcType="VARCHAR" property="totalKt" />
+    <result column="egfr" jdbcType="VARCHAR" property="egfr" />
+    <result column="npcr" jdbcType="VARCHAR" property="npcr" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="INTEGER" property="rowVersion" />
+    <result column="screen_id" jdbcType="VARCHAR" property="screenId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, hp_id, pt_id, tdate, height, weight, urine_volume, urine_bun, urine_cr, drainage_amount, 
+    drainage_bun, drainage_cr, serum_bun, serum_cr, residual_renal_ccr, peritoneal_dialysis_ccr, 
+    total_ccr, residual_renal_kt, peritoneal_dialysis_kt, total_kt, egfr, npcr, del_flag, 
+    created_by, date_created, modified_by, date_modified, row_version, screen_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_d_patient_dialysis_adequacy
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacyKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_d_patient_dialysis_adequacy
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacyKey">
+    delete from pd_d_patient_dialysis_adequacy
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacyExample">
+    delete from pd_d_patient_dialysis_adequacy
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacy">
+    insert into pd_d_patient_dialysis_adequacy (id, hp_id, pt_id, 
+      tdate, height, weight, 
+      urine_volume, urine_bun, urine_cr, 
+      drainage_amount, drainage_bun, drainage_cr, 
+      serum_bun, serum_cr, residual_renal_ccr, 
+      peritoneal_dialysis_ccr, total_ccr, residual_renal_kt, 
+      peritoneal_dialysis_kt, total_kt, egfr, 
+      npcr, del_flag, created_by, 
+      date_created, modified_by, date_modified, 
+      row_version, screen_id)
+    values (#{id,jdbcType=VARCHAR}, #{hpId,jdbcType=VARCHAR}, #{ptId,jdbcType=VARCHAR}, 
+      #{tdate,jdbcType=TIMESTAMP}, #{height,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, 
+      #{urineVolume,jdbcType=VARCHAR}, #{urineBun,jdbcType=VARCHAR}, #{urineCr,jdbcType=VARCHAR}, 
+      #{drainageAmount,jdbcType=VARCHAR}, #{drainageBun,jdbcType=VARCHAR}, #{drainageCr,jdbcType=VARCHAR}, 
+      #{serumBun,jdbcType=VARCHAR}, #{serumCr,jdbcType=VARCHAR}, #{residualRenalCcr,jdbcType=VARCHAR}, 
+      #{peritonealDialysisCcr,jdbcType=VARCHAR}, #{totalCcr,jdbcType=VARCHAR}, #{residualRenalKt,jdbcType=VARCHAR}, 
+      #{peritonealDialysisKt,jdbcType=VARCHAR}, #{totalKt,jdbcType=VARCHAR}, #{egfr,jdbcType=VARCHAR}, 
+      #{npcr,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{dateCreated,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, 
+      #{rowVersion,jdbcType=INTEGER}, #{screenId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacy">
+    insert into pd_d_patient_dialysis_adequacy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hpId != null">
+        hp_id,
+      </if>
+      <if test="ptId != null">
+        pt_id,
+      </if>
+      <if test="tdate != null">
+        tdate,
+      </if>
+      <if test="height != null">
+        height,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="urineVolume != null">
+        urine_volume,
+      </if>
+      <if test="urineBun != null">
+        urine_bun,
+      </if>
+      <if test="urineCr != null">
+        urine_cr,
+      </if>
+      <if test="drainageAmount != null">
+        drainage_amount,
+      </if>
+      <if test="drainageBun != null">
+        drainage_bun,
+      </if>
+      <if test="drainageCr != null">
+        drainage_cr,
+      </if>
+      <if test="serumBun != null">
+        serum_bun,
+      </if>
+      <if test="serumCr != null">
+        serum_cr,
+      </if>
+      <if test="residualRenalCcr != null">
+        residual_renal_ccr,
+      </if>
+      <if test="peritonealDialysisCcr != null">
+        peritoneal_dialysis_ccr,
+      </if>
+      <if test="totalCcr != null">
+        total_ccr,
+      </if>
+      <if test="residualRenalKt != null">
+        residual_renal_kt,
+      </if>
+      <if test="peritonealDialysisKt != null">
+        peritoneal_dialysis_kt,
+      </if>
+      <if test="totalKt != null">
+        total_kt,
+      </if>
+      <if test="egfr != null">
+        egfr,
+      </if>
+      <if test="npcr != null">
+        npcr,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+      <if test="screenId != null">
+        screen_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="hpId != null">
+        #{hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="ptId != null">
+        #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="tdate != null">
+        #{tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="urineVolume != null">
+        #{urineVolume,jdbcType=VARCHAR},
+      </if>
+      <if test="urineBun != null">
+        #{urineBun,jdbcType=VARCHAR},
+      </if>
+      <if test="urineCr != null">
+        #{urineCr,jdbcType=VARCHAR},
+      </if>
+      <if test="drainageAmount != null">
+        #{drainageAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="drainageBun != null">
+        #{drainageBun,jdbcType=VARCHAR},
+      </if>
+      <if test="drainageCr != null">
+        #{drainageCr,jdbcType=VARCHAR},
+      </if>
+      <if test="serumBun != null">
+        #{serumBun,jdbcType=VARCHAR},
+      </if>
+      <if test="serumCr != null">
+        #{serumCr,jdbcType=VARCHAR},
+      </if>
+      <if test="residualRenalCcr != null">
+        #{residualRenalCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="peritonealDialysisCcr != null">
+        #{peritonealDialysisCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCcr != null">
+        #{totalCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="residualRenalKt != null">
+        #{residualRenalKt,jdbcType=VARCHAR},
+      </if>
+      <if test="peritonealDialysisKt != null">
+        #{peritonealDialysisKt,jdbcType=VARCHAR},
+      </if>
+      <if test="totalKt != null">
+        #{totalKt,jdbcType=VARCHAR},
+      </if>
+      <if test="egfr != null">
+        #{egfr,jdbcType=VARCHAR},
+      </if>
+      <if test="npcr != null">
+        #{npcr,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="screenId != null">
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacyExample" resultType="java.lang.Integer">
+    select count(*) from pd_d_patient_dialysis_adequacy
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_d_patient_dialysis_adequacy
+    <set>
+      <if test="record._selectiveMark.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.hpId != null">
+        hp_id = #{record.hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ptId != null">
+        pt_id = #{record.ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tdate != null">
+        tdate = #{record.tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.height != null">
+        height = #{record.height,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.weight != null">
+        weight = #{record.weight,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.urineVolume != null">
+        urine_volume = #{record.urineVolume,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.urineBun != null">
+        urine_bun = #{record.urineBun,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.urineCr != null">
+        urine_cr = #{record.urineCr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.drainageAmount != null">
+        drainage_amount = #{record.drainageAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.drainageBun != null">
+        drainage_bun = #{record.drainageBun,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.drainageCr != null">
+        drainage_cr = #{record.drainageCr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.serumBun != null">
+        serum_bun = #{record.serumBun,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.serumCr != null">
+        serum_cr = #{record.serumCr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.residualRenalCcr != null">
+        residual_renal_ccr = #{record.residualRenalCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.peritonealDialysisCcr != null">
+        peritoneal_dialysis_ccr = #{record.peritonealDialysisCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.totalCcr != null">
+        total_ccr = #{record.totalCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.residualRenalKt != null">
+        residual_renal_kt = #{record.residualRenalKt,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.peritonealDialysisKt != null">
+        peritoneal_dialysis_kt = #{record.peritonealDialysisKt,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.totalKt != null">
+        total_kt = #{record.totalKt,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.egfr != null">
+        egfr = #{record.egfr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.npcr != null">
+        npcr = #{record.npcr,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="record._selectiveMark.screenId != null">
+        screen_id = #{record.screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_d_patient_dialysis_adequacy
+    set id = #{record.id,jdbcType=VARCHAR},
+      hp_id = #{record.hpId,jdbcType=VARCHAR},
+      pt_id = #{record.ptId,jdbcType=VARCHAR},
+      tdate = #{record.tdate,jdbcType=TIMESTAMP},
+      height = #{record.height,jdbcType=VARCHAR},
+      weight = #{record.weight,jdbcType=VARCHAR},
+      urine_volume = #{record.urineVolume,jdbcType=VARCHAR},
+      urine_bun = #{record.urineBun,jdbcType=VARCHAR},
+      urine_cr = #{record.urineCr,jdbcType=VARCHAR},
+      drainage_amount = #{record.drainageAmount,jdbcType=VARCHAR},
+      drainage_bun = #{record.drainageBun,jdbcType=VARCHAR},
+      drainage_cr = #{record.drainageCr,jdbcType=VARCHAR},
+      serum_bun = #{record.serumBun,jdbcType=VARCHAR},
+      serum_cr = #{record.serumCr,jdbcType=VARCHAR},
+      residual_renal_ccr = #{record.residualRenalCcr,jdbcType=VARCHAR},
+      peritoneal_dialysis_ccr = #{record.peritonealDialysisCcr,jdbcType=VARCHAR},
+      total_ccr = #{record.totalCcr,jdbcType=VARCHAR},
+      residual_renal_kt = #{record.residualRenalKt,jdbcType=VARCHAR},
+      peritoneal_dialysis_kt = #{record.peritonealDialysisKt,jdbcType=VARCHAR},
+      total_kt = #{record.totalKt,jdbcType=VARCHAR},
+      egfr = #{record.egfr,jdbcType=VARCHAR},
+      npcr = #{record.npcr,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=INTEGER},
+      screen_id = #{record.screenId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacy">
+    update pd_d_patient_dialysis_adequacy
+    <set>
+      <if test="_selectiveMark.hpId != null">
+        hp_id = #{hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ptId != null">
+        pt_id = #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tdate != null">
+        tdate = #{tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.height != null">
+        height = #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.weight != null">
+        weight = #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.urineVolume != null">
+        urine_volume = #{urineVolume,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.urineBun != null">
+        urine_bun = #{urineBun,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.urineCr != null">
+        urine_cr = #{urineCr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.drainageAmount != null">
+        drainage_amount = #{drainageAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.drainageBun != null">
+        drainage_bun = #{drainageBun,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.drainageCr != null">
+        drainage_cr = #{drainageCr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.serumBun != null">
+        serum_bun = #{serumBun,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.serumCr != null">
+        serum_cr = #{serumCr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.residualRenalCcr != null">
+        residual_renal_ccr = #{residualRenalCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.peritonealDialysisCcr != null">
+        peritoneal_dialysis_ccr = #{peritonealDialysisCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.totalCcr != null">
+        total_ccr = #{totalCcr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.residualRenalKt != null">
+        residual_renal_kt = #{residualRenalKt,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.peritonealDialysisKt != null">
+        peritoneal_dialysis_kt = #{peritonealDialysisKt,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.totalKt != null">
+        total_kt = #{totalKt,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.egfr != null">
+        egfr = #{egfr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.npcr != null">
+        npcr = #{npcr,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="_selectiveMark.screenId != null">
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientDialysisAdequacy">
+    update pd_d_patient_dialysis_adequacy
+    set hp_id = #{hpId,jdbcType=VARCHAR},
+      pt_id = #{ptId,jdbcType=VARCHAR},
+      tdate = #{tdate,jdbcType=TIMESTAMP},
+      height = #{height,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=VARCHAR},
+      urine_volume = #{urineVolume,jdbcType=VARCHAR},
+      urine_bun = #{urineBun,jdbcType=VARCHAR},
+      urine_cr = #{urineCr,jdbcType=VARCHAR},
+      drainage_amount = #{drainageAmount,jdbcType=VARCHAR},
+      drainage_bun = #{drainageBun,jdbcType=VARCHAR},
+      drainage_cr = #{drainageCr,jdbcType=VARCHAR},
+      serum_bun = #{serumBun,jdbcType=VARCHAR},
+      serum_cr = #{serumCr,jdbcType=VARCHAR},
+      residual_renal_ccr = #{residualRenalCcr,jdbcType=VARCHAR},
+      peritoneal_dialysis_ccr = #{peritonealDialysisCcr,jdbcType=VARCHAR},
+      total_ccr = #{totalCcr,jdbcType=VARCHAR},
+      residual_renal_kt = #{residualRenalKt,jdbcType=VARCHAR},
+      peritoneal_dialysis_kt = #{peritonealDialysisKt,jdbcType=VARCHAR},
+      total_kt = #{totalKt,jdbcType=VARCHAR},
+      egfr = #{egfr,jdbcType=VARCHAR},
+      npcr = #{npcr,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=INTEGER},
+      screen_id = #{screenId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

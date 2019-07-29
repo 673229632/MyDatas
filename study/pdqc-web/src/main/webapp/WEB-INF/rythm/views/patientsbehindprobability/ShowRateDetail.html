@@ -1,0 +1,28 @@
+@extends(views.common.DialogView,  v_sTitle:"掉队患者列表")
+@args String hospitalName;
+
+@widget.ctnr.Row(){
+		@widget.ctnr.Form("search_form"){
+			@widget.ctrl.Hidden(sId:"hospitalName",sName:"hospitalName",oValue:hospitalName)
+		}
+	
+		 @widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/PatientsBehindProbability/showRateDetailList",iPageSize:10,sSidePagination:"client"){
+			@widget.ctnr.Columns(){
+				{title: '序号',align:'center',width:'150',formatter:function(value, row, index){
+					return index + 1;
+				}},
+				{field: 'name',align:'center',title: '姓名',width:'150'},
+				{field: 'card_no',align:'center',title: '身份证号',width:'150'},
+				{field: 'phone_no',align:'center',title: '联系方式',width:'150'},
+				{field: 'address',align:'center',title: '家庭住址',width:'150'},
+				{field: 'infection_diseases',align:'center',title: '传染病',width:'150'},
+				{field: 'first_dialsys_date',align:'center',title: '首次腹透日',width:'150'}
+			}
+		}
+	}
+
+<script>
+	function createQueryParams(params) {
+		return buildQueryParam('#search_form', params);
+	}
+</script>

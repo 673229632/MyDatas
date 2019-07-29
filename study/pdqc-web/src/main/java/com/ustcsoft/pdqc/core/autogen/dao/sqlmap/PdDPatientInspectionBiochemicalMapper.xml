@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdDPatientInspectionBiochemicalMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemical">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="hp_id" jdbcType="VARCHAR" property="hpId" />
+    <result column="pt_id" jdbcType="VARCHAR" property="ptId" />
+    <result column="tdate" jdbcType="TIMESTAMP" property="tdate" />
+    <result column="alt" jdbcType="VARCHAR" property="alt" />
+    <result column="ast" jdbcType="VARCHAR" property="ast" />
+    <result column="tp" jdbcType="VARCHAR" property="tp" />
+    <result column="alb" jdbcType="VARCHAR" property="alb" />
+    <result column="seroglobulin" jdbcType="VARCHAR" property="seroglobulin" />
+    <result column="ag" jdbcType="VARCHAR" property="ag" />
+    <result column="tbil" jdbcType="VARCHAR" property="tbil" />
+    <result column="dbil" jdbcType="VARCHAR" property="dbil" />
+    <result column="ibil" jdbcType="VARCHAR" property="ibil" />
+    <result column="tba" jdbcType="VARCHAR" property="tba" />
+    <result column="glu" jdbcType="VARCHAR" property="glu" />
+    <result column="bun" jdbcType="VARCHAR" property="bun" />
+    <result column="cre" jdbcType="VARCHAR" property="cre" />
+    <result column="ua" jdbcType="VARCHAR" property="ua" />
+    <result column="co2" jdbcType="VARCHAR" property="co2" />
+    <result column="alp" jdbcType="VARCHAR" property="alp" />
+    <result column="ggt" jdbcType="VARCHAR" property="ggt" />
+    <result column="k" jdbcType="VARCHAR" property="k" />
+    <result column="na" jdbcType="VARCHAR" property="na" />
+    <result column="cl" jdbcType="VARCHAR" property="cl" />
+    <result column="ca" jdbcType="VARCHAR" property="ca" />
+    <result column="p" jdbcType="VARCHAR" property="p" />
+    <result column="mg" jdbcType="VARCHAR" property="mg" />
+    <result column="ck" jdbcType="VARCHAR" property="ck" />
+    <result column="ldh" jdbcType="VARCHAR" property="ldh" />
+    <result column="ahbdh" jdbcType="VARCHAR" property="ahbdh" />
+    <result column="creatine_kinase_isoenzyme" jdbcType="VARCHAR" property="creatineKinaseIsoenzyme" />
+    <result column="tc" jdbcType="VARCHAR" property="tc" />
+    <result column="tg" jdbcType="VARCHAR" property="tg" />
+    <result column="hdlc" jdbcType="VARCHAR" property="hdlc" />
+    <result column="ldlc" jdbcType="VARCHAR" property="ldlc" />
+    <result column="apolipoprotein_a1" jdbcType="VARCHAR" property="apolipoproteinA1" />
+    <result column="apolipoprotein_b" jdbcType="VARCHAR" property="apolipoproteinB" />
+    <result column="lpa" jdbcType="VARCHAR" property="lpa" />
+    <result column="apolipoprotein_e" jdbcType="VARCHAR" property="apolipoproteinE" />
+    <result column="pa" jdbcType="VARCHAR" property="pa" />
+    <result column="ada" jdbcType="VARCHAR" property="ada" />
+    <result column="microglobulin_b2" jdbcType="VARCHAR" property="microglobulinB2" />
+    <result column="afu" jdbcType="VARCHAR" property="afu" />
+    <result column="cystatin" jdbcType="VARCHAR" property="cystatin" />
+    <result column="nt5" jdbcType="VARCHAR" property="nt5" />
+    <result column="hscrp" jdbcType="VARCHAR" property="hscrp" />
+    <result column="bhb" jdbcType="VARCHAR" property="bhb" />
+    <result column="mao" jdbcType="VARCHAR" property="mao" />
+    <result column="sialic_acid" jdbcType="VARCHAR" property="sialicAcid" />
+    <result column="others" jdbcType="VARCHAR" property="others" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="INTEGER" property="rowVersion" />
+    <result column="screen_id" jdbcType="VARCHAR" property="screenId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, hp_id, pt_id, tdate, alt, ast, tp, alb, seroglobulin, ag, tbil, dbil, ibil, tba, 
+    glu, bun, cre, ua, co2, alp, ggt, k, na, cl, ca, p, mg, ck, ldh, ahbdh, creatine_kinase_isoenzyme, 
+    tc, tg, hdlc, ldlc, apolipoprotein_a1, apolipoprotein_b, lpa, apolipoprotein_e, pa, 
+    ada, microglobulin_b2, afu, cystatin, nt5, hscrp, bhb, mao, sialic_acid, others, 
+    del_flag, created_by, date_created, modified_by, date_modified, row_version, screen_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemicalExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_d_patient_inspection_biochemical
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemicalKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_d_patient_inspection_biochemical
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemicalKey">
+    delete from pd_d_patient_inspection_biochemical
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemicalExample">
+    delete from pd_d_patient_inspection_biochemical
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemical">
+    insert into pd_d_patient_inspection_biochemical (id, hp_id, pt_id, 
+      tdate, alt, ast, 
+      tp, alb, seroglobulin, 
+      ag, tbil, dbil, ibil, 
+      tba, glu, bun, cre, 
+      ua, co2, alp, ggt, 
+      k, na, cl, ca, 
+      p, mg, ck, ldh, 
+      ahbdh, creatine_kinase_isoenzyme, tc, 
+      tg, hdlc, ldlc, apolipoprotein_a1, 
+      apolipoprotein_b, lpa, apolipoprotein_e, 
+      pa, ada, microglobulin_b2, 
+      afu, cystatin, nt5, 
+      hscrp, bhb, mao, sialic_acid, 
+      others, del_flag, created_by, 
+      date_created, modified_by, date_modified, 
+      row_version, screen_id)
+    values (#{id,jdbcType=VARCHAR}, #{hpId,jdbcType=VARCHAR}, #{ptId,jdbcType=VARCHAR}, 
+      #{tdate,jdbcType=TIMESTAMP}, #{alt,jdbcType=VARCHAR}, #{ast,jdbcType=VARCHAR}, 
+      #{tp,jdbcType=VARCHAR}, #{alb,jdbcType=VARCHAR}, #{seroglobulin,jdbcType=VARCHAR}, 
+      #{ag,jdbcType=VARCHAR}, #{tbil,jdbcType=VARCHAR}, #{dbil,jdbcType=VARCHAR}, #{ibil,jdbcType=VARCHAR}, 
+      #{tba,jdbcType=VARCHAR}, #{glu,jdbcType=VARCHAR}, #{bun,jdbcType=VARCHAR}, #{cre,jdbcType=VARCHAR}, 
+      #{ua,jdbcType=VARCHAR}, #{co2,jdbcType=VARCHAR}, #{alp,jdbcType=VARCHAR}, #{ggt,jdbcType=VARCHAR}, 
+      #{k,jdbcType=VARCHAR}, #{na,jdbcType=VARCHAR}, #{cl,jdbcType=VARCHAR}, #{ca,jdbcType=VARCHAR}, 
+      #{p,jdbcType=VARCHAR}, #{mg,jdbcType=VARCHAR}, #{ck,jdbcType=VARCHAR}, #{ldh,jdbcType=VARCHAR}, 
+      #{ahbdh,jdbcType=VARCHAR}, #{creatineKinaseIsoenzyme,jdbcType=VARCHAR}, #{tc,jdbcType=VARCHAR}, 
+      #{tg,jdbcType=VARCHAR}, #{hdlc,jdbcType=VARCHAR}, #{ldlc,jdbcType=VARCHAR}, #{apolipoproteinA1,jdbcType=VARCHAR}, 
+      #{apolipoproteinB,jdbcType=VARCHAR}, #{lpa,jdbcType=VARCHAR}, #{apolipoproteinE,jdbcType=VARCHAR}, 
+      #{pa,jdbcType=VARCHAR}, #{ada,jdbcType=VARCHAR}, #{microglobulinB2,jdbcType=VARCHAR}, 
+      #{afu,jdbcType=VARCHAR}, #{cystatin,jdbcType=VARCHAR}, #{nt5,jdbcType=VARCHAR}, 
+      #{hscrp,jdbcType=VARCHAR}, #{bhb,jdbcType=VARCHAR}, #{mao,jdbcType=VARCHAR}, #{sialicAcid,jdbcType=VARCHAR}, 
+      #{others,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{dateCreated,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, 
+      #{rowVersion,jdbcType=INTEGER}, #{screenId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemical">
+    insert into pd_d_patient_inspection_biochemical
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hpId != null">
+        hp_id,
+      </if>
+      <if test="ptId != null">
+        pt_id,
+      </if>
+      <if test="tdate != null">
+        tdate,
+      </if>
+      <if test="alt != null">
+        alt,
+      </if>
+      <if test="ast != null">
+        ast,
+      </if>
+      <if test="tp != null">
+        tp,
+      </if>
+      <if test="alb != null">
+        alb,
+      </if>
+      <if test="seroglobulin != null">
+        seroglobulin,
+      </if>
+      <if test="ag != null">
+        ag,
+      </if>
+      <if test="tbil != null">
+        tbil,
+      </if>
+      <if test="dbil != null">
+        dbil,
+      </if>
+      <if test="ibil != null">
+        ibil,
+      </if>
+      <if test="tba != null">
+        tba,
+      </if>
+      <if test="glu != null">
+        glu,
+      </if>
+      <if test="bun != null">
+        bun,
+      </if>
+      <if test="cre != null">
+        cre,
+      </if>
+      <if test="ua != null">
+        ua,
+      </if>
+      <if test="co2 != null">
+        co2,
+      </if>
+      <if test="alp != null">
+        alp,
+      </if>
+      <if test="ggt != null">
+        ggt,
+      </if>
+      <if test="k != null">
+        k,
+      </if>
+      <if test="na != null">
+        na,
+      </if>
+      <if test="cl != null">
+        cl,
+      </if>
+      <if test="ca != null">
+        ca,
+      </if>
+      <if test="p != null">
+        p,
+      </if>
+      <if test="mg != null">
+        mg,
+      </if>
+      <if test="ck != null">
+        ck,
+      </if>
+      <if test="ldh != null">
+        ldh,
+      </if>
+      <if test="ahbdh != null">
+        ahbdh,
+      </if>
+      <if test="creatineKinaseIsoenzyme != null">
+        creatine_kinase_isoenzyme,
+      </if>
+      <if test="tc != null">
+        tc,
+      </if>
+      <if test="tg != null">
+        tg,
+      </if>
+      <if test="hdlc != null">
+        hdlc,
+      </if>
+      <if test="ldlc != null">
+        ldlc,
+      </if>
+      <if test="apolipoproteinA1 != null">
+        apolipoprotein_a1,
+      </if>
+      <if test="apolipoproteinB != null">
+        apolipoprotein_b,
+      </if>
+      <if test="lpa != null">
+        lpa,
+      </if>
+      <if test="apolipoproteinE != null">
+        apolipoprotein_e,
+      </if>
+      <if test="pa != null">
+        pa,
+      </if>
+      <if test="ada != null">
+        ada,
+      </if>
+      <if test="microglobulinB2 != null">
+        microglobulin_b2,
+      </if>
+      <if test="afu != null">
+        afu,
+      </if>
+      <if test="cystatin != null">
+        cystatin,
+      </if>
+      <if test="nt5 != null">
+        nt5,
+      </if>
+      <if test="hscrp != null">
+        hscrp,
+      </if>
+      <if test="bhb != null">
+        bhb,
+      </if>
+      <if test="mao != null">
+        mao,
+      </if>
+      <if test="sialicAcid != null">
+        sialic_acid,
+      </if>
+      <if test="others != null">
+        others,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+      <if test="screenId != null">
+        screen_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="hpId != null">
+        #{hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="ptId != null">
+        #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="tdate != null">
+        #{tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alt != null">
+        #{alt,jdbcType=VARCHAR},
+      </if>
+      <if test="ast != null">
+        #{ast,jdbcType=VARCHAR},
+      </if>
+      <if test="tp != null">
+        #{tp,jdbcType=VARCHAR},
+      </if>
+      <if test="alb != null">
+        #{alb,jdbcType=VARCHAR},
+      </if>
+      <if test="seroglobulin != null">
+        #{seroglobulin,jdbcType=VARCHAR},
+      </if>
+      <if test="ag != null">
+        #{ag,jdbcType=VARCHAR},
+      </if>
+      <if test="tbil != null">
+        #{tbil,jdbcType=VARCHAR},
+      </if>
+      <if test="dbil != null">
+        #{dbil,jdbcType=VARCHAR},
+      </if>
+      <if test="ibil != null">
+        #{ibil,jdbcType=VARCHAR},
+      </if>
+      <if test="tba != null">
+        #{tba,jdbcType=VARCHAR},
+      </if>
+      <if test="glu != null">
+        #{glu,jdbcType=VARCHAR},
+      </if>
+      <if test="bun != null">
+        #{bun,jdbcType=VARCHAR},
+      </if>
+      <if test="cre != null">
+        #{cre,jdbcType=VARCHAR},
+      </if>
+      <if test="ua != null">
+        #{ua,jdbcType=VARCHAR},
+      </if>
+      <if test="co2 != null">
+        #{co2,jdbcType=VARCHAR},
+      </if>
+      <if test="alp != null">
+        #{alp,jdbcType=VARCHAR},
+      </if>
+      <if test="ggt != null">
+        #{ggt,jdbcType=VARCHAR},
+      </if>
+      <if test="k != null">
+        #{k,jdbcType=VARCHAR},
+      </if>
+      <if test="na != null">
+        #{na,jdbcType=VARCHAR},
+      </if>
+      <if test="cl != null">
+        #{cl,jdbcType=VARCHAR},
+      </if>
+      <if test="ca != null">
+        #{ca,jdbcType=VARCHAR},
+      </if>
+      <if test="p != null">
+        #{p,jdbcType=VARCHAR},
+      </if>
+      <if test="mg != null">
+        #{mg,jdbcType=VARCHAR},
+      </if>
+      <if test="ck != null">
+        #{ck,jdbcType=VARCHAR},
+      </if>
+      <if test="ldh != null">
+        #{ldh,jdbcType=VARCHAR},
+      </if>
+      <if test="ahbdh != null">
+        #{ahbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="creatineKinaseIsoenzyme != null">
+        #{creatineKinaseIsoenzyme,jdbcType=VARCHAR},
+      </if>
+      <if test="tc != null">
+        #{tc,jdbcType=VARCHAR},
+      </if>
+      <if test="tg != null">
+        #{tg,jdbcType=VARCHAR},
+      </if>
+      <if test="hdlc != null">
+        #{hdlc,jdbcType=VARCHAR},
+      </if>
+      <if test="ldlc != null">
+        #{ldlc,jdbcType=VARCHAR},
+      </if>
+      <if test="apolipoproteinA1 != null">
+        #{apolipoproteinA1,jdbcType=VARCHAR},
+      </if>
+      <if test="apolipoproteinB != null">
+        #{apolipoproteinB,jdbcType=VARCHAR},
+      </if>
+      <if test="lpa != null">
+        #{lpa,jdbcType=VARCHAR},
+      </if>
+      <if test="apolipoproteinE != null">
+        #{apolipoproteinE,jdbcType=VARCHAR},
+      </if>
+      <if test="pa != null">
+        #{pa,jdbcType=VARCHAR},
+      </if>
+      <if test="ada != null">
+        #{ada,jdbcType=VARCHAR},
+      </if>
+      <if test="microglobulinB2 != null">
+        #{microglobulinB2,jdbcType=VARCHAR},
+      </if>
+      <if test="afu != null">
+        #{afu,jdbcType=VARCHAR},
+      </if>
+      <if test="cystatin != null">
+        #{cystatin,jdbcType=VARCHAR},
+      </if>
+      <if test="nt5 != null">
+        #{nt5,jdbcType=VARCHAR},
+      </if>
+      <if test="hscrp != null">
+        #{hscrp,jdbcType=VARCHAR},
+      </if>
+      <if test="bhb != null">
+        #{bhb,jdbcType=VARCHAR},
+      </if>
+      <if test="mao != null">
+        #{mao,jdbcType=VARCHAR},
+      </if>
+      <if test="sialicAcid != null">
+        #{sialicAcid,jdbcType=VARCHAR},
+      </if>
+      <if test="others != null">
+        #{others,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="screenId != null">
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemicalExample" resultType="java.lang.Integer">
+    select count(*) from pd_d_patient_inspection_biochemical
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_d_patient_inspection_biochemical
+    <set>
+      <if test="record._selectiveMark.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.hpId != null">
+        hp_id = #{record.hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ptId != null">
+        pt_id = #{record.ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tdate != null">
+        tdate = #{record.tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.alt != null">
+        alt = #{record.alt,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ast != null">
+        ast = #{record.ast,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tp != null">
+        tp = #{record.tp,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.alb != null">
+        alb = #{record.alb,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.seroglobulin != null">
+        seroglobulin = #{record.seroglobulin,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ag != null">
+        ag = #{record.ag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tbil != null">
+        tbil = #{record.tbil,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dbil != null">
+        dbil = #{record.dbil,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ibil != null">
+        ibil = #{record.ibil,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tba != null">
+        tba = #{record.tba,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.glu != null">
+        glu = #{record.glu,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.bun != null">
+        bun = #{record.bun,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.cre != null">
+        cre = #{record.cre,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ua != null">
+        ua = #{record.ua,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.co2 != null">
+        co2 = #{record.co2,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.alp != null">
+        alp = #{record.alp,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ggt != null">
+        ggt = #{record.ggt,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.k != null">
+        k = #{record.k,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.na != null">
+        na = #{record.na,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.cl != null">
+        cl = #{record.cl,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ca != null">
+        ca = #{record.ca,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.p != null">
+        p = #{record.p,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.mg != null">
+        mg = #{record.mg,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ck != null">
+        ck = #{record.ck,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ldh != null">
+        ldh = #{record.ldh,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ahbdh != null">
+        ahbdh = #{record.ahbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.creatineKinaseIsoenzyme != null">
+        creatine_kinase_isoenzyme = #{record.creatineKinaseIsoenzyme,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tc != null">
+        tc = #{record.tc,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tg != null">
+        tg = #{record.tg,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.hdlc != null">
+        hdlc = #{record.hdlc,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ldlc != null">
+        ldlc = #{record.ldlc,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.apolipoproteinA1 != null">
+        apolipoprotein_a1 = #{record.apolipoproteinA1,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.apolipoproteinB != null">
+        apolipoprotein_b = #{record.apolipoproteinB,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.lpa != null">
+        lpa = #{record.lpa,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.apolipoproteinE != null">
+        apolipoprotein_e = #{record.apolipoproteinE,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.pa != null">
+        pa = #{record.pa,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ada != null">
+        ada = #{record.ada,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.microglobulinB2 != null">
+        microglobulin_b2 = #{record.microglobulinB2,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.afu != null">
+        afu = #{record.afu,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.cystatin != null">
+        cystatin = #{record.cystatin,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.nt5 != null">
+        nt5 = #{record.nt5,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.hscrp != null">
+        hscrp = #{record.hscrp,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.bhb != null">
+        bhb = #{record.bhb,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.mao != null">
+        mao = #{record.mao,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.sialicAcid != null">
+        sialic_acid = #{record.sialicAcid,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.others != null">
+        others = #{record.others,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="record._selectiveMark.screenId != null">
+        screen_id = #{record.screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_d_patient_inspection_biochemical
+    set id = #{record.id,jdbcType=VARCHAR},
+      hp_id = #{record.hpId,jdbcType=VARCHAR},
+      pt_id = #{record.ptId,jdbcType=VARCHAR},
+      tdate = #{record.tdate,jdbcType=TIMESTAMP},
+      alt = #{record.alt,jdbcType=VARCHAR},
+      ast = #{record.ast,jdbcType=VARCHAR},
+      tp = #{record.tp,jdbcType=VARCHAR},
+      alb = #{record.alb,jdbcType=VARCHAR},
+      seroglobulin = #{record.seroglobulin,jdbcType=VARCHAR},
+      ag = #{record.ag,jdbcType=VARCHAR},
+      tbil = #{record.tbil,jdbcType=VARCHAR},
+      dbil = #{record.dbil,jdbcType=VARCHAR},
+      ibil = #{record.ibil,jdbcType=VARCHAR},
+      tba = #{record.tba,jdbcType=VARCHAR},
+      glu = #{record.glu,jdbcType=VARCHAR},
+      bun = #{record.bun,jdbcType=VARCHAR},
+      cre = #{record.cre,jdbcType=VARCHAR},
+      ua = #{record.ua,jdbcType=VARCHAR},
+      co2 = #{record.co2,jdbcType=VARCHAR},
+      alp = #{record.alp,jdbcType=VARCHAR},
+      ggt = #{record.ggt,jdbcType=VARCHAR},
+      k = #{record.k,jdbcType=VARCHAR},
+      na = #{record.na,jdbcType=VARCHAR},
+      cl = #{record.cl,jdbcType=VARCHAR},
+      ca = #{record.ca,jdbcType=VARCHAR},
+      p = #{record.p,jdbcType=VARCHAR},
+      mg = #{record.mg,jdbcType=VARCHAR},
+      ck = #{record.ck,jdbcType=VARCHAR},
+      ldh = #{record.ldh,jdbcType=VARCHAR},
+      ahbdh = #{record.ahbdh,jdbcType=VARCHAR},
+      creatine_kinase_isoenzyme = #{record.creatineKinaseIsoenzyme,jdbcType=VARCHAR},
+      tc = #{record.tc,jdbcType=VARCHAR},
+      tg = #{record.tg,jdbcType=VARCHAR},
+      hdlc = #{record.hdlc,jdbcType=VARCHAR},
+      ldlc = #{record.ldlc,jdbcType=VARCHAR},
+      apolipoprotein_a1 = #{record.apolipoproteinA1,jdbcType=VARCHAR},
+      apolipoprotein_b = #{record.apolipoproteinB,jdbcType=VARCHAR},
+      lpa = #{record.lpa,jdbcType=VARCHAR},
+      apolipoprotein_e = #{record.apolipoproteinE,jdbcType=VARCHAR},
+      pa = #{record.pa,jdbcType=VARCHAR},
+      ada = #{record.ada,jdbcType=VARCHAR},
+      microglobulin_b2 = #{record.microglobulinB2,jdbcType=VARCHAR},
+      afu = #{record.afu,jdbcType=VARCHAR},
+      cystatin = #{record.cystatin,jdbcType=VARCHAR},
+      nt5 = #{record.nt5,jdbcType=VARCHAR},
+      hscrp = #{record.hscrp,jdbcType=VARCHAR},
+      bhb = #{record.bhb,jdbcType=VARCHAR},
+      mao = #{record.mao,jdbcType=VARCHAR},
+      sialic_acid = #{record.sialicAcid,jdbcType=VARCHAR},
+      others = #{record.others,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=INTEGER},
+      screen_id = #{record.screenId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemical">
+    update pd_d_patient_inspection_biochemical
+    <set>
+      <if test="_selectiveMark.hpId != null">
+        hp_id = #{hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ptId != null">
+        pt_id = #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tdate != null">
+        tdate = #{tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.alt != null">
+        alt = #{alt,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ast != null">
+        ast = #{ast,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tp != null">
+        tp = #{tp,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.alb != null">
+        alb = #{alb,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.seroglobulin != null">
+        seroglobulin = #{seroglobulin,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ag != null">
+        ag = #{ag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tbil != null">
+        tbil = #{tbil,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dbil != null">
+        dbil = #{dbil,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ibil != null">
+        ibil = #{ibil,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tba != null">
+        tba = #{tba,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.glu != null">
+        glu = #{glu,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.bun != null">
+        bun = #{bun,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.cre != null">
+        cre = #{cre,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ua != null">
+        ua = #{ua,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.co2 != null">
+        co2 = #{co2,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.alp != null">
+        alp = #{alp,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ggt != null">
+        ggt = #{ggt,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.k != null">
+        k = #{k,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.na != null">
+        na = #{na,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.cl != null">
+        cl = #{cl,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ca != null">
+        ca = #{ca,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.p != null">
+        p = #{p,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.mg != null">
+        mg = #{mg,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ck != null">
+        ck = #{ck,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ldh != null">
+        ldh = #{ldh,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ahbdh != null">
+        ahbdh = #{ahbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.creatineKinaseIsoenzyme != null">
+        creatine_kinase_isoenzyme = #{creatineKinaseIsoenzyme,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tc != null">
+        tc = #{tc,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tg != null">
+        tg = #{tg,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.hdlc != null">
+        hdlc = #{hdlc,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ldlc != null">
+        ldlc = #{ldlc,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.apolipoproteinA1 != null">
+        apolipoprotein_a1 = #{apolipoproteinA1,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.apolipoproteinB != null">
+        apolipoprotein_b = #{apolipoproteinB,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.lpa != null">
+        lpa = #{lpa,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.apolipoproteinE != null">
+        apolipoprotein_e = #{apolipoproteinE,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.pa != null">
+        pa = #{pa,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ada != null">
+        ada = #{ada,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.microglobulinB2 != null">
+        microglobulin_b2 = #{microglobulinB2,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.afu != null">
+        afu = #{afu,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.cystatin != null">
+        cystatin = #{cystatin,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.nt5 != null">
+        nt5 = #{nt5,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.hscrp != null">
+        hscrp = #{hscrp,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.bhb != null">
+        bhb = #{bhb,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.mao != null">
+        mao = #{mao,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.sialicAcid != null">
+        sialic_acid = #{sialicAcid,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.others != null">
+        others = #{others,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="_selectiveMark.screenId != null">
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInspectionBiochemical">
+    update pd_d_patient_inspection_biochemical
+    set hp_id = #{hpId,jdbcType=VARCHAR},
+      pt_id = #{ptId,jdbcType=VARCHAR},
+      tdate = #{tdate,jdbcType=TIMESTAMP},
+      alt = #{alt,jdbcType=VARCHAR},
+      ast = #{ast,jdbcType=VARCHAR},
+      tp = #{tp,jdbcType=VARCHAR},
+      alb = #{alb,jdbcType=VARCHAR},
+      seroglobulin = #{seroglobulin,jdbcType=VARCHAR},
+      ag = #{ag,jdbcType=VARCHAR},
+      tbil = #{tbil,jdbcType=VARCHAR},
+      dbil = #{dbil,jdbcType=VARCHAR},
+      ibil = #{ibil,jdbcType=VARCHAR},
+      tba = #{tba,jdbcType=VARCHAR},
+      glu = #{glu,jdbcType=VARCHAR},
+      bun = #{bun,jdbcType=VARCHAR},
+      cre = #{cre,jdbcType=VARCHAR},
+      ua = #{ua,jdbcType=VARCHAR},
+      co2 = #{co2,jdbcType=VARCHAR},
+      alp = #{alp,jdbcType=VARCHAR},
+      ggt = #{ggt,jdbcType=VARCHAR},
+      k = #{k,jdbcType=VARCHAR},
+      na = #{na,jdbcType=VARCHAR},
+      cl = #{cl,jdbcType=VARCHAR},
+      ca = #{ca,jdbcType=VARCHAR},
+      p = #{p,jdbcType=VARCHAR},
+      mg = #{mg,jdbcType=VARCHAR},
+      ck = #{ck,jdbcType=VARCHAR},
+      ldh = #{ldh,jdbcType=VARCHAR},
+      ahbdh = #{ahbdh,jdbcType=VARCHAR},
+      creatine_kinase_isoenzyme = #{creatineKinaseIsoenzyme,jdbcType=VARCHAR},
+      tc = #{tc,jdbcType=VARCHAR},
+      tg = #{tg,jdbcType=VARCHAR},
+      hdlc = #{hdlc,jdbcType=VARCHAR},
+      ldlc = #{ldlc,jdbcType=VARCHAR},
+      apolipoprotein_a1 = #{apolipoproteinA1,jdbcType=VARCHAR},
+      apolipoprotein_b = #{apolipoproteinB,jdbcType=VARCHAR},
+      lpa = #{lpa,jdbcType=VARCHAR},
+      apolipoprotein_e = #{apolipoproteinE,jdbcType=VARCHAR},
+      pa = #{pa,jdbcType=VARCHAR},
+      ada = #{ada,jdbcType=VARCHAR},
+      microglobulin_b2 = #{microglobulinB2,jdbcType=VARCHAR},
+      afu = #{afu,jdbcType=VARCHAR},
+      cystatin = #{cystatin,jdbcType=VARCHAR},
+      nt5 = #{nt5,jdbcType=VARCHAR},
+      hscrp = #{hscrp,jdbcType=VARCHAR},
+      bhb = #{bhb,jdbcType=VARCHAR},
+      mao = #{mao,jdbcType=VARCHAR},
+      sialic_acid = #{sialicAcid,jdbcType=VARCHAR},
+      others = #{others,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=INTEGER},
+      screen_id = #{screenId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

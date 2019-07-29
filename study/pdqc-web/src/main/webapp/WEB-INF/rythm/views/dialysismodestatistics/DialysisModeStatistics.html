@@ -1,0 +1,168 @@
+@extends(views.common.MainView, v_sTitle:"透析模式统计")
+
+@widget.ctnr.Row(){
+	@widget.ctnr.Column(sAlign:"center",sCss:"col-8"){
+		@widget.ctnr.Div(sId:"DialysisModeStatisticsChart",sStyle:"width:1000px;height:500px;"){}
+	}
+	@widget.ctnr.Column(sAlign:"center",sCss:"col-4"){	
+		@widget.ctnr.Div(sStyle:"margin-top:140px;"){
+			@widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/dialysisModeStatistics/dialysisModeStatisticsList",bPagination:true,iPageSize:10,sSidePagination:"client",sCss:"no-pagination-left"){
+        		@widget.ctnr.Columns(){
+		            {field: 'hp_id',align:'center',title: '医院',width:'150',formatter:function (value, row, index){
+		                           return setLengthLimit(value, row, index,10);
+		            }},
+		            {field: 'capd',align:'center',title: 'CAPD',width:'50',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='transmissParameter(\""+'CAPD'+','+row.hp_id+"\")'>"+value+"</div>";
+					}},
+					{field: 'apd',align:'center',title: 'APD',width:'50',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='transmissParameter(\""+'APD'+','+row.hp_id+"\")'>"+value+"</div>";
+					}},
+					{field: 'ipd',align:'center',title: 'IPD',width:'50',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='transmissParameter(\""+'IPD'+','+row.hp_id+"\")'>"+value+"</div>";
+					}},
+					{field: 'apdtpd',align:'center',title: 'APD-TPD',width:'50',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='transmissParameter(\""+'APD-TPD'+','+row.hp_id+"\")'>"+value+"</div>";
+					}}
+        		}
+    		}
+   		}
+	}
+}
+		
+		
+<script>
+$(function(){
+	initDialysisModeStatistics();
+});
+
+//透析模式统计 柱状图
+function initDialysisModeStatistics(){
+
+	Ajax.ajax({
+		url : '@url("/dialysisModeStatistics/initDialysisModeStatisticsChart")',
+		success : function(data) {
+			initDialysisModeStatisticsChart(data.data);
+		}
+	});
+}
+
+//加载透析模式统计柱状图
+function initDialysisModeStatisticsChart(data){
+	var myChart = echarts.init(document.getElementById('DialysisModeStatisticsChart'));
+	var dataAxis = [];
+	var dataCount1 = [];
+	var dataCount2 = [];
+	var dataCount3 = [];
+	var dataCount4 = [];
+	var dataHp_id = [];
+	
+	//获取医院名称
+	for (var j = 0; j < data.length; j=j+4) {
+		dataAxis.push(data[j].hospitalName);
+		dataHp_id.push(data[j].hp_id);
+	}
+	
+		//获得所占比例
+       for(var i=0;i<data.length;i++){
+		if(data[i].type == "CAPD"){
+			dataCount1.push(data[i].countPatient);
+		}else if(data[i].type == "APD"){
+			dataCount2.push(data[i].countPatient);	
+		}else if(data[i].type == "IPD"){
+			dataCount3.push(data[i].countPatient);
+		}else if(data[i].type == "APD-TPD"){
+			dataCount4.push(data[i].countPatient);
+		}
+	} 
+    option = {
+    	    tooltip : {
+    	        trigger: 'axis',
+    	        axisPointer : {        
+    	            type : 'shadow'        
+    	        }
+    	    },
+    	    legend: {
+    	        data:['CAPD','APD','IPD','APD-TPD']
+    	    },
+    	    grid: {
+    	        left: '3%',
+    	        right: '4%',
+    	        bottom: '3%',
+    	        containLabel: true
+    	    },
+            toolbox: {
+            	x: '950',
+    	        feature: {
+    	            saveAsImage: {}// 保存为图片
+    	        }
+    	    },
+    	    xAxis : [
+    	        {
+    	        	axisLabel:{interval: 0},
+    	            type : 'category',
+    	            name : '医院',
+    	            data : dataAxis,
+    	   	         axisLabel:{ 
+    	   	   	         formatter : function(v) {  debugger
+    	   	   	          for (var i = 1; i < dataAxis.length+1; i++) {
+								if(v == dataAxis[i-1]){
+									return dataHp_id[i-1];
+								}
+							}
+    	   	   	    	}
+    	   	   	   } 
+    	        }
+    	    ],
+    	    yAxis : [
+    	        {
+    	            type : 'value',
+    	            name : '比例'
+    	        }
+    	    ],
+    	    series : [
+    	        {
+    	            name:'CAPD',
+    	            type:'bar',
+    	            data: dataCount1
+    	        },
+    	        {
+    	            name:'APD',
+    	            type:'bar',
+    	            stack: '',
+    	            data:dataCount2
+    	        },
+    	        {
+    	            name:'IPD',
+    	            type:'bar',
+    	            data:dataCount3
+    	        },
+    	        {
+    	            name:'APD-TPD',
+    	            type:'bar',
+    	            data:dataCount4
+    	        },
+    	    ]
+    	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+function transmissParameter(string){debugger
+	var str = string.split(",");
+	Dialog.open('@url("/dialysisModeStatistics/transmissParameter?dialysis='+str[0]+'&hospitalName='+str[1]+'")', {
+    iframeHeight : 650,
+    title:"腹透患者列表"
+});
+}
+
+//设置字符长度
+function setLengthLimit(value, row, index,length){
+     if(value == null){
+         return "<div class='td-ellipsis' title=''></div>";
+     }else if(value.length>length){
+         return "<div class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+     }else{
+         return "<div class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+     }
+}
+</script>

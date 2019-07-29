@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CheckResultTimeListMapper">
+	<resultMap id="CheckResultTimeListMap"
+        type="com.ustcsoft.pdqc.web.scoremanagement.form.CheckResultTimeListForm">
+        <result column="checkNo" jdbcType="VARCHAR" property="checkNo" />
+        <result column="qcCenterNo" jdbcType="VARCHAR" property="qcCenterNo" />
+        <result column="checkName" jdbcType="VARCHAR" property="checkName" />
+        <result column="standardNo" jdbcType="VARCHAR" property="standardNo" />
+        <result column="standardName" jdbcType="VARCHAR" property="standardName" />
+        <result column="checkStartDate" jdbcType="TIMESTAMP" property="checkStartDate" />
+        <result column="checkEndDate" jdbcType="TIMESTAMP" property="checkEndDate" />
+        <result column="publishStartDate" jdbcType="TIMESTAMP" property="publishStartDate" />
+        <result column="publishEndDate" jdbcType="TIMESTAMP" property="publishEndDate" />
+        <result column="publishStatus" jdbcType="VARCHAR" property="publishStatus" />
+        <result column="useSign" jdbcType="VARCHAR" property="useSign" />
+        <result column="kpiPart" jdbcType="VARCHAR" property="kpiPart" />
+    </resultMap>
+    
+    <select id="searchCheckResultTimeList" parameterType="com.ustcsoft.pdqc.web.scoremanagement.form.CheckResultTimeListForm"
+    			resultMap="CheckResultTimeListMap">
+    			
+    	SELECT
+    		d1.check_no as checkNo,d1.qc_center_no as qcCenterNo,d1.check_name as checkName,d1.standard_no as standardNo,
+    		d2.standard_name as standardName,d1.check_start_date as checkStartDate,d1.check_end_date as checkEndDate,
+    		d1.publish_start_date as publishStartDate,d1.publish_end_date as publishEndDate,d1.publish_status as publishStatus,
+    		d1.use_sign as useSign,d1.kpi_part as kpiPart
+    		from pd_m_check_result_time d1 left join pd_m_check_standard_version d2 on d1.standard_no=d2.standard_no
+    		where d1.del_flag='0' and d2.del_flag='0' and d1.qc_center_no=#{qcCenterNo,jdbcType=VARCHAR}
+    		order by d1.check_no desc
+    </select>
+    <resultMap id="CheckResultTimeInformationMap"
+        type="com.ustcsoft.pdqc.web.scoremanagement.form.CheckResultTimeListForm">
+        <result column="checkNo" jdbcType="VARCHAR" property="checkNo" />
+        <result column="qcCenterNo" jdbcType="VARCHAR" property="qcCenterNo" />
+        <result column="checkName" jdbcType="VARCHAR" property="checkName" />
+        <result column="standardNo" jdbcType="VARCHAR" property="standardNo" />
+        <result column="standardName" jdbcType="VARCHAR" property="standardName" />
+        <result column="checkStartDate" jdbcType="TIMESTAMP" property="checkStartDate" />
+        <result column="checkEndDate" jdbcType="TIMESTAMP" property="checkEndDate" />
+        <result column="publishStartDate" jdbcType="TIMESTAMP" property="publishStartDate" />
+        <result column="publishEndDate" jdbcType="TIMESTAMP" property="publishEndDate" />
+        <result column="publishStatus" jdbcType="VARCHAR" property="publishStatus" />
+        <result column="useSign" jdbcType="VARCHAR" property="useSign" />
+        <result column="kpiPart" jdbcType="VARCHAR" property="kpiPart" />
+    </resultMap>
+    
+    <select id="searchCheckResultTimeInformation" parameterType="com.ustcsoft.pdqc.web.scoremanagement.form.CheckResultTimeListForm"
+    			resultMap="CheckResultTimeInformationMap">
+    			
+    	SELECT
+    		d1.check_no as checkNo,d1.qc_center_no as qcCenterNo,d1.check_name as checkName,d1.standard_no as standardNo,
+    		d1.check_start_date as checkStartDate,d1.check_end_date as checkEndDate,d1.publish_start_date as publishStartDate,
+    		d1.publish_end_date as publishEndDate,d1.publish_status as publishStatus,d1.use_sign as useSign,d1.kpi_part as kpiPart
+    		from pd_m_check_result_time d1 
+    		where d1.del_flag='0' and d1.check_no=#{checkNo,jdbcType=VARCHAR}
+    		order by d1.check_no desc
+    </select>
+</mapper>

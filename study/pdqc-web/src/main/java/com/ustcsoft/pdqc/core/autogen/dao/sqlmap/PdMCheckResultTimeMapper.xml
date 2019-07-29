@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdMCheckResultTimeMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTime">
+    <id column="check_no" jdbcType="VARCHAR" property="checkNo" />
+    <result column="check_name" jdbcType="VARCHAR" property="checkName" />
+    <result column="standard_no" jdbcType="VARCHAR" property="standardNo" />
+    <result column="qc_center_no" jdbcType="VARCHAR" property="qcCenterNo" />
+    <result column="check_start_date" jdbcType="TIMESTAMP" property="checkStartDate" />
+    <result column="check_end_date" jdbcType="TIMESTAMP" property="checkEndDate" />
+    <result column="publish_start_date" jdbcType="TIMESTAMP" property="publishStartDate" />
+    <result column="publish_end_date" jdbcType="TIMESTAMP" property="publishEndDate" />
+    <result column="publish_status" jdbcType="CHAR" property="publishStatus" />
+    <result column="use_sign" jdbcType="CHAR" property="useSign" />
+    <result column="kpi_part" jdbcType="VARCHAR" property="kpiPart" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="order_index" jdbcType="BIGINT" property="orderIndex" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="BIGINT" property="rowVersion" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    check_no, check_name, standard_no, qc_center_no, check_start_date, check_end_date, 
+    publish_start_date, publish_end_date, publish_status, use_sign, kpi_part, del_flag, 
+    order_index, created_by, date_created, modified_by, date_modified, row_version
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTimeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_m_check_result_time
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTimeKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_m_check_result_time
+    where check_no = #{checkNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTimeKey">
+    delete from pd_m_check_result_time
+    where check_no = #{checkNo,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTimeExample">
+    delete from pd_m_check_result_time
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTime">
+    insert into pd_m_check_result_time (check_no, check_name, standard_no, 
+      qc_center_no, check_start_date, check_end_date, 
+      publish_start_date, publish_end_date, publish_status, 
+      use_sign, kpi_part, del_flag, 
+      order_index, created_by, date_created, 
+      modified_by, date_modified, row_version
+      )
+    values (#{checkNo,jdbcType=VARCHAR}, #{checkName,jdbcType=VARCHAR}, #{standardNo,jdbcType=VARCHAR}, 
+      #{qcCenterNo,jdbcType=VARCHAR}, #{checkStartDate,jdbcType=TIMESTAMP}, #{checkEndDate,jdbcType=TIMESTAMP}, 
+      #{publishStartDate,jdbcType=TIMESTAMP}, #{publishEndDate,jdbcType=TIMESTAMP}, #{publishStatus,jdbcType=CHAR}, 
+      #{useSign,jdbcType=CHAR}, #{kpiPart,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}, 
+      #{orderIndex,jdbcType=BIGINT}, #{createdBy,jdbcType=VARCHAR}, #{dateCreated,jdbcType=TIMESTAMP}, 
+      #{modifiedBy,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, #{rowVersion,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTime">
+    insert into pd_m_check_result_time
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="checkNo != null">
+        check_no,
+      </if>
+      <if test="checkName != null">
+        check_name,
+      </if>
+      <if test="standardNo != null">
+        standard_no,
+      </if>
+      <if test="qcCenterNo != null">
+        qc_center_no,
+      </if>
+      <if test="checkStartDate != null">
+        check_start_date,
+      </if>
+      <if test="checkEndDate != null">
+        check_end_date,
+      </if>
+      <if test="publishStartDate != null">
+        publish_start_date,
+      </if>
+      <if test="publishEndDate != null">
+        publish_end_date,
+      </if>
+      <if test="publishStatus != null">
+        publish_status,
+      </if>
+      <if test="useSign != null">
+        use_sign,
+      </if>
+      <if test="kpiPart != null">
+        kpi_part,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="orderIndex != null">
+        order_index,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="checkNo != null">
+        #{checkNo,jdbcType=VARCHAR},
+      </if>
+      <if test="checkName != null">
+        #{checkName,jdbcType=VARCHAR},
+      </if>
+      <if test="standardNo != null">
+        #{standardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCenterNo != null">
+        #{qcCenterNo,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStartDate != null">
+        #{checkStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkEndDate != null">
+        #{checkEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishStartDate != null">
+        #{publishStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishEndDate != null">
+        #{publishEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishStatus != null">
+        #{publishStatus,jdbcType=CHAR},
+      </if>
+      <if test="useSign != null">
+        #{useSign,jdbcType=CHAR},
+      </if>
+      <if test="kpiPart != null">
+        #{kpiPart,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="orderIndex != null">
+        #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTimeExample" resultType="java.lang.Integer">
+    select count(*) from pd_m_check_result_time
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_m_check_result_time
+    <set>
+      <if test="record._selectiveMark.checkNo != null">
+        check_no = #{record.checkNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.checkName != null">
+        check_name = #{record.checkName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.standardNo != null">
+        standard_no = #{record.standardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.qcCenterNo != null">
+        qc_center_no = #{record.qcCenterNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.checkStartDate != null">
+        check_start_date = #{record.checkStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.checkEndDate != null">
+        check_end_date = #{record.checkEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.publishStartDate != null">
+        publish_start_date = #{record.publishStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.publishEndDate != null">
+        publish_end_date = #{record.publishEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.publishStatus != null">
+        publish_status = #{record.publishStatus,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.useSign != null">
+        use_sign = #{record.useSign,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.kpiPart != null">
+        kpi_part = #{record.kpiPart,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.orderIndex != null">
+        order_index = #{record.orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_m_check_result_time
+    set check_no = #{record.checkNo,jdbcType=VARCHAR},
+      check_name = #{record.checkName,jdbcType=VARCHAR},
+      standard_no = #{record.standardNo,jdbcType=VARCHAR},
+      qc_center_no = #{record.qcCenterNo,jdbcType=VARCHAR},
+      check_start_date = #{record.checkStartDate,jdbcType=TIMESTAMP},
+      check_end_date = #{record.checkEndDate,jdbcType=TIMESTAMP},
+      publish_start_date = #{record.publishStartDate,jdbcType=TIMESTAMP},
+      publish_end_date = #{record.publishEndDate,jdbcType=TIMESTAMP},
+      publish_status = #{record.publishStatus,jdbcType=CHAR},
+      use_sign = #{record.useSign,jdbcType=CHAR},
+      kpi_part = #{record.kpiPart,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      order_index = #{record.orderIndex,jdbcType=BIGINT},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTime">
+    update pd_m_check_result_time
+    <set>
+      <if test="_selectiveMark.checkName != null">
+        check_name = #{checkName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.standardNo != null">
+        standard_no = #{standardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.qcCenterNo != null">
+        qc_center_no = #{qcCenterNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.checkStartDate != null">
+        check_start_date = #{checkStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.checkEndDate != null">
+        check_end_date = #{checkEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.publishStartDate != null">
+        publish_start_date = #{publishStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.publishEndDate != null">
+        publish_end_date = #{publishEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.publishStatus != null">
+        publish_status = #{publishStatus,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.useSign != null">
+        use_sign = #{useSign,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.kpiPart != null">
+        kpi_part = #{kpiPart,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.orderIndex != null">
+        order_index = #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=BIGINT},
+      </if>
+    </set>
+    where check_no = #{checkNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMCheckResultTime">
+    update pd_m_check_result_time
+    set check_name = #{checkName,jdbcType=VARCHAR},
+      standard_no = #{standardNo,jdbcType=VARCHAR},
+      qc_center_no = #{qcCenterNo,jdbcType=VARCHAR},
+      check_start_date = #{checkStartDate,jdbcType=TIMESTAMP},
+      check_end_date = #{checkEndDate,jdbcType=TIMESTAMP},
+      publish_start_date = #{publishStartDate,jdbcType=TIMESTAMP},
+      publish_end_date = #{publishEndDate,jdbcType=TIMESTAMP},
+      publish_status = #{publishStatus,jdbcType=CHAR},
+      use_sign = #{useSign,jdbcType=CHAR},
+      kpi_part = #{kpiPart,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      order_index = #{orderIndex,jdbcType=BIGINT},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=BIGINT}
+    where check_no = #{checkNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

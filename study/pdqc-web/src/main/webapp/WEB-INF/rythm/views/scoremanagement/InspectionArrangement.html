@@ -1,0 +1,280 @@
+@extends(views.common.MainView, v_sTitle:"检查安排")
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+
+@widget.ctnr.Div(sCss:"col-xs-4"){
+	@widget.ctnr.Form("search_result"){
+		@widget.ctrl.ZTree(sId:"tree", bShowIcon:true, bExpendTree:true, bShowFilter:false, sDataUrl:"/inspectionArrangement/getTree")
+		@widget.ctrl.Hidden({sLabel:"id:", sName:"id", sId:"id", sGroupCss:"col-12 hanzi4"})
+		@widget.ctrl.Hidden({sLabel:"pid:", sName:"pid", sId:"pid", sGroupCss:"col-12 hanzi4"})
+		@widget.ctrl.Hidden({sLabel:"treeNo:", sName:"treeNo", sId:"treeNo", sGroupCss:"col-12 hanzi4"})
+	}
+}
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"arrange"){
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"添加时间", sBtncss:"btn-normal", sId:"addInspectTime",sOnClick:"addInspectTime"})
+		}
+	}
+}
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"arrangeTime"){
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"修改时间", sBtncss:"btn-normal", sId:"updateInspectTime",sOnClick:"updateInspectTime"})
+			@widget.ctrl.Button({sLabel:"删除时间", sBtncss:"btn-normal", sId:"deleteInspectTime",sOnClick:"deleteInspectTime"})
+		}
+	}
+}
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"hospitalList"){
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"添加医院", sBtncss:"btn-normal", sId:"addHospital",sOnClick:"addHospital"})
+		}
+	}	
+}
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"hospital"){
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"删除医院", sBtncss:"btn-normal", sId:"deleteHospital",sOnClick:"deleteHospital"})
+		}
+	}	
+}
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"expertList"){
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"添加专家", sBtncss:"btn-normal", sId:"addExpert",sOnClick:"addExpert"})
+		}
+	}	
+}
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"expert"){
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"删除专家", sBtncss:"btn-normal", sId:"deleteExpert",sOnClick:"deleteExpert"})
+			@widget.ctrl.Button({sLabel:"添加项目", sBtncss:"btn-normal", sId:"addProject",sOnClick:"addProject"})
+		}
+	}	
+}
+@widget.ctnr.Div(sCss:"col-xs-8", sId:"project"){
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"删除项目", sBtncss:"btn-normal", sId:"deleteProject",sOnClick:"deleteProject"})
+		}
+	}	
+}
+
+<!-- 脚本 -->
+<script>
+$(function(){
+	$("#arrange").prop('style', 'display: none;');
+	$("#arrangeTime").prop('style', 'display: none;');
+	$("#hospitalList").prop('style', 'display: none;');
+	$("#hospital").prop('style', 'display: none;');
+	$("#expertList").prop('style', 'display: none;');
+	$("#expert").prop('style', 'display: none;');
+	$("#project").prop('style', 'display: none;');
+})
+
+//刷新表格
+function freshtable(){
+	debugger
+	location.reload();
+}
+
+//点击树结构的项目获取对应的明细
+$("#tree").on('ztree.click', function(event, treeNode) {
+	var treeNo = treeNode.orgType;
+	var id = treeNode.id;
+	var pid = treeNode.pid;
+	$("#id").val(id);
+	$("#pid").val(pid);
+	$("#treeNo").val(treeNo);
+	if(treeNo=="1"){
+	$("#arrange").prop('style', 'display: block;');
+	$("#arrangeTime").prop('style', 'display: none;');
+	$("#hospitalList").prop('style', 'display: none;');
+	$("#hospital").prop('style', 'display: none;');
+	$("#expertList").prop('style', 'display: none;');
+	$("#expert").prop('style', 'display: none;');
+	$("#project").prop('style', 'display: none;');
+	}else if(treeNo=="2"){
+		$("#arrange").prop('style', 'display: none;');
+		$("#arrangeTime").prop('style', 'display: block;');
+		$("#hospitalList").prop('style', 'display: none;');
+		$("#hospital").prop('style', 'display: none;');
+		$("#expertList").prop('style', 'display: none;');
+		$("#expert").prop('style', 'display: none;');
+		$("#project").prop('style', 'display: none;');
+	}else if(treeNo=="3"){
+		$("#arrange").prop('style', 'display: none;');
+		$("#arrangeTime").prop('style', 'display: none;');
+		$("#hospitalList").prop('style', 'display: block;');
+		$("#hospital").prop('style', 'display: none;');
+		$("#expertList").prop('style', 'display: none;');
+		$("#expert").prop('style', 'display: none;');
+		$("#project").prop('style', 'display: none;');
+	}else if(treeNo=="4"){
+		$("#arrange").prop('style', 'display: none;');
+		$("#arrangeTime").prop('style', 'display: none;');
+		$("#hospitalList").prop('style', 'display: none;');
+		$("#hospital").prop('style', 'display: none;');
+		$("#expertList").prop('style', 'display: block;');
+		$("#expert").prop('style', 'display: none;');
+		$("#project").prop('style', 'display: none;');
+	}else if(treeNo=="5"){
+		$("#arrange").prop('style', 'display: none;');
+		$("#arrangeTime").prop('style', 'display: none;');
+		$("#hospitalList").prop('style', 'display: none;');
+		$("#hospital").prop('style', 'display: block;');
+		$("#expertList").prop('style', 'display: none;');
+		$("#expert").prop('style', 'display: none;');
+		$("#project").prop('style', 'display: none;');
+	}else if(treeNo=="6"){
+		$("#arrange").prop('style', 'display: none;');
+		$("#arrangeTime").prop('style', 'display: none;');
+		$("#hospitalList").prop('style', 'display: none;');
+		$("#hospital").prop('style', 'display: none;');
+		$("#expertList").prop('style', 'display: none;');
+		$("#expert").prop('style', 'display: block;');
+		$("#project").prop('style', 'display: none;');
+	}else if(treeNo=="7"){
+		$("#arrange").prop('style', 'display: none;');
+		$("#arrangeTime").prop('style', 'display: none;');
+		$("#hospitalList").prop('style', 'display: none;');
+		$("#hospital").prop('style', 'display: none;');
+		$("#expertList").prop('style', 'display: none;');
+		$("#expert").prop('style', 'display: none;');
+		$("#project").prop('style', 'display: block;');
+	}
+})
+//添加时间
+function addInspectTime() {
+	var id = $("#id").val();
+	var pid = $("#treeNo").val();
+	var treeNo = $("#treeNo").val();
+	editInspectTime(0,id,pid,treeNo);
+}
+//修改时间
+function updateInspectTime() {
+	var id = $("#id").val();
+	var pid = $("#pid").val();
+	var treeNo = $("#treeNo").val();
+	editInspectTime(1,id,pid,treeNo);
+}
+//编辑时间画面
+function editInspectTime(editflag,id,pid,treeNo){
+    var title = "";
+    if(editflag == 0){
+        title = "添加时间";
+    }else if(editflag == 1){
+        title = "修改时间";
+    }
+    Dialog.open('@url("/inspectionArrangement/addTimePage?id=")'+id+'&pid='+pid+'&editflag='+editflag+'&treeNo='+treeNo , {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:title
+	});
+}
+//删除时间
+function deleteInspectTime(){
+	var id = $("#id").val();
+    MsgBox.confirm("确认删除吗？", function(isConfirm) {
+        if (isConfirm) {
+            Ajax.ajax({
+                url : '@url("/inspectionArrangement/deleteTime?id=")'+id,
+                success : function(data) {
+                    if (data.successCount > 0) {
+                        
+                        MsgBox.success(data.retMsg,function(){
+                        	freshtable();
+                        });
+                    } else {
+                        MsgBox.warning(data.retMsg,freshtable());
+                    }
+                }
+            })
+        }
+    });
+}
+
+//添加医院
+function addHospital() {
+	var id = $("#id").val();
+	var pid = $("#pid").val();
+	var treeNo = $("#treeNo").val();
+	Dialog.open('@url("/inspectionArrangement/addHospitalPage?id=")'+id+'&pid='+pid+'&treeNo='+treeNo , {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:'添加医院'
+	});
+}
+
+//删除医院
+function deleteHospital(){
+	var id = $("#id").val();
+    MsgBox.confirm("确认删除吗？", function(isConfirm) {
+        if (isConfirm) {
+            Ajax.ajax({
+                url : '@url("/inspectionArrangement/deleteHospital?id=")'+id,
+                success : function(data) {
+                    if (data.successCount > 0) {
+                        
+                        MsgBox.success(data.retMsg,function(){
+                        	freshtable();
+                        });
+                    } else {
+                        MsgBox.warning(data.retMsg,freshtable());
+                    }
+                }
+            })
+        }
+    });
+}
+
+//添加专家
+function addExpert() {
+	var id = $("#id").val();
+	var pid = $("#pid").val();
+	var treeNo = $("#treeNo").val();
+	Dialog.open('@url("/inspectionArrangement/addExpertPage?id=")'+id+'&pid='+pid+'&treeNo='+treeNo , {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:'添加专家'
+	});
+}
+
+//删除专家
+function deleteExpert(){
+	var id = $("#id").val();
+    MsgBox.confirm("确认删除吗？", function(isConfirm) {
+        if (isConfirm) {
+            Ajax.ajax({
+                url : '@url("/inspectionArrangement/deleteExpert?id=")'+id,
+                success : function(data) {
+                    if (data.successCount > 0) {
+                        
+                        MsgBox.success(data.retMsg,function(){
+                        	freshtable();
+                        });
+                    } else {
+                        MsgBox.warning(data.retMsg,freshtable());
+                    }
+                }
+            })
+        }
+    });
+}
+
+
+//添加项目
+function addProject() {
+	Dialog.open('@url("/inspectionArrangement/addProjectPage")' , {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:'添加项目'
+	});
+}
+//删除项目
+function deleteProject() {
+	MsgBox.confirm("确认删除项目吗",function() {
+	});
+}
+</script>

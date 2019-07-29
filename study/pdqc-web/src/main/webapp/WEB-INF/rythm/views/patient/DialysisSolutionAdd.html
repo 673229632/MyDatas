@@ -1,0 +1,61 @@
+@extends(views.common.DialogView,  v_sTitle:"透析方案上报/编辑")
+@import com.ustcsoft.pdqc.web.common.entity.Code
+@import com.ustcsoft.pdqc.web.patient.form.DialysisSolutionForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+@args String hpId
+@args DialysisSolutionForm condForm
+
+@widget.ctnr.Row() {
+	@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi4",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi4",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi4",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+}
+@widget.ctnr.Form("DialysisSolutionForm"){
+	@widget.ctrl.Hidden(sId:"id",sName:"id",oValue:condForm.getId())
+	@widget.ctrl.Hidden(sId:"patientId",sName:"patientId",oValue:condForm.getPatientId())
+	@widget.ctrl.Hidden(sId:"hpId",sName:"hpId",oValue:condForm.getHpId())
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"日期:",sGroupCss:"col-md-4 hanzi2",sName:"tdate",sId:"tdate",sFormat:"YYYY-MM-DD",bRequired:true,oValue:condForm.getTdate())	
+		@widget.ctrl.SelectPicker(sLabel:"腹透类型:", sName:"type", sId:"type",bShowEmptyOption:true,oOptions:"{'1':'CAPD'}",sGroupCss:"col-md-4 hanzi4",bRequired:true,sInitValue:condForm.getType())
+    }
+  	@widget.ctnr.Row() {
+  	 @widget.ctrl.Input(sLabel:"1.5%×2L×", sGroupCss:"col-md-4 hanzi4",sId:"amount1", sName:"amount1",bDisabled:false,oValue:condForm.getAmount1())
+  	 @widget.ctrl.Input(sLabel:"2.5%×2L×", sGroupCss:"col-md-4 hanzi4",sId:"amount2", sName:"amount2",bDisabled:false,oValue:condForm.getAmount2())
+  	 @widget.ctrl.Input(sLabel:"4.25%×2L×", sGroupCss:"col-md-4 hanzi4",sId:"amount3", sName:"amount3",bDisabled:false,oValue:condForm.getAmount3())
+    }
+	@widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"solutionSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+ 	}
+	
+	}
+	 <script type="text/javascript">
+		//保存
+		function solutionSave(){
+			var patientId=$("#patientId").val();
+			$('#DialysisSolutionForm').bootstrapValidator('validate');
+			var isValid = $('#DialysisSolutionForm').data('bootstrapValidator').isValid();
+			if(!isValid){
+		    	return;
+		    }
+			var sConidtion = $('#DialysisSolutionForm').serialize();
+			Ajax.ajax({
+				url : '@url("/patientOverView/solutionSave")',
+				data : sConidtion,
+				success : function(data) {
+					if (data.retCode == 0) {
+						parent.MsgBox.success(data.retMsg,function(){
+		                    parent.$("#dialysis-result2").bootstrapTable('refresh', {query: {patientId : patientId}});
+		                    parent.$("#dialysis-result").bootstrapTable('refresh');
+		                    Dialog.closeSelf();
+		                })
+		                ;
+					} else {
+						MsgBox.warning(data.retMsg);
+					}
+				}
+			});
+		}
+	 </script>

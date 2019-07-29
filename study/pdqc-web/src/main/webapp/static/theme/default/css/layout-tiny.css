@@ -1,0 +1,284 @@
+/**************************** TinyView开始 *********************/
+body {
+    background-color: rgba(230, 230, 230, 1);
+    font-size: 12px;
+    color: #000;
+    zoom: 1;
+    font-family: '微软雅黑';
+    /**min-width:650px;**/
+}
+/* 顶部图标 */
+#left-side-toggle a.nav-button {font-size:14px;}
+
+/* 正文标题 */
+#pageTitle {
+    padding-top: 0;
+    border-bottom: 1px solid #e5e5e5;
+    height: auto;
+}
+#pageTitle:after {display: table;content:" ";clear: both;}
+#pageTitle > h2 {
+    margin:0;
+    padding:0 10px;
+    font-size: 18px;
+    font-weight: 400;
+    line-height:38px;
+    display:block;
+    float:left;
+}
+#pageTitle > div {
+    display:block;
+    padding:3px 0;
+    float:left;
+}
+#pageTitle > div button {
+    margin: 2px 2px;
+}
+/* 正文内容 */
+#pageBody {
+    padding: 5px 0 10px;
+}
+
+/* 菜单 */
+.menu-item-rythm * {
+    font-size: 14px!important;
+}
+dmh2 {
+    font-size: inherit;
+}
+.menu-item-rythm.fa:before {
+    width: 14px;
+    display: inline-block;
+    text-align: center;
+}
+
+/* 文本框 */
+.form-control {
+    padding: 2px 8px;
+    height: 28px;
+    font-size: 14px;
+}
+
+/* 输入框组后缀 */
+.input-group-addon {
+    font-size: 12px;
+    padding: 2px 3px;
+}
+
+/* DatePicker控件 */
+.input-group-btn .btn.datepickerbutton {
+    width: 34px;
+}
+.rythm-input-group > .input-group-label,
+.rythm-input-group > .input-group-required {
+    line-height: 28px;
+}
+
+.btn {
+    padding: 2px 8px;
+    height: 28px;
+    font-size: 14px;
+}
+
+/* 下拉按钮边框线 */
+.bootstrap-select > .btn.dropdown-toggle > .bs-caret {
+    width: 33px;
+    height: 27px;
+}
+
+/* 行间距 */
+.form-group {
+    margin-bottom: 8px;
+}
+
+/* 面板 */
+.rythm-panel {
+    margin-bottom: 8px;
+}
+.rythm-panel .panel-heading {
+    padding: 4px 8px;
+    font-size: 14px;
+    line-height: 20px;
+}
+.rythm-panel .panel-heading h3 {
+    line-height: 20px;
+}
+
+.rythm-panel .panel-body {
+    padding: 4px 0;
+}
+
+/* 表格 */
+.bootstrap-table {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.fixed-table-container thead th .th-inner {
+    padding: 3px 4px;
+}
+.table-rythm > tbody > tr > td {
+    padding: 3px 4px!important;
+}
+.fixed-table-pagination .pagination-detail .page-list button {
+    height: 30px;
+}
+.fixed-table-pagination .pagination-detail .page-list {
+    line-height: 30px;
+}
+
+/* 表格的工具栏 */
+.bootstrap-table > .fixed-table-toolbar > .bs-bars {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 30px;
+}
+.bootstrap-table > .fixed-table-toolbar > .bs-bars > .toolbar-rythm {
+    margin-top: 2px;
+    ;
+    margin-bottom: 2px;
+}
+.toolbar-rythm button {
+    margin: 3px 8px;
+}
+
+/* 按钮容器 */
+.btnbox-rythm {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.btnbox-rythm button {
+    margin: 3px 4px;
+}
+
+/* 区域框 */
+.box-rythm {
+    margin: 0px 0px 8px 0px;
+    padding: 8px 5px 0px 5px !important;
+}
+
+/* InputMini */
+.rythm-fileinput-mini div.btn.btn-file {padding-top:5px;}
+
+
+
+/* 组件前面的文字（基于14px字体: 14*(字数)+6(左空白)+8(右边距)） */
+.rythm-input-group > .input-group-label { font-size : 14px; }
+.hanzi1 .rythm-input-group.with-label > .input-group-label {width: 28px;min-width:28px;margin-left:-28px; }
+.hanzi1 .rythm-input-group.with-label {padding-left:28px;}
+.hanzi2 .rythm-input-group.with-label > .input-group-label {width: 42px;min-width:42px;margin-left:-42px; }
+.hanzi2 .rythm-input-group.with-label {padding-left:42px;}
+.hanzi3 .rythm-input-group.with-label > .input-group-label {width: 56px;min-width:56px;margin-left:-56px; }
+.hanzi3 .rythm-input-group.with-label {padding-left:56px;}
+.hanzi4 .rythm-input-group.with-label > .input-group-label {width: 70px;min-width:70px;margin-left:-70px; }
+.hanzi4 .rythm-input-group.with-label {padding-left:70px;}
+.hanzi5 .rythm-input-group.with-label > .input-group-label {width: 84px;min-width:84px;margin-left:-84px; }
+.hanzi5 .rythm-input-group.with-label {padding-left:84px;}
+.hanzi6 .rythm-input-group.with-label > .input-group-label {width: 98px;min-width:98px;margin-left: -98px; }
+.hanzi6 .rythm-input-group.with-label {padding-left:98px;}
+.hanzi7 .rythm-input-group.with-label > .input-group-label {width: 112px;min-width:112px;margin-left: -112px; }
+.hanzi7 .rythm-input-group.with-label {padding-left:112px;}
+.hanzi8 .rythm-input-group.with-label > .input-group-label {width: 126px;min-width:126px;margin-left: -126px; }
+.hanzi8 .rythm-input-group.with-label {padding-left:126px;}
+.hanzi9 .rythm-input-group.with-label > .input-group-label {width: 140px;min-width:140px;margin-left: -140px; }
+.hanzi9 .rythm-input-group.with-label {padding-left:140px;}
+.hanzi10 .rythm-input-group.with-label > .input-group-label {width: 154px;min-width:154px;margin-left: -154px; }
+.hanzi10 .rythm-input-group.with-label {padding-left:154px;}
+.hanzi11 .rythm-input-group.with-label > .input-group-label {width: 168px;min-width:168px;margin-left: -168px; }
+.hanzi11 .rythm-input-group.with-label {padding-left:168px;}
+.hanzi13 .rythm-input-group.with-label > .input-group-label {width: 196px;min-width:196px;margin-left: -196px; }
+.hanzi13 .rythm-input-group.with-label {padding-left:196px;}
+.hanzi14 .rythm-input-group.with-label > .input-group-label {width: 210px;min-width:210px;margin-left: -210px; }
+.hanzi14 .rythm-input-group.with-label {padding-left:210px;}
+.hanzi15 .rythm-input-group.with-label > .input-group-label {width: 224px;min-width:224px;margin-left: -224px; }
+.hanzi15 .rythm-input-group.with-label {padding-left:224px;}
+.hanzi16 .rythm-input-group.with-label > .input-group-label {width: 238px;min-width:238px;margin-left: -238px; }
+.hanzi16 .rythm-input-group.with-label {padding-left:238px;}
+.hanzi17 .rythm-input-group.with-label > .input-group-label {width: 252px;min-width:252px;margin-left: -252px; }
+.hanzi17 .rythm-input-group.with-label {padding-left:252px;}
+.hanzi18 .rythm-input-group.with-label > .input-group-label {width: 266px;min-width:266px;margin-left: -266px; }
+.hanzi18 .rythm-input-group.with-label {padding-left:266px;}
+.hanzi19 .rythm-input-group.with-label > .input-group-label {width: 280px;min-width:280px;margin-left: -280px; }
+.hanzi19 .rythm-input-group.with-label {padding-left:280px;}
+.hanzi20 .rythm-input-group.with-label > .input-group-label {width: 294px;min-width:294px;margin-left: -294px; }
+.hanzi20 .rythm-input-group.with-label {padding-left:294px;}
+.hanzi21 .rythm-input-group.with-label > .input-group-label {width: 308px;min-width:308px;margin-left: -308px; }
+.hanzi21 .rythm-input-group.with-label {padding-left:308px;}
+.hanzi22 .rythm-input-group.with-label > .input-group-label {width: 322px;min-width:322px;margin-left: -322px; }
+.hanzi22 .rythm-input-group.with-label {padding-left:322px;}
+.hanzi23 .rythm-input-group.with-label > .input-group-label {width: 336px;min-width:336px;margin-left: -336px; }
+.hanzi23 .rythm-input-group.with-label {padding-left:336px;}
+.hanzi24 .rythm-input-group.with-label > .input-group-label {width: 350px;min-width:350px;margin-left: -350px; }
+.hanzi24 .rythm-input-group.with-label {padding-left:350px;}
+.hanzi25 .rythm-input-group.with-label > .input-group-label {width: 364px;min-width:364px;margin-left: -364px; }
+.hanzi25 .rythm-input-group.with-label {padding-left:364px;}
+.rythm-numberft span {line-height: 28px; height:28px;}
+
+/*****************************************  固定按钮容器 ********************************************************/
+.inpad .rythm-btnbox-fixed {position:relative; left:0px;background-color: transparent;}
+
+.rythm-dialog .rythm-dialog-content{margin-top: 10px;}
+/* 文本 */
+.rythm-label {line-height: 28px; height:28px; font-size: 14px;}
+/* 单选框 */
+.check-rythm label.icheck-label { margin-top: 0; font-size: 14px;}
+/* 控件左右间距 */
+.rythm-form-group {padding-right: 8px;    padding-left: 8px;}
+/* 行高(解决站位问题) */
+.with-label.rythm-form-group { min-height: 28px; }
+/* 折叠面板标题 */
+.panel-title > span {font-size:16px;padding-left: 4px;}
+/* 组件下边距(紧缩模式) */
+.compact-vertical .rythm-form-group {margin-bottom: 0!important;}
+
+.tabs-container-rythm{padding:0px 15px;}
+
+/* iCheck背景缩小 */
+.icheckbox_square-red,
+.iradio_square-red {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    border: none;
+    cursor: pointer;
+    -webkit-background-size: 180px 18px;
+    background-size: 180px 18px;
+    margin-right:3px;
+    min-height:auto;
+}
+
+.icheckbox_square-red {
+    background-position: 0 0;
+}
+.icheckbox_square-red.hover {
+    background-position: -18px 0;
+}
+.icheckbox_square-red.checked {
+    background-position: -36px 0;
+}
+.icheckbox_square-red.disabled {
+    background-position: -54px 0;
+    cursor: default;
+}
+.icheckbox_square-red.checked.disabled {
+    background-position: -72px 0;
+}
+.iradio_square-red {
+    background-position: -90px 0;
+}
+.iradio_square-red.hover {
+    background-position: -108px 0;
+}
+.iradio_square-red.checked {
+    background-position: -126px 0;
+}
+.iradio_square-red.disabled {
+    background-position: -144px 0;
+    cursor: default;
+}
+.iradio_square-red.checked.disabled {
+    background-position: -162px 0;
+}

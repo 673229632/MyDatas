@@ -1,0 +1,27 @@
+@extends(views.common.DialogView,  v_sTitle:"患者生存月列表")
+@args String hospitalName;
+
+@widget.ctnr.Row(){
+		@widget.ctnr.Form("search_form"){
+			@widget.ctrl.Hidden(sId:"hospitalName",sName:"hospitalName",oValue:hospitalName)
+		}
+	
+		 @widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/PatientSurvivalMonth/PatientSurvivalMonthDetail",iPageSize:10,sSidePagination:"client"){
+			@widget.ctnr.Columns(){
+				{title: '序号',align:'center',formatter:function(value, row, index){
+					return index + 1;
+				}},
+				{field: 'name',align:'center',title: '姓名'},
+				{field: 'phone_no',align:'center',title: '联系方式'},
+				{field: 'infection_diseases',align:'center',title: '传染病'},
+				{field: 'first_dialsys_date',align:'center',title: '首次腹透日'},
+				{field: 'survivalMonth',align:'center',title: '生存月'},
+			}
+		}
+	}
+
+<script>
+	function createQueryParams(params) {
+		return buildQueryParam('#search_form', params);
+	}
+</script>

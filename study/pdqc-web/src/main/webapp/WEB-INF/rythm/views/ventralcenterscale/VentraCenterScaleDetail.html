@@ -1,0 +1,29 @@
+@extends(views.common.DialogView,  v_sTitle:"患者列表")
+@args String hospitalName;
+
+@widget.ctnr.Row(){
+		@widget.ctnr.Form("search_form"){
+			@widget.ctrl.Hidden(sId:"hospitalName",sName:"hospitalName",oValue:hospitalName)
+		}
+	
+		 @widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/VentralCenterScale/ventralCenterScaleDetailList",iPageSize:10,sSidePagination:"client"){
+			@widget.ctnr.Columns(){
+				{title: '序号',align:'center',formatter:function(value, row, index){
+					return index + 1;
+				}},
+				{field: 'name',align:'center',title: '姓名'},
+				{field: 'birth_day',align:'center',title: '出生日期'},
+				{field: 'phone_no',align:'center',title: '联系方式'},
+				{field: 'first_dialsys_date',align:'center',title: '首次腹透日'},
+				{field: 'infection_diseases',align:'center',title: '传染病'},
+				{field: 'primary_disease',align:'center',title: '肾原发病'},
+				{field: 'primary_disease_date',align:'center',title: '确诊时间'}
+			}
+		}
+	}
+
+<script>
+	function createQueryParams(params) {
+		return buildQueryParam('#search_form', params);
+	}
+</script>

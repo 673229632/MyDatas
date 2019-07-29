@@ -1,0 +1,39 @@
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+
+@widget.ctnr.Row(){
+	@widget.ctnr.Form("search_form"){
+		@widget.ctrl.SelectPicker({sLabel:"筛选条件:", sName:"condition", sId:"condition", sGroupCss:"col-6 hanzi4", oOptions:"未安排,已安排"})
+		@widget.ctrl.SelectPicker({sLabel:"项目名称:", sName:"projectName", sId:"projectName", sGroupCss:"col-6 hanzi4", oOptions:"测试项目一,测试项目二,测试项目三,测试项目四,测试项目五"})
+		}
+	@widget.ctnr.BtnBox(sAlign:"center"){
+		@widget.ctrl.Button({sLabel:"确定", sBtncss:"btn-normal", sOnClick:"saveUser", sId:"saveUserBtn"})
+		@widget.ctrl.Button({sLabel:"关闭", sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()", sId:"closeDialogBtn"})
+	}
+}
+<!-- 脚本 -->
+<script>
+function saveUser() {
+	parent.MsgBox.success("保存成功",function() {
+					Dialog.closeSelf();
+				});
+}
+
+//下拉框联动
+$("#condition").change(function(){
+	var conditionValue = $("#condition").find(".selectpicker").selectpicker('val');
+	if(conditionValue=="未安排"){
+		$("#projectName").find("select").empty();
+		$("#projectName select").append("<option selected>测试项目一</option>");
+		$("#projectName select").append("<option>测试项目二</option>");
+		$('#projectName select').selectpicker('refresh');//刷新操作
+	}else if(conditionValue=="已安排"){
+		$("#projectName").find("select").empty();
+		$("#projectName select").append("<option selected>测试项目三</option>");
+		$("#projectName select").append("<option>测试项目四</option>");
+		$("#projectName select").append("<option>测试项目五</option>");
+		$('#projectName select').selectpicker('refresh');//刷新操作
+	}
+})
+</script>

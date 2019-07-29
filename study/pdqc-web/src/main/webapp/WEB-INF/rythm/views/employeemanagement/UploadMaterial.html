@@ -1,0 +1,60 @@
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@args List<Code> fileTypeOptions
+@args String employeeNo
+	@widget.ctnr.Form("employee_form"){
+		@widget.ctrl.Hidden(sId:"employeeNo",sName:"employeeNo",oValue:employeeNo)
+		@widget.ctnr.Row(){
+			@widget.ctrl.SelectPicker(sLabel:"文件类型:",sId:"fileTypeNo",sName:"fileTypeNo",
+  				sGroupCss:"col-3 hanzi5", oOptions:fileTypeOptions,bRequired:true)
+  			@widget.ctrl.FileInputMini({sLabel:"选择文件:",sAllowedFileExtensions:"gif,jpg,jepg,png,doc,docx,xlsx,xls,txt",
+  				iMaxFileSize:10240,sId:"file1",sName:"file1",sGroupCss:"col-6 hanzi5",bRequired:true})
+		}
+		@widget.ctnr.BtnBoxFixed(bBorder:true) {
+	        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",sIconCss:"fa fa-save",style:"margin-left:20px", sOnClick:"editSave"})
+	        @widget.ctrl.ButtonClose(sLabel:"关闭")
+    	}
+		@widget.ctrl.Hidden({sLabel:"文件名",sName:"fileTitle1",oValue:""})
+	}
+	
+<!--脚本  -->
+<script>
+//上传职员资料
+	//保存
+    function editSave() {
+    	$('#employee_form').bootstrapValidator('validate');
+        var isValid = $('#employee_form').data('bootstrapValidator').isValid();
+        setExtrParams();
+        var sConidtion = new FormData($('#employee_form')[0]);
+        if(isValid){
+        	Ajax.ajax({
+				url : '@url("/employeeList/addOrEditFile")',
+				type : "POST",
+				data : sConidtion,
+				contentType : false,
+                processData : false,
+				success : function(data) {
+					if(data.retCode != -1){
+						if (data.successCount > 0) {
+						    parent.MsgBox.success("保存成功",function(){
+		                        parent.$("#searchResult").bootstrapTable('refresh');
+		                        //parent.$("searchResult").bootstrapTable('refresh', {query: {patientId : patientId}});
+		                        Dialog.closeSelf();
+		                    });
+						
+						} else {
+							parent.MsgBox.warning(data.retMsg);
+						}
+					}
+				}
+			});
+        }
+	}
+	
+	function setExtrParams(){
+		for(var i = 1; i <= 1; i++){
+			$("#fileTitle" + i).val($($("#file"+i).find('.file-caption-name')[0]).attr('title'));
+		}
+	}
+</script>

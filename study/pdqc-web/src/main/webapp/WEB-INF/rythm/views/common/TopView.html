@@ -1,0 +1,126 @@
+@* 最顶层的视图模版页 *@
+@import com.ustcsoft.pdqc.web.common.util.SecurityUtil
+@import com.ustcsoft.pdqc.web.common.security.LoginUser
+
+@* 参数：页面标题 *@
+@args String  v_sTitle        = ""
+@* 是否启用Bootstrap-Select插件 *@
+@args Boolean v_bEnableBootstrapSelect = true
+@* 是否启用Boostrap3-Dialog插件 *@
+@args Boolean v_bEnableBoostrap3Dialog = true
+@* 是否启用Boostrap Table插件 *@
+@args Boolean v_bEnableBoostrapTable   = true
+@* 是否启用ZTree插件 *@
+@args Boolean v_bEnableZTree           = true
+@* 是否启用Boostrap DatetimePicker *@
+@args Boolean v_bEnableDatetimepicker  = true
+@* 默认皮肤颜色 *@
+@args String  skinCss = ""
+@* 是否启用lodop打印控件 *@
+@args Boolean v_bEnableLodopFuncs  = true
+@* 是否启用echarts打印控件 *@
+@args Boolean v_bEnableEcharts  = true
+
+@{
+    // 注意：开发模式的场合，请设为true，这样会加载未经压缩的css和js
+    final Boolean bDevMode = false;
+    final String sMinVer = bDevMode ? "" : ".min";
+    // 获取根目录
+    final String contextRoot = fnGetContextPath("/", request);
+}
+<!DOCTYPE html >
+<html>
+    <head>
+        <title class="print">@v_sTitle</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+        <link rel="shortcut icon" type="image/x-icon" href="@(contextRoot)/favicon.ico">
+        <!-- 合并后共通css -->
+        @widget.helper.ImportAssetsCss(bDevMode:bDevMode)
+
+        @if (v_bEnableZTree) {
+        <link rel="stylesheet" href="@(contextRoot)static/lib/bootstrap-jstree/css/bootstrap-jstree.css"/>
+        }
+        <link rel="stylesheet" href="@(contextRoot)static/lib/bootstrap-flexslider/flexslider.css"/>
+        <link rel="stylesheet" href="@(contextRoot)static/lib/bootstrap-tagsinput/bootstrap-tagsinput.css"/>
+        
+        <!-- 共通样式 -->
+        @{LoginUser loginUser = SecurityUtil.getLoginUser();
+            if(loginUser != null && !"".equals(loginUser.getSkincss())){
+            	skinCss = loginUser.getSkincss();
+            }else{
+            	skinCss = "default";
+            }
+        }
+        <link rel="stylesheet" href='@(contextRoot)static/theme/@(skinCss)/css/main.css?v=180101'/>
+        <!-- <link rel="stylesheet" href="@(contextRoot)static/theme/default/css/main.css"/> -->
+        <!-- 紧凑样式 -->
+        <link rel="stylesheet" href="@(contextRoot)static/theme/default/css/layout-tiny.css?v=180101"/>
+        <!-- 个人页面自定义样式 -->
+        <link rel="stylesheet" href="@(contextRoot)static/css/userdefined/personal.css"/>
+        <style media="print">
+           .noprint { display : none; }
+        </style>
+        
+        <script type="text/javascript">
+           var OFFSET_HEIGHT = 72;
+           var CONTEXT_ROOT = "@url("/")";
+           var DIALOG_ID = '@request.getParameter("_DIALOG_ID")';
+        </script>
+        <!-- 合并后共通js -->
+        @widget.helper.ImportAssetsJS(bDevMode:bDevMode)
+
+        @if (v_bEnableZTree) {
+        <!-- 下拉树(ZTree) -->
+        <script type="text/javascript" src="@(contextRoot)/static/lib/bootstrap-jstree/js/bootstrap-jstree.js")"></script>
+        <script type="text/javascript" src="@(contextRoot)/static/lib/bootstrap-jstreegrid/js/bootstrap-jstreegrid.js")"></script>
+        }
+        
+        <!-- jQuery插件 -->
+        <script type="text/javascript" src="@(contextRoot)static/lib/jquery-plugin/jquery.cookie.js"></script>
+        <script type="text/javascript" src="@(contextRoot)static/lib/jquery-plugin/jquery.base64.js"></script>
+        <script type="text/javascript" src="@(contextRoot)static/lib/jquery-plugin/jquery.formatDateTime.min.js"></script>
+        <script type="text/javascript" src="@(contextRoot)static/lib/jquery-plugin/jquery.mask.min.js"></script>
+        <script type="text/javascript" src="@(contextRoot)static/lib/jquery-plugin/jquery.browser.js"></script>
+        <script type="text/javascript" src="@(contextRoot)static/lib/jquery-plugin/jquery.iframe-auto-height.js"></script>
+        <!-- UUID -->
+        <script type="text/javascript" src="@(contextRoot)static/lib/js-plugin/math.uuid.js"></script>
+        <script type="text/javascript" src="@(contextRoot)static/lib/bootstrap-flexslider/jquery.flexslider.js"></script> 
+        <script type="text/javascript" src="@(contextRoot)static/lib/bootstrap-tagsinput/bootstrap-tagsinput.js"></script> 
+		
+       	<!--右键菜单插件start-->
+        <script type="text/javascript" src="@(contextRoot)static/lib/bootstrap-contextmenu/bootstrap-contextmenu.js"></script> 	
+        <script type="text/javascript" src="@(contextRoot)static/lib/bootstrap-contextmenu/BootstrapMenu.min.js"></script>
+        <!-- 获取汉语拼音简写 -->
+        <script type="text/javascript" src="@(contextRoot)static/js/pingyin.js"></script> 
+        
+        <!--右键菜单插件end-->
+        <!-- Login.html 用到
+		<script type="text/javascript" src="@(contextRoot)static/js/common.js"></script>
+		<script type="text/javascript" src="@(contextRoot)static/lib/js-plugin/webtoolkit.md5.js"></script>
+		-->
+        <!--[if lt IE 9]>
+        <script type="text/javascript" src="@(contextRoot)static/lib/jquery-plugin/html5shiv.js"></script>
+        <script type="text/javascript" src="@(contextRoot)static/lib/jquery-plugin/respond.src.js"></script>
+        <![endif]-->
+ 
+        <!-- 打印控件 -->
+        @if (v_bEnableLodopFuncs) {
+	        <script type="text/javascript" src="@(contextRoot)static/lib/lodop/LodopFuncs.js"></script>
+        }
+        <!-- 共通ＪＳ -->
+        <script type="text/javascript" src="@(contextRoot)static/js/app.js"></script>
+        <!-- echarts插件 -->
+        @if (v_bEnableEcharts) {
+	        <script type="text/javascript" src="@(contextRoot)static/lib/js-plugin/echarts.js"></script>
+	        <script type="text/javascript" src="@(contextRoot)static/lib/js-plugin/echarts.min.js"></script>
+        }
+        <!-- 引入页面CSS -->
+        @render("PageCss") {
+        }
+        <!-- 引入页面JS -->
+        @render("PageJs") {
+        }
+   </head>
+   
+   @render()
+</html>

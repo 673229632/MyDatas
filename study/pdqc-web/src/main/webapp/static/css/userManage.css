@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+.user-lable{
+    min-width: 80px;
+}
+
+.hide{
+	display:none;
+}
+
+.lable-top {
+	vertical-align: top;
+}
+
+.tarea-noresize{
+	resize:none;
+}
+
+.td-ellipsis {
+	width: 100%;
+    word-break: keep-all;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.summary-width {
+	width: 400px !important;
+}
+
+.lable-style1 {
+	padding-left: 0 !important;
+}
+
+.table-striped > tbody > tr.select-color > td {
+	background-color:#46B8DA !important;
+}
+
+/* tr * {
+	background-color: #46B8DA !important;
+} */
+
+
+
+

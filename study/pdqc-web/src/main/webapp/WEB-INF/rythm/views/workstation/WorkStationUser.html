@@ -1,0 +1,2293 @@
+@extends(views.common.MainView, v_sTitle:"首页")
+@args String name;
+@args String staffflag;
+@args String orgType;
+@widget.ctnr.Row() {
+	@widget.ctnr.Column(sStyle:"float:right;padding-left:20px;font-size:12px;margin-bottom:15px;margin-top:-20px;text-align: right; color:#666"){
+		欢迎您,@name 
+		
+		<span>~</span>
+	}
+}
+
+@widget.ctnr.Column(sCss:"col-12") {
+	@widget.ctrl.Hidden(sLabel:"orgType", sName:"orgType", sId:"orgType",oValue:orgType)
+	@widget.ctnr.Tabs(sId:"changeTab"){
+		@widget.ctnr.Tab(sId:"orgInfo",sTitle:"机构信息"){
+			@widget.ctrl.Table(sId:"org-table", sUrl:"/workstation/getOrgList", iPageSize:10, sSidePagination:"server"){
+				@widget.ctnr.Columns(){
+					{field: 'orgIndex', title: '机构编号'},
+					{field: 'txCenterName', title: '透析中心名称'},
+					{field: 'doctorNum', title: '医生人数'},
+					{field: 'nurseNum', title: '护士人数'},
+					{field: 'engineerNum', title: '工程师人数'},
+					{field: 'allPatient', title: '所有患者'},
+					{field: 'patientRetention', title: '患者保有量'}
+				}
+			}
+			@widget.ctnr.Div(sId:"orgInfoDiv"){
+                @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"orgInfoChart",sStyle:"width:800px;height:400px;"){}
+				}
+			}
+		}
+		@widget.ctnr.Tab(sId:"reportIntegrity",sTitle:"上报完整性"){
+			@if("1".equals(orgType)){
+				@widget.ctrl.DynmicTable(sId:"dynmicTable")
+			}else{
+				@widget.ctrl.Table(sId:"integrity-table", sUrl:"/workstation/getRePortCompletenes", iPageSize:10, sSidePagination:"server"){
+					@widget.ctnr.Columns(){
+						{field: 'reportProject',align:'center', title: '上报项目英文名',visible:false},
+						{field: 'reportProjectName',align:'center', title: '上报项目',formatter: function (value, row, index){
+								if(""==value){
+								return "";
+								}else{
+								return "<a onclick='patientView(\""+row.reportProject+"\")'>"+value+"</a>"
+								}
+							}
+						},
+						{field: 'shouldReportPeople',align:'center', title: '本年度应上报人次'},
+						{field: 'actualReportPeople',align:'center', title: '本年度实际上报人次'},
+						{field: 'integrity',align:'center', title: '完整度'},
+						{field: 'recentReportTime',align:'center', title: '最近上报时间'},
+					}
+				}
+			}
+		}
+		@widget.ctnr.Tab(sId:"kpiHb",sTitle:"Hb"){
+			@widget.ctnr.Row(){
+				@widget.ctrl.Button({sId:"hbDataExport",sLabel:"数据导出",sBtncss:"btn-left",
+               		sIconCss:"fa fa-random", sBtncss:"btn-normal",sOnClick:"hbDataExport"})
+                @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"kpiHbChart",sStyle:"width:800px;height:400px;"){}
+					@widget.ctrl.Button({sId:"hbScoreBtn",sLabel:"HB得分",sBtncss:"btn-normal",
+               		sStyle:"margin-left:20px;", sOnClick:"initKpiHbScoreChart"})
+          			@widget.ctrl.Button({sId:"hbExamBtn",sLabel:"HB检查率",sBtncss:"btn-normal",
+                 	sStyle:"margin-left:20px;", sOnClick:"initKpiHbExamChart"})
+           			@widget.ctrl.Button({sId:"hbStandardBtn",sLabel:"HB达标率",sBtncss:"btn-normal",
+                	sStyle:"margin-left:20px;", sOnClick:"initKpiHbStandardChart()"})
+				}
+			}
+		}
+		@widget.ctnr.Tab(sId:"kpiAlb",sTitle:"ALB"){
+			@widget.ctnr.Row(){
+				@widget.ctrl.Button({sId:"albDataExport",sLabel:"数据导出",sBtncss:"btn-left",
+               		sIconCss:"fa fa-random", sBtncss:"btn-normal",sOnClick:"albDataExport"})
+                @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"kpiAlbChart",sStyle:"width:800px;height:400px;"){}
+					@widget.ctrl.Button({sId:"AlbScoreBtn",sLabel:"ALB得分",sBtncss:"btn-normal",
+               		sStyle:"margin-left:20px;", sOnClick:"initKpiAlbScoreChart"})
+          			@widget.ctrl.Button({sId:"AlbExamBtn",sLabel:"ALB检查率",sBtncss:"btn-normal",
+                 	sStyle:"margin-left:20px;", sOnClick:"initKpiAlbExamChart"})
+           			@widget.ctrl.Button({sId:"AlbStandardBtn",sLabel:"ALB达标率",sBtncss:"btn-normal",
+                	sStyle:"margin-left:20px;", sOnClick:"initKpiAlbStandardChart()"})
+				}
+			}
+		}
+		@widget.ctnr.Tab(sId:"kpiCa",sTitle:"Ca"){
+			@widget.ctnr.Row(){
+				@widget.ctrl.Button({sId:"caDataExport",sLabel:"数据导出",sBtncss:"btn-left",
+               		sIconCss:"fa fa-random", sBtncss:"btn-normal",sOnClick:"caDataExport"})
+                @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"kpiCaChart",sStyle:"width:800px;height:400px;"){}
+					@widget.ctrl.Button({sId:"CaScoreBtn",sLabel:"Ca得分",sBtncss:"btn-normal",
+               		sStyle:"margin-left:20px;", sOnClick:"initKpiCaScoreChart"})
+          			@widget.ctrl.Button({sId:"CaExamBtn",sLabel:"Ca检查率",sBtncss:"btn-normal",
+                 	sStyle:"margin-left:20px;", sOnClick:"initKpiCaExamChart"})
+           			@widget.ctrl.Button({sId:"CaStandardBtn",sLabel:"Ca达标率",sBtncss:"btn-normal",
+                	sStyle:"margin-left:20px;", sOnClick:"initKpiCaStandardChart()"})
+				}
+			}
+		}
+		@widget.ctnr.Tab(sId:"kpiP",sTitle:"P"){
+			@widget.ctnr.Row(){
+				@widget.ctrl.Button({sId:"pDataExport",sLabel:"数据导出",sBtncss:"btn-left",
+               		sIconCss:"fa fa-random", sBtncss:"btn-normal",sOnClick:"pDataExport"})
+                @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"kpiPChart",sStyle:"width:800px;height:400px;"){}
+					@widget.ctrl.Button({sId:"PScoreBtn",sLabel:"P得分",sBtncss:"btn-normal",
+               		sStyle:"margin-left:20px;", sOnClick:"initKpiPScoreChart"})
+          			@widget.ctrl.Button({sId:"PExamBtn",sLabel:"P检查率",sBtncss:"btn-normal",
+                 	sStyle:"margin-left:20px;", sOnClick:"initKpiPExamChart"})
+           			@widget.ctrl.Button({sId:"PStandardBtn",sLabel:"P达标率",sBtncss:"btn-normal",
+                	sStyle:"margin-left:20px;", sOnClick:"initKpiPStandardChart()"})
+				}
+			}
+		}
+		@widget.ctnr.Tab(sId:"kpiPth",sTitle:"PTH"){
+			@widget.ctnr.Row(){
+				@widget.ctrl.Button({sId:"pthDataExport",sLabel:"数据导出",sBtncss:"btn-left",
+               		sIconCss:"fa fa-random", sBtncss:"btn-normal",sOnClick:"pthDataExport"})
+                @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"kpiPthChart",sStyle:"width:800px;height:400px;"){}
+					@widget.ctrl.Button({sId:"PthScoreBtn",sLabel:"Pth得分",sBtncss:"btn-normal",
+               		sStyle:"margin-left:20px;", sOnClick:"initKpiPthScoreChart"})
+          			@widget.ctrl.Button({sId:"PthExamBtn",sLabel:"Pth检查率",sBtncss:"btn-normal",
+                 	sStyle:"margin-left:20px;", sOnClick:"initKpiPthExamChart"})
+           			@widget.ctrl.Button({sId:"PthStandardBtn",sLabel:"Pth达标率",sBtncss:"btn-normal",
+                	sStyle:"margin-left:20px;", sOnClick:"initKpiPthStandardChart()"})
+				}
+			}
+		}
+		
+		@widget.ctnr.Tab(sId:"kpiVentral",sTitle:"腹透充分性"){
+			@widget.ctnr.Row(){
+				@widget.ctrl.Button({sId:"VentralDataExport",sLabel:"数据导出",sBtncss:"btn-left",
+               		sIconCss:"fa fa-random", sBtncss:"btn-normal",sOnClick:"VentralDataExport"})
+              @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"kpiVentralChart",sStyle:"width:800px;height:400px;"){}
+					@widget.ctrl.Button({sId:"VentralScoreBtn",sLabel:"得分",sBtncss:"btn-normal",
+               		sStyle:"margin-left:20px;", sOnClick:"initKpiVentralScoreChart"})
+          			@widget.ctrl.Button({sId:"VentralExamBtn",sLabel:"检查率",sBtncss:"btn-normal",
+                 	sStyle:"margin-left:20px;", sOnClick:"initKpiVentralExamChart"})
+         			@widget.ctrl.Button({sId:"VentralStandardBtn",sLabel:"达标率",sBtncss:"btn-normal",
+              		sStyle:"margin-left:20px;", sOnClick:"initVentralStandardChart"})
+				}
+			}
+		}
+		
+		 @widget.ctnr.Tab(sId:"kpiTransport",sTitle:"腹膜转运能力",bVisible : false){
+			@widget.ctnr.Row(){
+              @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"kpiTransportChart",sStyle:"width:1200px;height:400px;"){}
+         			@widget.ctrl.Button({sId:"TransportStandardBtn",sLabel:"转运能力",sBtncss:"btn-normal",
+              		sStyle:"margin-left:20px;", sOnClick:"initTransportChart"})
+				}
+			}
+		}
+		
+		@widget.ctnr.Tab(sId:"kpiComplications",sTitle:"合并症",bVisible : false){
+			@widget.ctnr.Row(){
+              @widget.ctnr.Column(sAlign:"center",sCss:"col-12"){ 
+					@widget.ctnr.Div(sId:"kpiComplicationsChart",sStyle:"width:1200px;height:400px;"){}
+         			@widget.ctrl.Button({sId:"ComplicationsStandardBtn",sLabel:"发生率",sBtncss:"btn-normal",
+              		sStyle:"margin-left:20px;", sOnClick:"initComplicationsChart"})
+				}
+			}
+		} 
+	}
+}
+<script>
+$(function(){
+	// 登陆的是质控中心时 隐藏医院信息图表
+	var orgType = $("#orgType").val();
+	if (orgType == "1") {
+		//加载质控中心端上报完整性
+		initAndSearchDynmicTable();
+		$("#orgInfoDiv").prop('style', 'display: none;');
+	} else {
+		// 加载医院信息图表
+		initHospitalChart();
+	}
+	
+
+	initKpiHbScoreChart();
+	initKpiAlbScoreChart();
+	initKpiCaScoreChart();
+	initKpiPScoreChart();
+	initKpiPthScoreChart();
+	initKpiVentralScoreChart();
+	initTransportChart();
+	initComplicationsChart();
+});
+
+function initAndSearchDynmicTable() {
+	var fnSuccess=function(data) {
+        var columns = [];
+        var columnsdata = [];
+        
+        //表头标题
+        var tempTitle=data.titleList;
+        for(var i=0;i<tempTitle.length;i++) {
+	    	var column={field:tempTitle[i].fieldName, title:tempTitle[i].titleName, align:'center', striped:true}
+            columns.push(column);
+        }
+        
+         //列表数据
+        columnsdata=data.dataList.data;
+		
+        $.fn.bootstrapTable.DynmicTable.resetTable($("#dynmicTable"),{
+            columns:columns,
+            data:columnsdata,
+            sidePagination:'client',
+			pageNumber:1,
+			pageSize:10,
+			pageList:[10,25,50,100]
+        }) 
+    }
+	
+    Ajax.ajax({
+        url:'@url("/workstation/getIntegrityList")',
+        data:{},
+        success:fnSuccess
+    })
+}
+function patientView(reportProject){
+	Dialog.open('@url("/workstation/unreportedPatient")'+ '?reportProject=' + reportProject,{
+		iframeHeight : 500,
+		iframeWidth : 300,
+    	title: "未上报患者信息"
+	});
+}
+
+
+// 医院信息图表
+function initHospitalChart(){
+	Ajax.ajax({
+		url : '@url("/workstation/initHospitalChart")',
+		success : function(data) {
+			loadHospitalChart(data.data);
+		}
+	});
+}
+
+
+// 合并症 柱状图
+function initComplicationsChart(){
+	
+	Ajax.ajax({
+		url : '@url("/workstation/initComplicationsStandardChart")',
+		success : function(data) {
+			initComplicationsStandardChart(data.data);
+		}
+	});
+}
+
+//腹膜转运能力 柱状图
+function initTransportChart(){
+	
+	Ajax.ajax({
+		url : '@url("/workstation/initTransportStandardChart")',
+		success : function(data) {
+			initTransportStandardChart(data.data);
+		}
+	});
+}
+//腹透充分性导出
+function VentralDataExport(){
+	var form = $("<form>");// 定义一个form表单
+	form.attr("style", "display:none");
+	form.attr("target", "");
+	form.attr("method", "post");
+	form.attr("action", '@url("/workstation/ventralDataExport?examType=totalKt")');
+	var inputkeys = $("<input>");
+	inputkeys.attr("type", "hidden");
+	inputkeys.attr("name", "fname");
+	inputkeys.attr("value", "totalKt");
+	
+	$("body").append(form);// 将表单放置在web中
+	form.append(inputkeys);
+	form.submit();// 表单提交
+}
+//腹透充分性 柱状图
+function initKpiVentralScoreChart(){
+	var orderBy ="0";
+	getKpiVentralScoreChart(orderBy);
+}
+//腹透充分性排序
+function getKpiVentralScoreChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiVentralScoreChart")'+ '?examType=totalKt'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiVentralScoreChart(data.data);
+		}
+	});
+}
+
+//腹透充分性检查率  柱状图
+function initKpiVentralExamChart(){
+	var orderBy = "0";
+	getKpiVentralExamChart(orderBy);
+}
+//腹透充分性检查率排序
+function getKpiVentralExamChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiVentralExamChart")'+ '?examType=totalKt'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiVentralExamChart(data.data);
+		}
+	});
+}
+//腹透充分性达标率 柱状图
+function initVentralStandardChart(){
+	var orderBy ="0";
+	getVentralStandardChart(orderBy);
+}
+//腹透充分性达标率排序
+function getVentralStandardChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiVentralStandardChart")'+ '?examType=totalKt'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiVentralStandardChart(data.data);
+		}
+	});
+}
+//Hb导出
+function hbDataExport(){
+	var form = $("<form>");// 定义一个form表单
+	form.attr("style", "display:none");
+	form.attr("target", "");
+	form.attr("method", "post");
+	form.attr("action", '@url("/workstation/hbDataExport?examType=hb")');
+	var inputkeys = $("<input>");
+	inputkeys.attr("type", "hidden");
+	inputkeys.attr("name", "fname");
+	inputkeys.attr("value", "hb");
+	
+	$("body").append(form);// 将表单放置在web中
+	form.append(inputkeys);
+	form.submit();// 表单提交
+}
+// Hb分数 柱状图
+function initKpiHbScoreChart(){
+	var orderBy = "0";
+	getKpiHbScoreChart(orderBy);
+}
+//Hb分数排序
+function getKpiHbScoreChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiHbScoreChart")'+ '?examType=hb'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiHbScoreChart(data.data);
+		}
+	});
+}
+//Hb检查率 柱状图
+function initKpiHbExamChart(){
+	var orderBy = "0";
+	getKpiHbExamChart(orderBy);
+}
+//Hb检查率排序
+function getKpiHbExamChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiHbExamChart")'+ '?examType=hb'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiHbExamChart(data.data);
+		}
+	});
+}
+//Hb达标率 柱状图
+function initKpiHbStandardChart(){
+	var orderBy ="0";
+	getKpiHbStandardChart(orderBy);
+}
+//Hb达标率排序
+function getKpiHbStandardChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiHbStandardChart")'+ '?examType=hb'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiHbStandardChart(data.data);
+		}
+	});
+}
+//Alb导出
+function albDataExport(){
+	var form = $("<form>");// 定义一个form表单
+	form.attr("style", "display:none");
+	form.attr("target", "");
+	form.attr("method", "post");
+	form.attr("action", '@url("/workstation/albDataExport?examType=alb")');
+	var inputkeys = $("<input>");
+	inputkeys.attr("type", "hidden");
+	inputkeys.attr("name", "fname");
+	inputkeys.attr("value", "alb");
+	
+	$("body").append(form);// 将表单放置在web中
+	form.append(inputkeys);
+	form.submit();// 表单提交
+}
+//ALB分数 柱状图
+function initKpiAlbScoreChart(){
+	var orderBy ="0";
+	getKpiAlbScoreChart(orderBy);
+}
+//ALB分数排序
+function getKpiAlbScoreChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiAlbScoreChart")'+ '?examType=alb'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiAlbScoreChart(data.data);
+		}
+	});
+}
+//Alb检查率  柱状图
+function initKpiAlbExamChart(){
+	var orderBy ="0";
+	getKpiAlbExamChart(orderBy);
+}
+//Alb检查率排序
+function getKpiAlbExamChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiHbExamChart")'+ '?examType=alb'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiAlbExamChart(data.data);
+		}
+	});
+}
+//Alb达标率 柱状图
+function initKpiAlbStandardChart(){
+	var orderBy = "0";
+	getKpiAlbStandardChart(orderBy);
+}
+//Alb达标率排序
+function getKpiAlbStandardChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiAlbStandardChart")'+ '?examType=alb'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiAlbStandardChart(data.data);
+		}
+	});
+}
+//Ca导出
+function caDataExport(){
+	var form = $("<form>");// 定义一个form表单
+	form.attr("style", "display:none");
+	form.attr("target", "");
+	form.attr("method", "post");
+	form.attr("action", '@url("/workstation/caDataExport?examType=ca")');
+	var inputkeys = $("<input>");
+	inputkeys.attr("type", "hidden");
+	inputkeys.attr("name", "fname");
+	inputkeys.attr("value", "ca");
+	
+	$("body").append(form);// 将表单放置在web中
+	form.append(inputkeys);
+	form.submit();// 表单提交
+}
+//Ca分数 柱状图
+function initKpiCaScoreChart(){
+	var orderBy ="0";
+	getKpiCaScoreChart(orderBy);
+}
+//Ca分数排序
+function getKpiCaScoreChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiCaScoreChart")'+ '?examType=ca'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiCaScoreChart(data.data);
+		}
+	});
+}
+//Ca检查率  柱状图
+function initKpiCaExamChart(){
+	var orderBy = "0";
+	getKpiCaExamChart(orderBy);
+}
+//Ca检查率排序
+function getKpiCaExamChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiCaExamChart")'+ '?examType=ca'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiCaExamChart(data.data);
+		}
+	});
+}
+//Ca达标率 柱状图
+function initKpiCaStandardChart(){
+	var orderBy = "0";
+	getKpiCaStandardChart(orderBy);
+}
+//Ca达标率排序
+function getKpiCaStandardChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiCaStandardChart")'+ '?examType=ca'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiCaStandardChart(data.data);
+		}
+	});
+}
+//p导出
+function pDataExport(){
+	var form = $("<form>");// 定义一个form表单
+	form.attr("style", "display:none");
+	form.attr("target", "");
+	form.attr("method", "post");
+	form.attr("action", '@url("/workstation/pDataExport?examType=p")');
+	var inputkeys = $("<input>");
+	inputkeys.attr("type", "hidden");
+	inputkeys.attr("name", "fname");
+	inputkeys.attr("value", "p");
+	
+	$("body").append(form);// 将表单放置在web中
+	form.append(inputkeys);
+	form.submit();// 表单提交
+}
+//P分数 柱状图
+function initKpiPScoreChart(){
+	var orderBy = "0";
+	getKpiPScoreChart(orderBy);
+}
+//P分数排序
+function getKpiPScoreChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiPScoreChart")'+ '?examType=p'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiPScoreChart(data.data);
+		}
+	});
+}
+//P检查率  柱状图
+function initKpiPExamChart(){
+	var orderBy = "0";
+	getKpiPExamChart(orderBy);
+}
+//P检查率排序
+function getKpiPExamChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiPExamChart")'+ '?examType=p'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiPExamChart(data.data);
+		}
+	});
+}
+//P达标率 柱状图
+function initKpiPStandardChart(){
+	var orderBy = "0";
+	getKpiPStandardChart(orderBy);
+}
+//P达标率排序
+function getKpiPStandardChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiPStandardChart")'+ '?examType=p'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiPStandardChart(data.data);
+		}
+	});
+}
+//Pth导出
+function pthDataExport(){
+	var form = $("<form>");// 定义一个form表单
+	form.attr("style", "display:none");
+	form.attr("target", "");
+	form.attr("method", "post");
+	form.attr("action", '@url("/workstation/pthDataExport?examType=pth")');
+	var inputkeys = $("<input>");
+	inputkeys.attr("type", "hidden");
+	inputkeys.attr("name", "fname");
+	inputkeys.attr("value", "pth");
+	
+	$("body").append(form);// 将表单放置在web中
+	form.append(inputkeys);
+	form.submit();// 表单提交
+}
+//Pth分数 柱状图
+function initKpiPthScoreChart(){
+	var orderBy ="0";
+	getKpiPthScoreChart(orderBy);
+}
+//Pth分数排序
+function getKpiPthScoreChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiPthScoreChart")'+ '?examType=pth'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiPthScoreChart(data.data);
+		}
+	});
+}
+//Pth检查率  柱状图
+function initKpiPthExamChart(){
+	
+var orderBy = "0";
+getKpiPthExamChart(orderBy);
+}
+//Pth检查率排序
+function getKpiPthExamChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiPthExamChart")'+ '?examType=pth'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiPthExamChart(data.data);
+		}
+	});
+}
+
+//Pth达标率 柱状图
+function initKpiPthStandardChart(){
+	var orderBy ="0";
+	getKpiPthStandardChart(orderBy);
+}
+//Pth达标率排序
+function getKpiPthStandardChart(orderBy){
+	Ajax.ajax({
+		url : '@url("/workstation/searchKpiPthStandardChart")'+ '?examType=pth'+'&orderBy='+orderBy,
+		success : function(data) {
+			searchKpiPthStandardChart(data.data);
+		}
+	});
+}
+//加载医院列表图表
+function loadHospitalChart(data){
+	var myChart = echarts.init(document.getElementById('orgInfoChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].name);
+		dataCount.push(data.eChartCodeFormList[k].value);
+	}
+    option = {
+   	    title : {
+   	    	text: '医院信息',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis'
+   	    },
+   	   
+
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'数目',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+// 加载Hb得分柱状图
+function searchKpiHbScoreChart(data){
+	var myChart = echarts.init(document.getElementById('kpiHbChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Hb得分',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	  	     formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+	           		ret += '<br/>' + '得分' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+	            }
+	   	    	return ret;
+	
+	    	}
+   	    },
+   	   
+      	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '分数排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiHbScoreChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiHbScoreChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	            axisLabel : {
+   	            	interval : 0,
+   	            	rotate : -45,
+   	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'得分',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+// 加载Hb检查率柱状图
+function searchKpiHbExamChart(data){
+	var myChart = echarts.init(document.getElementById('kpiHbChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Hb检查率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '检查率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+   	 toolbox: {
+         feature : {
+             myTool : {
+                 show : true,
+                 title : '检查率排序',
+                 icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                 onclick : function (){
+                	 getKpiHbExamChart("1");
+                 }
+             }, 
+             myTool2 : {
+                 show : true,
+                 title : '还原',
+                 icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                 onclick : function (){
+                	 getKpiHbExamChart("0");
+                 }
+             }, 
+             saveAsImage : {
+            	 show: true,
+            	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+            	 }
+         }
+     },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'检查率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载Hb达标率柱状图
+function searchKpiHbStandardChart(data){
+	var myChart = echarts.init(document.getElementById('kpiHbChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Hb达标率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '达标率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+
+        	}
+   	    },
+   	   
+     	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '达标率排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiHbStandardChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiHbStandardChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'达标率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载ALB得分柱状图
+function searchKpiAlbScoreChart(data){
+	var myChart = echarts.init(document.getElementById('kpiAlbChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Alb得分',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '得分' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+     	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '分数排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiAlbScoreChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiAlbScoreChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	            axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'得分',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载Alb检查率柱状图
+function searchKpiAlbExamChart(data){
+	var myChart = echarts.init(document.getElementById('kpiAlbChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Alb检查率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '检查率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+   	 toolbox: {
+         feature : {
+             myTool : {
+                 show : true,
+                 title : '检查率排序',
+                 icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                 onclick : function (){
+                	 getKpiAlbExamChart("1");
+                 }
+             }, 
+             myTool2 : {
+                 show : true,
+                 title : '还原',
+                 icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                 onclick : function (){
+                	 getKpiAlbExamChart("0");
+                 }
+             }, 
+             saveAsImage : {
+            	 show: true,
+            	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+            	 }
+         }
+     },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'检查率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载Alb达标率柱状图
+function searchKpiAlbStandardChart(data){
+	var myChart = echarts.init(document.getElementById('kpiAlbChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Alb达标率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '达标率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '达标率排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiAlbStandardChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiAlbStandardChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'达标率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载Ca得分柱状图
+function searchKpiCaScoreChart(data){
+	var myChart = echarts.init(document.getElementById('kpiCaChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Ca得分',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '得分' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '分数排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiCaScoreChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiCaScoreChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'得分',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载Ca检查率柱状图
+function searchKpiCaExamChart(data){
+	debugger
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Ca检查率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '检查率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+   	 toolbox: {
+         feature : {
+             myTool : {
+                 show : true,
+                 title : '检查率排序',
+                 icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                 onclick : function (){
+                	 getKpiCaExamChart("1");
+                 }
+             }, 
+             myTool2 : {
+                 show : true,
+                 title : '还原',
+                 icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                 onclick : function (){
+                	 getKpiCaExamChart("0");
+                 }
+             }, 
+             saveAsImage : {
+            	 show: true,
+            	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+            	 }
+         }
+     },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'检查率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载Ca达标率柱状图
+function searchKpiCaStandardChart(data){
+	var myChart = echarts.init(document.getElementById('kpiCaChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Ca达标率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '达标率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '达标率排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiCaStandardChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiCaStandardChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'达标率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载P得分柱状图
+function searchKpiPScoreChart(data){
+	var myChart = echarts.init(document.getElementById('kpiPChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'P得分',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '得分' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '分数排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiPScoreChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiPScoreChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'得分',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载P检查率柱状图
+function searchKpiPExamChart(data){
+	var myChart = echarts.init(document.getElementById('kpiPChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'P检查率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '检查率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	 toolbox: {
+         feature : {
+             myTool : {
+                 show : true,
+                 title : '检查率排序',
+                 icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                 onclick : function (){
+                	 getKpiPExamChart("1");
+                 }
+             }, 
+             myTool2 : {
+                 show : true,
+                 title : '还原',
+                 icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                 onclick : function (){
+                	 getKpiPExamChart("0");
+                 }
+             }, 
+             saveAsImage : {
+            	 show: true,
+            	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+            	 }
+         }
+     },
+
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'检查率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载P达标率柱状图
+function searchKpiPStandardChart(data){
+	var myChart = echarts.init(document.getElementById('kpiPChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'P达标率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '达标率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '达标率排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiPStandardChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiPStandardChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'达标率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载Pth得分柱状图
+function searchKpiPthScoreChart(data){
+	var myChart = echarts.init(document.getElementById('kpiPthChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Pth得分',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '得分' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '分数排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiPthScoreChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiPthScoreChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'得分',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载Pth检查率柱状图
+function searchKpiPthExamChart(data){
+	var myChart = echarts.init(document.getElementById('kpiPthChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Pth检查率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '检查率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+      	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '检查率排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiPthExamChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiPthExamChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'检查率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载Pth达标率柱状图
+function searchKpiPthStandardChart(data){
+	var myChart = echarts.init(document.getElementById('kpiPthChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: 'Pth达标率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '达标率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '达标率排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiPthStandardChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiPthStandardChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'达标率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载腹透充分性柱状图
+function searchKpiVentralScoreChart(data){
+	var myChart = echarts.init(document.getElementById('kpiVentralChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: '腹透充分性得分',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '得分' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '分数排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getKpiVentralScoreChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getKpiVentralScoreChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+    	        {
+    	            type : 'category',
+    	            data : dataAxis,
+       	         	axisLabel : {
+    	            	interval : 0,
+    	            	rotate : -45,
+    	            }
+    	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'达标率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载腹透充分性检查率柱状图
+function searchKpiVentralExamChart(data){
+	var myChart = echarts.init(document.getElementById('kpiVentralChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+	}
+    option = {
+   	    title : {
+   	    	text: '腹透充分性检查率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '检查率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+   	 toolbox: {
+         feature : {
+             myTool : {
+                 show : true,
+                 title : '检查率排序',
+                 icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                 onclick : function (){
+                	 getKpiVentralExamChart("1");
+                 }
+             }, 
+             myTool2 : {
+                 show : true,
+                 title : '还原',
+                 icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                 onclick : function (){
+                	 getKpiVentralExamChart("0");
+                 }
+             }, 
+             saveAsImage : {
+            	 show: true,
+            	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+            	 }
+         }
+     },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'检查率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载腹透充分性达标率柱状图
+function searchKpiVentralStandardChart(data){
+	var myChart = echarts.init(document.getElementById('kpiVentralChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataName = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].orgIndex);
+		dataCount.push(data.eChartCodeFormList[k].value);
+		dataName.push(data.eChartCodeFormList[k].name);
+		
+	}
+    option = {
+   	    title : {
+   	    	text: '腹透充分性达标率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis',
+	   	    formatter : function (params) {
+	   	    	var res = params[0].dataIndex;
+	   	    	var ret = dataName[res];
+	   	    	for (var i = 0, l = params.length; i < l; i++) {
+               		ret += '<br/>' + '达标率' + ' : ' + params[i].value;//鼠标悬浮显示的字符串内容
+                }
+	   	    	return ret;
+        	}
+   	    },
+   	   
+    	 toolbox: {
+             feature : {
+                 myTool : {
+                     show : true,
+                     title : '达标率排序',
+                     icon : 'image://http://cdns2.freepik.com/free-photo/sort-descending_318-52854.jpg',
+                     onclick : function (){
+                    	 getVentralStandardChart("1");
+                     }
+                 }, 
+                 myTool2 : {
+                     show : true,
+                     title : '还原',
+                     icon : 'image://http://img32.photophoto.cn/20140716/0006019724330369_s.jpg',
+                     onclick : function (){
+                    	 getVentralStandardChart("0");
+                     }
+                 }, 
+                 saveAsImage : {
+                	 show: true,
+                	 icon : 'image://http://cdns2.freepik.com/free-photo/black-folder-with-equal-sign_318-60683.jpg',
+                	 }
+             }
+         },
+   	    xAxis : [
+   	        {
+   	            type : 'category',
+   	            data : dataAxis,
+   	         	axisLabel : {
+	            	interval : 0,
+	            	rotate : -45,
+	            }
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	            name : '比例/%'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'达标率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+//加载腹膜转运能力柱状图
+function initTransportStandardChart(data){
+	var myChart = echarts.init(document.getElementById('kpiTransportChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+/*     for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].name);
+		dataCount.push(data.eChartCodeFormList[k].value);
+	} */
+    option = {
+    	    tooltip : {
+    	        trigger: 'axis',
+    	        axisPointer : {        
+    	            type : 'shadow'        
+    	        }
+    	    },
+    	    legend: {
+    	        data:['高转运','高平均转运','低平均转运','低转运']
+    	    },
+    	    grid: {
+    	        left: '3%',
+    	        right: '4%',
+    	        bottom: '3%',
+    	        containLabel: true
+    	    },
+    	    xAxis : [
+    	        {
+    	        	axisLabel:{interval: 0},
+    	            type : 'category',
+    	            data : ['武汉市第一医院','武汉市中心医院后湖院区','武汉市中心医院南京路院区','武汉天霖中西医结合肾病医院','武汉市新洲区中医肾病专科医院'],
+    	   	         axisLabel:{ 
+    	   	   	         formatter : function(v) {  
+    	   	   	          if (v == '武汉市第一医院') {return '1'}  
+    	   	   	          else if (v =='武汉市中心医院后湖院区' ) {return '2'}  
+    	   	   	          else if (v =='武汉市中心医院南京路院区' ) {return '3'}
+    	   	   	       	  else if (v =='武汉天霖中西医结合肾病医院' ) {return '4'} 
+    	   	   	          else if (v =='武汉市新洲区中医肾病专科医院' ) {return '5'} ;  
+    	   	   	    		  }
+    	   	   	      	  } 
+    	        }
+    	    ],
+    	    yAxis : [
+    	        {
+    	            type : 'value'
+    	        }
+    	    ],
+    	    series : [
+    	        {
+    	            name:'高转运',
+    	            type:'bar',
+    	            data: [98.23,94.36,89.88,80.25,85.26]
+    	        },
+    	        {
+    	            name:'高平均转运',
+    	            type:'bar',
+    	            stack: '',
+    	            data:[88.53,90.12,80.17,85.45,88.36]
+    	        },
+    	        {
+    	            name:'低平均转运',
+    	            type:'bar',
+    	            data:[97.23,91.49,89.38,80.20,78.27]
+    	        },
+    	        {
+    	            name:'低转运',
+    	            type:'bar',
+    	            data:[96.29,91.33,88.15,90.25,87.12]
+    	        },
+    	    ]
+    	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//加载合并症柱状图
+function initComplicationsStandardChart(data){
+	var myChart = echarts.init(document.getElementById('kpiComplicationsChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var k=0;k<data.eChartCodeFormList.length;k++){
+		dataAxis.push(data.eChartCodeFormList[k].name);
+		dataCount.push(data.eChartCodeFormList[k].value);
+	}
+    option = {
+   	    title : {
+   	    	text: '合并症发生率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis'
+   	    },
+   	   
+
+   	    xAxis : [
+   	        {
+   	        	axisLabel:{interval: 0},
+   	            type : 'category',
+   	            data : dataAxis,
+      	         axisLabel:{ 
+      	   	         formatter : function(v) {  
+      	   	          if (v == '武汉市第一医院') {return '1'}  
+      	   	          else if (v =='武汉市中心医院后湖院区' ) {return '2'}  
+      	   	          else if (v =='武汉市中心医院南京路院区' ) {return '3'}
+      	   	       	  else if (v =='武汉天霖中西医结合肾病医院' ) {return '4'} 
+      	   	          else if (v =='武汉市新洲区中医肾病专科医院' ) {return '5'} ;  
+      	   	    		  }
+      	   	      	  } 
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'发生率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+</script>

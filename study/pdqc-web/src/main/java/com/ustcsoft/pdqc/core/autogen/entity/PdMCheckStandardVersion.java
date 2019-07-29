@@ -1,0 +1,241 @@
+//******************************************************************************
+// 版权所有(c) 2018，科大国创软件股份有限公司，保留所有权利。
+//******************************************************************************
+
+package com.ustcsoft.pdqc.core.autogen.entity;
+
+import com.ustcsoft.mybatis.autogen.entity.AutoGenEntity;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+public class PdMCheckStandardVersion extends PdMCheckStandardVersionKey implements AutoGenEntity {
+    /**
+     * 标准名 (pd_m_check_standard_version.standard_name)
+     */
+    private String standardName;
+
+    /**
+     * 质控中心编号 (pd_m_check_standard_version.qc_center_no)
+     */
+    private String qcCenterNo;
+
+    /**
+     * 删除标志 (pd_m_check_standard_version.del_flag)
+     */
+    private String delFlag;
+
+    /**
+     * 表示顺序 (pd_m_check_standard_version.order_index)
+     */
+    private Long orderIndex;
+
+    /**
+     * 登录人 (pd_m_check_standard_version.created_by)
+     */
+    private String createdBy;
+
+    /**
+     * 登录时间 (pd_m_check_standard_version.date_created)
+     */
+    private Date dateCreated;
+
+    /**
+     * 更新人 (pd_m_check_standard_version.modified_by)
+     */
+    private String modifiedBy;
+
+    /**
+     * 更新时间 (pd_m_check_standard_version.date_modified)
+     */
+    private Date dateModified;
+
+    /**
+     * 更新回数 (pd_m_check_standard_version.row_version)
+     */
+    private Long rowVersion;
+
+    /**
+     * 更新标记.
+     */ 
+    protected final Map<String, Boolean> _selectiveMark = new HashMap<String, Boolean>();
+
+    /**
+     * 取得：标准名 (pd_m_check_standard_version.standard_name)
+     *
+     * @return standardName String
+     */
+    public String getStandardName() {
+        return standardName;
+    }
+
+    /**
+     * 设定：标准名 (pd_m_check_standard_version.standard_name)
+     *
+     * @param standardName String
+     */
+    public void setStandardName(String standardName) {
+        this.standardName = standardName;
+        this._selectiveMark.put("standardName", true);
+    }
+
+    /**
+     * 取得：质控中心编号 (pd_m_check_standard_version.qc_center_no)
+     *
+     * @return qcCenterNo String
+     */
+    public String getQcCenterNo() {
+        return qcCenterNo;
+    }
+
+    /**
+     * 设定：质控中心编号 (pd_m_check_standard_version.qc_center_no)
+     *
+     * @param qcCenterNo String
+     */
+    public void setQcCenterNo(String qcCenterNo) {
+        this.qcCenterNo = qcCenterNo;
+        this._selectiveMark.put("qcCenterNo", true);
+    }
+
+    /**
+     * 取得：删除标志 (pd_m_check_standard_version.del_flag)
+     *
+     * @return delFlag String
+     */
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    /**
+     * 设定：删除标志 (pd_m_check_standard_version.del_flag)
+     *
+     * @param delFlag String
+     */
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+        this._selectiveMark.put("delFlag", true);
+    }
+
+    /**
+     * 取得：表示顺序 (pd_m_check_standard_version.order_index)
+     *
+     * @return orderIndex Long
+     */
+    public Long getOrderIndex() {
+        return orderIndex;
+    }
+
+    /**
+     * 设定：表示顺序 (pd_m_check_standard_version.order_index)
+     *
+     * @param orderIndex Long
+     */
+    public void setOrderIndex(Long orderIndex) {
+        this.orderIndex = orderIndex;
+        this._selectiveMark.put("orderIndex", true);
+    }
+
+    /**
+     * 取得：登录人 (pd_m_check_standard_version.created_by)
+     *
+     * @return createdBy String
+     */
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    /**
+     * 设定：登录人 (pd_m_check_standard_version.created_by)
+     *
+     * @param createdBy String
+     */
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+        this._selectiveMark.put("createdBy", true);
+    }
+
+    /**
+     * 取得：登录时间 (pd_m_check_standard_version.date_created)
+     *
+     * @return dateCreated Date
+     */
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    /**
+     * 设定：登录时间 (pd_m_check_standard_version.date_created)
+     *
+     * @param dateCreated Date
+     */
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+        this._selectiveMark.put("dateCreated", true);
+    }
+
+    /**
+     * 取得：更新人 (pd_m_check_standard_version.modified_by)
+     *
+     * @return modifiedBy String
+     */
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    /**
+     * 设定：更新人 (pd_m_check_standard_version.modified_by)
+     *
+     * @param modifiedBy String
+     */
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+        this._selectiveMark.put("modifiedBy", true);
+    }
+
+    /**
+     * 取得：更新时间 (pd_m_check_standard_version.date_modified)
+     *
+     * @return dateModified Date
+     */
+    public Date getDateModified() {
+        return dateModified;
+    }
+
+    /**
+     * 设定：更新时间 (pd_m_check_standard_version.date_modified)
+     *
+     * @param dateModified Date
+     */
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
+        this._selectiveMark.put("dateModified", true);
+    }
+
+    /**
+     * 取得：更新回数 (pd_m_check_standard_version.row_version)
+     *
+     * @return rowVersion Long
+     */
+    public Long getRowVersion() {
+        return rowVersion;
+    }
+
+    /**
+     * 设定：更新回数 (pd_m_check_standard_version.row_version)
+     *
+     * @param rowVersion Long
+     */
+    public void setRowVersion(Long rowVersion) {
+        this.rowVersion = rowVersion;
+        this._selectiveMark.put("rowVersion", true);
+    }
+
+    /**
+     * 更新标记.
+     * @return MAP 
+     */ 
+    public Map<String, Boolean> get_selectiveMark() {
+        return this._selectiveMark;
+    }
+}

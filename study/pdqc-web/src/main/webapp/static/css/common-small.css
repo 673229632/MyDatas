@@ -1,0 +1,69 @@
+/*行高缩小版样式区域--开始*/
+.form-control:not(.input-lg){
+	height:30px;
+}
+.btn:not(.btn-lg){
+	padding:4px 12px !important;
+}
+.label-rythm{
+	height:30px;
+	line-height:30px;
+}
+td.editable-column-rythm {
+	padding: 2px 0px 3px 20px !important;
+}
+td.editable-column-rythm .group-rythm {
+	padding: 0px;
+	margin: 0px;
+	height: 29px;
+}
+.form-group {
+	margin-bottom: 10px;
+}
+textarea.form-control{
+	height:auto !important;
+}
+.content-rythm{
+	padding-top:15px;
+}
+.jstree{
+	margin-bottom:10px;
+}
+.box-rythm {
+	margin: 0px 0px 10px 0px;
+	padding: 10px 10px 0px 10px !important;
+}
+.box-rythm .btn {
+	margin-bottom: 10px !important;
+}
+.form-control-feedback{
+	height:30px;
+	width:30px;
+	line-height:30px;
+}
+label.icheck-label{
+	margin-top:2px;
+	margin-bottom:2px;
+}
+.check-rythm{
+	margin-bottom:2px;
+}
+.modal-header, .modal-footer {
+	padding: 8px;
+}
+.bootstrap-dialog-close-button .close {
+	margin-top: -6px;
+	font-size: 28px;
+}
+.modal-body {
+	padding: 15px 15px 5px 15px;
+}
+/*
+.input-lg{
+	height:38px;
+}
+.input-lg + .form-control-feedback{
+	height: 38px;
+	line-height: 38px !important;
+}
+/*行高缩小版样式区域--结束*/

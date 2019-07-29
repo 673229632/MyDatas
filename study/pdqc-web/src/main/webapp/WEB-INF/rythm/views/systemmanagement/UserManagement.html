@@ -1,0 +1,181 @@
+@extends(views.common.MainView, v_sTitle:"用户管理")
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.lotus.rythm.widget.bootstrapselect.*;
+
+@args String topOrgNo
+@args List<Code> userTypeList
+
+@widget.ctnr.Div(sCss:"col-xs-4"){
+	@widget.ctnr.Form("form1"){
+		@widget.ctrl.ZTree(sId:"tree", bShowIcon:true, bExpendTree:true, bShowFilter:false, sDataUrl:"/organizationList/getTree")
+	}
+	@widget.ctnr.BtnBox(sAlign:"right"){
+		@widget.ctrl.Button({sLabel:"刷新", sBtncss:"btn-normal", sOnClick:"refresh", sId:"refreshBtn"})
+	}
+}
+
+
+@widget.ctnr.Div(sCss:"col-xs-8"){
+	@widget.ctnr.Form("search_form"){
+		@widget.ctrl.Hidden({sLabel:"当前节点:", sName:"currentNode", sId:"currentNode",sGroupCss:"col-4", sMaxLength:"20"})
+		@widget.ctrl.Input({sLabel:"登录名:", sName:"loginName", sId:"loginName", sGroupCss:"col-4 hanzi4", sMaxLength:"20"})
+		@widget.ctrl.Input({sLabel:"用户姓名:", sName:"userRealName", sId:"userRealName", sGroupCss:"col-4 hanzi4", sMaxLength:"20"})
+		@widget.ctrl.SelectPicker({sLabel:"用户类型:", sName:"userType", sId:"userType", sGroupCss:"col-4 hanzi4", oOptions:userTypeList})
+	}
+	
+	@widget.ctnr.BtnBox(sAlign:"right"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"查询", sBtncss:"btn-normal", sId:"searchUserBtn"})
+			@widget.ctrl.Button({sLabel:"新增", sBtncss:"btn-normal", sOnClick:"addUser", sId:"addUserBtn"})
+			@widget.ctrl.Button({sLabel:"批量删除", sBtncss:"btn-normal", sOnClick:"batchDelete", sId:"delBatchBtn"})
+		}
+	}
+	
+	@widget.ctrl.Table(sId:"search-result", sQueryParamFunction:"createQueryParams", sUrl:"/userManagement/getUserData", iPageSize:10, sSidePagination:"server"){
+		@widget.ctnr.Columns(){
+			{field: 'state', align:'center', checkbox: true},
+			{field: 'sno', align:'center', title: 'No', formatter: function (value, row, index){
+					return index+1;
+				}
+			},
+			{title: '操作', formatter: function (value, row, index){
+				return "<div><input type='button' style='margin-left: 5px' onclick='editUser(\""+row.userNo+"\")' value='编辑' title='编辑' /><input type='button' style='margin-left: 5px' onclick='delUser(\""+row.userNo+"\")' value='删除' title='删除' /><input type='button' style='margin-left: 5px' onclick='remakePsd(\""+row.userNo+"\")' value='重置密码' title='重置密码' /></div>";
+				}
+      		},
+			{field: 'userNo', title: '用户编号', visible:false},
+			{field: 'loginName', title: '登录名'},
+			{field: 'userRealName', title: '用户姓名'},
+			{field: 'userType', title: '用户类型编号', visible:false},
+			{field: 'userTypeName', title: '用户类型'},
+			{field: 'orgNo', title: '所属机构编号', visible:false},
+			{field: 'orgName', title: '所属机构'},
+			{field: 'employeeName', title: '关联职员'},
+		}
+	}
+}
+
+<!-- 脚本 -->
+<script>
+
+$(function(){
+	
+})
+
+// 刷新
+function refresh() {
+	location.reload();
+}
+
+// 新增
+function addUser() {
+	Dialog.open('@url("/userManagement/addUser")', {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:'新增用户'
+	});
+}
+
+// 编辑
+function editUser(userNo) {
+	
+	Dialog.open('@url("/userManagement/editUser?userNo=")'+userNo, {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:'编辑用户'
+	});
+}
+
+// 删除
+function delUser(userNo) {
+	Ajax.ajax({
+		url : '@url("/userManagement/delUser")',
+		data : {userNo : userNo},
+		success : function(data) {
+			if (data.successCount > 0) {
+				parent.MsgBox.success(data.retMsg,function() {
+					location.reload();
+				});
+				
+			} else {
+				parent.MsgBox.warning(data.retMsg,function() {
+					location.reload();
+				});
+			}
+		}
+	});
+}
+
+// 批量删除
+function batchDelete() {
+	var changerows = $('#search-result').bootstrapTable('getSelections');
+	if (changerows.length > 0) {
+		var codes = "";
+		for (var i=0; i < changerows.length; i++) {
+			codes += changerows[i].userNo + ",";
+		}
+		codes.substr(0,codes.length-1);
+		Ajax.ajax({
+			url : '@url("/userManagement/batchDelete")',
+			data : {userNos : codes},
+			success : function(data) {
+				if (data.successCount > 0) {
+					parent.MsgBox.success(data.retMsg,function() {
+						location.reload();
+					});
+				} else {
+					parent.MsgBox.warning(data.retMsg,function() {
+						location.reload();
+					});
+				}
+			}
+		});
+	} else {
+		MsgBox.warning("请选择用户");
+	}
+}
+// 重置密码
+function remakePsd(userNo) {
+	Ajax.ajax({
+		url : '@url("/userManagement/remakePsd")',
+		data : {userNo : userNo},
+		success : function(data) {
+			if (data.successCount > 0) {
+				parent.MsgBox.success(data.retMsg,function() {
+					location.reload();
+				});
+				
+			} else {
+				parent.MsgBox.warning(data.retMsg,function() {
+					location.reload();
+				});
+			}
+		}
+	});
+}
+
+// 查询
+$("#searchUserBtn").on('click',function(){
+	freshtable();
+})
+
+// 刷新表格
+function freshtable(){
+	$('#search-result').bootstrapTable('refresh');
+}
+
+// 点击树结构的项目获取对应的明细
+$("#tree").on('ztree.click', function(event, treeNode) {
+	var orgNo = treeNode.id;
+	var topOrgNo = $('#topOrgNo').val();
+	// 记录点击的机构编号
+	$('#currentNode').val(orgNo);
+	freshtable();
+})
+
+
+//列表检索参数
+function createQueryParams(params) {
+    return buildQueryParam('#search_form', params);
+}
+
+</script>

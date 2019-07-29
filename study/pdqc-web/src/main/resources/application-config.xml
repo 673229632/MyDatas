@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 配置文件 -->
+    <beans profile="default">
+        <bean class="com.ustcsoft.marsfw.spring.context.SpringConfigPlaceholder">
+            <property name="locations" value="classpath:application.properties" />
+        </bean>
+    </beans>
+    <beans>
+        <!-- 扫描所有除了Controller组件到IOC容器 -->
+        <context:component-scan base-package="com.ustcsoft.pdqc">
+            <!-- 默认不扫描Controller注解 -->
+            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+        </context:component-scan>
+
+        <!-- I18n多国语言配置 -->
+        <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+            <!-- 消息不存在，就使用CODE -->
+            <property name="useCodeAsDefaultMessage" value="true" />
+            <!-- 消息文件位置 -->
+            <property name="basenames">
+                <list>
+                    <value>i18n/label</value>
+                    <value>i18n/message</value>
+                </list>
+            </property>
+        </bean>
+
+        <!-- 缓存配置 -->
+        <import resource="classpath:application-config-cache.xml" />
+        <!-- 导入权限配置 -->
+        <import resource="classpath:application-config-shiro.xml" />
+        <!-- 导入数据库配置 -->
+        <import resource="classpath:application-config-db.xml" /> 
+    </beans>
+</beans>

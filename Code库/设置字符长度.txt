@@ -1,0 +1,26 @@
+
+//参数使用
+formatter:function (value, row, index){return setLengthLimit(value, row, index,4);}
+
+//设置字符长度
+function setLengthLimit(value, row, index,length){
+     if(value == null){
+         return "<div class='td-ellipsis' title=''></div>";
+     }else if(value.length>length){
+         return "<div class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+     }else{
+         return "<div class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+     }
+}
+
+
+//设置字符长度(含div宽度)
+function setLengthLimit2(value, row, index,length,width){
+     if(value == null){
+         return "<div style='width:"+width+"px' class='td-ellipsis' title=''></div>";
+     }else if(value.length>length){
+         return "<div style='width:"+width+"px' class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+     }else{
+         return "<div style='width:"+width+"px' class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+     }
+}

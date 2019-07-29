@@ -1,0 +1,37 @@
+
+function getRangeTime(){
+	var timezone = $("#timezone").find(".selectpicker").selectpicker('val');//取值
+	  debugger;
+	Ajax.ajax({
+		url : '@url("/pdappointmentinfo/getrangetime")',
+		data : {
+			code:timezone
+		},
+		type:"post",
+		success : function(data) {
+		    $("#timerange").find("select").empty();
+            $.each(data.data,function(i,code){ 
+           		$("#timerange select").append("<option value='"+code.value+"'>"+code.text+"</option>"); 
+            }); 
+		    $('#timerange select').selectpicker('refresh');
+		    $("#timerange select").trigger("change");
+		}
+	})
+}
+
+
+	/**
+     * 后台.
+     * 
+     * @param code String
+     * @return JacksonListReturn
+     */
+    @RequestMapping(value = "/getrangetime", method = RequestMethod.POST)
+    @ControllerID(DBScreenID.PD_CHECKTIME_REGISTER_D)
+    public JacksonDataReturn<List<Code>> getRangeTime(String code) {
+        JacksonDataReturn<List<Code>> jsonlist = new JacksonDataReturn<>();
+        List<Code> timerange = new ArrayList<>();
+			//方法
+        jsonlist.setData(timerange);
+        return jsonlist;
+    }

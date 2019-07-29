@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<master>
+	<table>
+		<tableName>M_TIMEZONE</tableName>
+		<tableField>
+			<fieldName>Code</fieldName>
+			<fieldType>vachar</fieldType>
+			<fieldValue>001</fieldValue>
+			<readOnly>true</readOnly>
+			<show>true</show>
+			<showType>text</showType>
+			<width>50</width>
+		</tableField>
+	</table>
+	<table>
+		<tableName>M_TIMEZONE</tableName>
+		<tableField>
+			<fieldName>Code</fieldName>
+			<fieldType>vachar</fieldType>
+			<fieldValue>001</fieldValue>
+			<readOnly>true</readOnly>
+			<show>true</show>
+			<showType>text</showType>
+			<width>50</width>
+		</tableField>
+	</table>
+</master>

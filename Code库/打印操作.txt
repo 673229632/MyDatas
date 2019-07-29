@@ -1,0 +1,87 @@
+
+	//打印
+	function doprint(){
+		debugger;
+		$('#search_form').bootstrapValidator('validate');
+		var sConidtion = $('#search_form').serializeObject();
+			// var url1 = getFullCanvasDataURL("showChart1");//也可以直接用echarts的getDataURL
+
+		var url1 = myChart.getDataURL({
+			type:'jpeg',
+			pixelRatio: 0.8,
+			backgroundColor: '#fff'
+		});
+		var isfollowup = $("#isfollowup").find(".selectpicker").selectpicker('val');//取值
+		sConidtion.url1 = url1;
+		sConidtion.isfollowup = isfollowup;
+		var LODOP; //声明为全局变量
+		LODOP=getLodop();  
+		LODOP.PRINT_INIT("打印腹透规模趋势统计");
+		Ajax.ajax({
+			url : '@url("/pdpatientoutcome/doPrint")',
+			data :sConidtion,
+			type:"post",
+			success : function(data) {
+				var strHTML=data.retMsg;
+				LODOP.ADD_PRINT_HTM(20,20,350,"100%",strHTML); 
+				LODOP.PREVIEW();
+			}
+		});
+	}
+
+
+
+	/**
+     * 打印.
+     * 
+     * @param condition PdPatientStatisticsCondForm
+     * @return JacksonCountReturn
+     */
+    @ControllerID(DBScreenID.PATIENTOUTCOME_TONG_LOOK)
+    @RequestMapping(value = "/doPrint", method = RequestMethod.POST)
+    public JacksonCountReturn doPrint(PatientOutcomeCondForm condition) {
+        JacksonCountReturn result  = new JacksonCountReturn();
+        String str = "";
+        Map<String, String> resmap = pdpatientOutcomeService.searchPrintData(condition);
+        try {
+            String tempStr = "";
+            InputStream is = this.getClass()
+                    .getResourceAsStream("/META-INF/resources/WEB-INF/template/PdPatientOutcomeBill.html");// 读取模块文件
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+            // 循环添加打印内容
+            while ((tempStr = br.readLine()) != null) {
+                // 当内容包含para 则为参数 替换为map里对应的值
+                if (tempStr.contains("para")) {
+                    tempStr = resmap.get(tempStr.trim().replaceAll("'", "").replaceAll("\t", ""));
+                    // 防止空数值打印出“null” 设置成空字符串
+                    if (Tools.isblank(tempStr)) {
+                        tempStr = "";
+                    }
+                    // 去空格
+                    if (!Tools.isblank(tempStr)) {
+                        tempStr = tempStr.trim();
+                    }
+                }
+                str = str + tempStr;
+            }
+            is.close();
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        result.setRetMsg(str);
+        return result;
+    }
+	
+	
+	/**
+     * 打印.
+     * 
+     */
+    @Override
+    public Map<String, String> searchPrintData(PatientOutcomeCondForm condition) {
+        Map<String, String> resmap = new HashMap<String, String>();
+        resmap.put("paraurl1", condition.getUrl1());
+        
+        return resmap;
+    }

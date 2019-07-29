@@ -1,0 +1,4 @@
+public static String getPrettyNumber(String number) {  
+    return BigDecimal.valueOf(Double.parseDouble(number))  
+            .stripTrailingZeros().toPlainString();  
+}  

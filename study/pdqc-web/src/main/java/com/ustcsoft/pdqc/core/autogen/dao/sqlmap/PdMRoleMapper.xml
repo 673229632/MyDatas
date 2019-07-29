@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdMRoleMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdMRole">
+    <id column="role_no" jdbcType="VARCHAR" property="roleNo" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="org_no" jdbcType="VARCHAR" property="orgNo" />
+    <result column="role_flag" jdbcType="CHAR" property="roleFlag" />
+    <result column="role_desp" jdbcType="VARCHAR" property="roleDesp" />
+    <result column="order_index" jdbcType="BIGINT" property="orderIndex" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="BIGINT" property="rowVersion" />
+    <result column="screen_id" jdbcType="VARCHAR" property="screenId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    role_no, role_name, org_no, role_flag, role_desp, order_index, del_flag, created_by, 
+    date_created, modified_by, date_modified, row_version, screen_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRoleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_m_role
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRoleKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_m_role
+    where role_no = #{roleNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRoleKey">
+    delete from pd_m_role
+    where role_no = #{roleNo,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRoleExample">
+    delete from pd_m_role
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRole">
+    insert into pd_m_role (role_no, role_name, org_no, 
+      role_flag, role_desp, order_index, 
+      del_flag, created_by, date_created, 
+      modified_by, date_modified, row_version, 
+      screen_id)
+    values (#{roleNo,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{orgNo,jdbcType=VARCHAR}, 
+      #{roleFlag,jdbcType=CHAR}, #{roleDesp,jdbcType=VARCHAR}, #{orderIndex,jdbcType=BIGINT}, 
+      #{delFlag,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{dateCreated,jdbcType=TIMESTAMP}, 
+      #{modifiedBy,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, #{rowVersion,jdbcType=BIGINT}, 
+      #{screenId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRole">
+    insert into pd_m_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleNo != null">
+        role_no,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="orgNo != null">
+        org_no,
+      </if>
+      <if test="roleFlag != null">
+        role_flag,
+      </if>
+      <if test="roleDesp != null">
+        role_desp,
+      </if>
+      <if test="orderIndex != null">
+        order_index,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+      <if test="screenId != null">
+        screen_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleNo != null">
+        #{roleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgNo != null">
+        #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="roleFlag != null">
+        #{roleFlag,jdbcType=CHAR},
+      </if>
+      <if test="roleDesp != null">
+        #{roleDesp,jdbcType=VARCHAR},
+      </if>
+      <if test="orderIndex != null">
+        #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="screenId != null">
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRoleExample" resultType="java.lang.Integer">
+    select count(*) from pd_m_role
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_m_role
+    <set>
+      <if test="record._selectiveMark.roleNo != null">
+        role_no = #{record.roleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.roleName != null">
+        role_name = #{record.roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orgNo != null">
+        org_no = #{record.orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.roleFlag != null">
+        role_flag = #{record.roleFlag,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.roleDesp != null">
+        role_desp = #{record.roleDesp,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orderIndex != null">
+        order_index = #{record.orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.screenId != null">
+        screen_id = #{record.screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_m_role
+    set role_no = #{record.roleNo,jdbcType=VARCHAR},
+      role_name = #{record.roleName,jdbcType=VARCHAR},
+      org_no = #{record.orgNo,jdbcType=VARCHAR},
+      role_flag = #{record.roleFlag,jdbcType=CHAR},
+      role_desp = #{record.roleDesp,jdbcType=VARCHAR},
+      order_index = #{record.orderIndex,jdbcType=BIGINT},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=BIGINT},
+      screen_id = #{record.screenId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRole">
+    update pd_m_role
+    <set>
+      <if test="_selectiveMark.roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.orgNo != null">
+        org_no = #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.roleFlag != null">
+        role_flag = #{roleFlag,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.roleDesp != null">
+        role_desp = #{roleDesp,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.orderIndex != null">
+        order_index = #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.screenId != null">
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_no = #{roleNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMRole">
+    update pd_m_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      org_no = #{orgNo,jdbcType=VARCHAR},
+      role_flag = #{roleFlag,jdbcType=CHAR},
+      role_desp = #{roleDesp,jdbcType=VARCHAR},
+      order_index = #{orderIndex,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=BIGINT},
+      screen_id = #{screenId,jdbcType=VARCHAR}
+    where role_no = #{roleNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

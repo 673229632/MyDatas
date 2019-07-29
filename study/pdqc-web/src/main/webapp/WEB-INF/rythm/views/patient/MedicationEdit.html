@@ -1,0 +1,169 @@
+@import com.ustcsoft.pdqc.web.patient.form.MedicationResultForm;
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@extends(views.common.DialogView,  v_sTitle:"用药处方上报/编辑")
+
+@args MedicationResultForm resultForm
+
+@args List<Code> typeCodeList
+
+@widget.ctnr.Row() {
+	@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi4",sId:"hospitalName", sName:"hospitalName",oValue:resultForm.getHospitalName(),bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi4",sId:"patientName", sName:"patientName",oValue:resultForm.getPatientName(),bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi4",sId:"patientType", sName:"patientType",oValue:resultForm.getPatientOutcomeName(),bDisabled:true)
+}
+
+@widget.ctnr.Form("medication_form") {
+	@widget.ctrl.Hidden(sLabel:"用药处方id:", sGroupCss:"col-md-4 hanzi4",sId:"id", sName:"id",oValue:resultForm.getId())
+	@widget.ctrl.Input(sLabel:"患者id:", sGroupCss:"col-md-4 hanzi4",sId:"ptId", sName:"ptId",oValue:resultForm.getPtId(),bDisabled:true)
+	@widget.ctrl.Input(sLabel:"医院id:", sGroupCss:"col-md-4 hanzi4",sId:"hpId", sName:"hpId",oValue:resultForm.getHpId(),bDisabled:true)
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdateStr",sId:"tdateStr",sFormat:"YYYY-MM-DD",bRequired:true,oValue:resultForm.getTdate())	
+    }
+    @widget.ctnr.Row() {
+    	@widget.ctrl.SelectPicker(sLabel:"类型:", sName:"type", sId:"type",bShowEmptyOption:true,oOptions:typeCodeList,sGroupCss:"col-md-4 hanzi4",bRequired:true,sInitValue:resultForm.getType())
+    	@widget.ctnr.Div(sId:"typeDiv2") {
+    		@widget.ctrl.SelectPicker(sLabel:"类型2:", sName:"type2", sId:"type2",bShowEmptyOption:true,sGroupCss:"col-md-4 hanzi4",sInitValue:resultForm.getType2())
+    		@widget.ctrl.Hidden(sLabel:"typeText2", sName:"typeText2", sId:"typeText2",oValue:resultForm.getType2())
+    		
+    	}
+    	@widget.ctnr.Div( sId:"typeDiv3") {
+    		@widget.ctrl.SelectPicker(sLabel:"类型3:", sName:"type3", sId:"type3",bShowEmptyOption:true,sGroupCss:"col-md-4 hanzi4",sInitValue:resultForm.getType3())
+			@widget.ctrl.Hidden(sLabel:"typeText3", sName:"typeText3", sId:"typeText3",oValue:resultForm.getType3())
+		}    
+    }
+    
+    @widget.ctnr.Row() {
+    	@widget.ctrl.Input(sLabel:"医嘱名称:", sGroupCss:"col-md-4 hanzi4",sId:"drugName", sName:"drugName",oValue:resultForm.getDrugName())
+    	@widget.ctrl.Input(sLabel:"频次:", sGroupCss:"col-md-4 hanzi4",sId:"frequency", sName:"frequency",oValue:resultForm.getFrequency())
+    	@widget.ctrl.Input(sLabel:"用法:", sGroupCss:"col-md-4 hanzi4",sId:"method", sName:"method",oValue:resultForm.getMethod())
+    }
+    @widget.ctnr.Row() {
+    	@widget.ctrl.Input(sLabel:"单次用量:", sGroupCss:"col-md-4 hanzi4",sId:"singleDose", sName:"singleDose",oValue:resultForm.getSingleDose())
+    	@widget.ctrl.Input(sLabel:"用量单位:", sGroupCss:"col-md-4 hanzi4",sId:"unitName", sName:"unitName",oValue:resultForm.getUnitName())
+    }
+    @widget.ctnr.BtnBox(){
+		@widget.ctrl.Button({sLabel:"保存", sBtncss:"btn-normal", sOnClick:"saveMedication", sId:"saveMedicationBtn"})
+		@widget.ctrl.Button({sLabel:"取消", sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()", sId:"closeDialogBtn"})
+	}
+}
+
+<script>
+$(function(){
+	debugger;
+	changeType();
+	changeSelectPickerType();
+	var typeText2 = $("#typeText2").val();
+	var typeText3 = $("#typeText3").val();
+	$('#type2 select').selectpicker('val',typeText2);
+	changeSelectPickerType2();
+	$('#type3 select').selectpicker('val',typeText3);
+	changeType();
+})
+// 根据type下拉框是否有值 控制其他type下拉框显示
+function changeType() {
+	
+	var type = $('#type select').selectpicker('val');
+	if (type != null && type != "") {
+		$("#typeDiv2").prop('style', 'display: block;');
+	} else {
+		$("#typeDiv2").prop('style', 'display: none;');
+	}
+	var type2 = $('#type2 select').selectpicker('val');
+	if (type2 != null && type2 != "") {
+		$("#typeDiv3").prop('style', 'display: block;');
+	} else {
+		$("#typeDiv3").prop('style', 'display: none;');
+	}
+}
+
+// type下拉框改变时触发事件
+$("#type").change(function() {
+	changeType();
+	changeSelectPickerType();
+	$('#type2 select').selectpicker('val','');
+	changeType();
+	changeSelectPickerType2();
+	$('#type3 select').selectpicker('val','');
+})
+// type2下拉框改变时触发事件
+$("#type2").change(function() {
+	changeType();
+	changeSelectPickerType2();
+	$('#type3 select').selectpicker('val','');
+})
+
+// 改变type下拉框的选项
+function changeSelectPickerType(){
+	var supperType = $('#type select').selectpicker('val');
+	Ajax.ajax({
+		url : '@url("/patientOverView/changeSelectPickerType")',
+		data : {
+			supperType : supperType
+		},
+		type:"post", 
+		async: false, 
+		success : function(data) {
+		    $("#type2").find("select").empty();
+            $.each(data.data,function(i,code){ 
+            	$("#type2 select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            }); 
+		    $('#type2 select').selectpicker('refresh');//刷新操作
+		    $("#type2 select").trigger("change");
+		}
+	});
+}
+
+//改变type2下拉框的选项
+function changeSelectPickerType2(){
+	var supperType = $('#type2 select').selectpicker('val');
+	Ajax.ajax({
+		url : '@url("/patientOverView/changeSelectPickerType")',
+		data : {
+			supperType : supperType
+		},
+		type:"post", 
+		async: false, 
+		success : function(data) {
+		    $("#type3").find("select").empty();
+            $.each(data.data,function(i,code){ 
+            	$("#type3 select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            }); 
+		    $('#type3 select').selectpicker('refresh');//刷新操作
+		    $("#type3 select").trigger("change");
+		}
+	});
+}
+
+// 保存
+function saveMedication() {
+	var patientId = $('#ptId').val();
+	$('#medication_form').bootstrapValidator('validate');
+	var isValid = $('#medication_form').data('bootstrapValidator').isValid();
+    if(!isValid) {
+    	return;
+    }
+    debugger;
+    var datas = $("#medication_form").serialize();
+    Ajax.ajax({
+		url : '@url("/patientOverView/saveMedication")',
+		data : datas,
+		type:'post',
+		success : function(data) {
+			if (data.successCount > 0) {
+				MsgBox.success(data.retMsg,function() {
+					parent.freshtableMedication();
+					parent.freshtablePntMedication(patientId);
+					Dialog.closeSelf();
+				});
+			} else {
+				MsgBox.warning(data.retMsg,function() {
+					parent.freshtableMedication();
+					parent.freshtablePntMedication(patientId);
+					Dialog.closeSelf();
+				});
+			}
+		}
+	})
+}
+</script>

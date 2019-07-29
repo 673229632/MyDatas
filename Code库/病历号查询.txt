@@ -1,0 +1,38 @@
+@widget.ctrl.Input(sLabel:"病历号:",sId:"medicalrecordno",sName:"medicalrecordno",sUnitString:" ",sIconCss:"fa fa-search",oValue:mrecord,sButtonClick:"searchBlh()",sMaxLength:"20",sGroupCss:"col-4 hanzi4")
+
+//查询该患者的所有病历号
+    function searchBlh(){
+        var patientId=$("#patientId").val();
+        Ajax.ajax({
+            url : '@url("/patientPdinfor/searchBlh")',
+            data:{patientId:patientId},
+            success : function(data) {
+                MsgBox.success(data.retMsg);
+            }
+        })
+    }
+	
+	
+	//鼠标在病历号失去焦点时 检测病历号是否存在
+    $("#medicalrecordno").blur(function(){
+        var medicalrecordno = $('#medicalrecordno').val();
+        var patientId=$("#patientId").val();
+        Ajax.ajax({
+            url : '@url("/patientPdinfor/checkMedicalrecordno")',
+            data : {"medicalrecordno":medicalrecordno,
+                    "patientId":patientId
+            },
+            success : function(data) {
+                if(data.data !="" && data.data != null && data.data != undefined){
+                    var msg = "该病历号已绑定如下患者："+data.data.name+",是否展示该患者基础信息？"
+                    MsgBox.confirm(msg, function(isConfirm) {
+                        if (isConfirm) {
+                        location.href = '@url("/patientPdinfor")'
+                            + '?patientId=' + data.data.patientid;
+                        }
+                    })
+                }
+            }
+        }) 
+    });
+	

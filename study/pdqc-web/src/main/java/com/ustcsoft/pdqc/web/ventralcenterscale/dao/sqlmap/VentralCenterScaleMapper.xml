@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VentralCenterScaleMapper">
+    <select id="selectPatientInfo" resultType="com.ustcsoft.pdqc.web.ventralcenterscale.form.VentralCenterScaleForm">
+         select count(name) as count,hp_id as hp_id from pd_d_patient_info
+         where del_flag = "0"
+         AND outcome_type = "PD_OUT_1"
+         group by hp_id
+    </select>
+    
+    <!-- 弹出框患者列表 -->
+    <select id="ventralCenterScaleDetailList" resultType="com.ustcsoft.pdqc.web.ventralcenterscale.form.ventralCenterScaleDetailForm">
+            SELECT
+                hp_id AS hp_id,
+                name AS name,
+                DATE_FORMAT(birth_day, '%Y-%m-%d') AS birth_day,
+                phone_no AS phone_no,
+                DATE_FORMAT(
+                    first_dialsys_date,
+                    '%Y-%m-%d'
+                ) AS first_dialsys_date,
+                infection_diseases AS infection_diseases,
+                primary_disease AS primary_disease,
+                DATE_FORMAT(
+                    primary_disease_date,
+                    '%Y-%m-%d'
+                ) AS primary_disease_date
+            FROM
+                pd_d_patient_info
+            WHERE
+                del_flag = "0"
+            AND outcome_type = "PD_OUT_1"
+            AND hp_id = #{hp_id}
+    </select>
+</mapper>

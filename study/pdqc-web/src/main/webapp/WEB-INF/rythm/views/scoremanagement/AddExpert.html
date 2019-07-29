@@ -1,0 +1,80 @@
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+@args String id
+@args String pid
+@args String treeNo
+@args List<Code> options
+
+@widget.ctnr.Row(){
+	@widget.ctnr.Form("search_form"){
+		@widget.ctrl.Hidden({sLabel:"id:", sName:"id", sId:"id", sGroupCss:"col-3 hanzi4",oValue:id})
+		@widget.ctrl.Hidden({sLabel:"pid:", sName:"pid", sId:"pid", sGroupCss:"col-3 hanzi4",oValue:pid})
+		@widget.ctrl.Hidden({sLabel:"treeNo:", sName:"treeNo", sId:"pid", sGroupCss:"col-3 hanzi4",oValue:treeNo})
+		@widget.ctrl.SelectPicker(sLabel:"筛选条件:", sName:"condition", sId:"condition", sGroupCss:"col-6 hanzi4",sInitValue:"0",oOptions:"{'0':'未安排','1':'已安排'}")
+		@widget.ctrl.SelectPicker({sLabel:"专家名称:", sName:"expertName", sId:"expertName", sGroupCss:"col-6 hanzi4",oOptions : options,bRequired:true)
+		}
+	@widget.ctnr.BtnBox(sAlign:"center"){
+		@widget.ctrl.Button({sLabel:"确定", sBtncss:"btn-normal", sOnClick:"saveExpert", sId:"saveExpertBtn"})
+		@widget.ctrl.Button({sLabel:"关闭", sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()", sId:"closeDialogBtn"})
+	}
+}
+<!-- 脚本 -->
+<script>
+$(function(){
+    	$("#condition").find(".selectpicker").selectpicker('val', "0");
+});
+function saveUser() {
+	parent.MsgBox.success("保存成功",function() {
+					Dialog.closeSelf();
+				});
+}
+//下拉框联动
+$("#condition").change(function(){
+	var conditionValue = $("#condition").find(".selectpicker").selectpicker('val');
+	Ajax.ajax({
+		url : '@url("/inspectionArrangement/getExpert")',
+		data : {
+			arrangeType : conditionValue
+		},
+		type:"post", 
+		async: false, 
+		success : function(data) {
+		    $("#expertName").find("select").empty();
+            $.each(data.data,function(i,code){ 
+            	$("#expertName select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            }); 
+		    $('#expertName select').selectpicker('refresh');//刷新操作
+		    $("#expertName select").trigger("change");
+		}
+	});
+})
+//保存,编辑
+function saveExpert(){
+	var conditionValue = $("#expertName").find(".selectpicker").selectpicker('val');
+	var pid = $("#pid").val();
+	if(conditionValue != null){
+    Ajax.ajax({
+		url : '@url("/inspectionArrangement/addExpert")',
+			data : {
+				id : conditionValue,
+				pid : pid
+				},
+		success : function(data) {
+			if(data.retCode != -1){
+				if (data.successCount > 0) {
+				    parent.MsgBox.success("保存成功",function(){
+                        parent.freshtable();
+                        Dialog.closeSelf();
+                    });
+				} else if(data.successCount == 0){
+					MsgBox.warning("该专家已安排，请选择未安排专家");
+				} else {
+					MsgBox.warning("保存失败");
+				}
+			}
+		}
+	});
+	}
+}
+</script>

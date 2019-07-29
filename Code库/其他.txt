@@ -1,0 +1,113 @@
+
+//父窗口的重新加载
+	parent.location.reload();
+
+//提示框
+	MsgBox.warning("请选择患者！");//警告
+	MsgBox.success("保存成功");//成功
+	MsgBox.error("保存失败");//失败
+
+    Dialog.closeSelf();
+    
+//form刷新
+	$("#search-patientDialysis").bootstrapTable('refresh');
+
+//获得当前日期
+	var date = new Date();
+	var year=date.getFullYear();
+	var month =date.getMonth() +1;
+	var day =date.getDate();
+	var datestr = year + "-" + month + "-" +day;
+	
+//当赋值变化时，刷新
+    //日期选择框
+    $('#date').on('dp.change', function(e){
+        $('#search-result').bootstrapTable('refresh');
+    });
+	//input输入框
+	$("#warehousename").on("keyup",function(){
+		$("#search-result").bootstrapTable('refresh');
+	});
+	//下拉框
+	$("#colour").on('change',function(){
+		typeChange();//方法
+	});
+	
+@widget.ctnr.Row(){
+	@widget.ctrl.Button({sLabel:"占位", sBtncss:"btn-normal",bVisible:true,sStyle:"visibility: hidden"})
+}
+
+
+
+	/**
+     * 日期的加减
+     * 
+     * @param cond
+     * @param day
+     * @return
+     */
+    private static String getDate(String cond, int day) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        String daString = "";
+        try {
+            date = simpleDateFormat.parse(cond);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, day);
+            Date sDate = calendar.getTime();
+            daString = simpleDateFormat.format(sDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return daString;
+    }
+	
+	
+	
+	
+	 /**
+     * 日期的区间.
+     * 
+     * @param minDate String
+     * @param maxDate String
+     * @return List
+     */
+    public List<String> getMonthBetween(String minDate, String maxDate) {
+        List<String> result = new ArrayList<String>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");// 格式化为年月
+
+        Calendar min = Calendar.getInstance();
+        Calendar max = Calendar.getInstance();
+
+        try {
+            min.setTime(sdf.parse(minDate));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        min.set(min.get(Calendar.YEAR), min.get(Calendar.MONTH), 1);
+
+        try {
+            max.setTime(sdf.parse(maxDate));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        max.set(max.get(Calendar.YEAR), max.get(Calendar.MONTH), 2);
+
+        Calendar curr = min;
+        while (curr.before(max)) {
+            result.add(sdf.format(curr.getTime()));
+            curr.add(Calendar.MONTH, 1);
+        }
+        return result;
+    }
+
+
+	$("#search-result2 tbody tr").removeClass("color");
+    $element.addClass("color");
+
+
+    // 获取table的当前页
+    var nowPageNum = $("ul[class='pagination']").children("li.page-number.active").children("a").html();

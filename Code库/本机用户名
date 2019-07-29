@@ -1,0 +1,10 @@
+	String currentUser = System.getProperty("user.name");
+	System.out.println("Current user is " + currentUser);
+   
+    try {  
+        InetAddress inetAddress = InetAddress.getLocalHost();  
+        System.out.println("本机IP:"  + inetAddress.getHostAddress().toString());  
+        System.out.println("本机名称:" + inetAddress.getHostName().toString());  
+    } catch (UnknownHostException e) {  
+        e.printStackTrace();  
+    }  

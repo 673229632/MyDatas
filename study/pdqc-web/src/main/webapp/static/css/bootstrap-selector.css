@@ -1,0 +1,50 @@
+.selector-item-rythm,.selector-more-rythm{
+	padding:0 5px;
+	cursor: pointer;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: block;
+	overflow: hidden;
+	vertical-align: middle;
+	line-height: 25px;
+}
+.selector-more-rythm{
+	top:0px;
+	float:right;
+}
+.selector-container-rythm li{
+	float: left;
+}
+.selector-container-rythm{
+	list-style: none;
+	padding: 0px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	margin-bottom: 0px;
+}
+.selector-item-rythm:hover{
+	color: #f6bb42;
+}
+.selector-active-rythm{
+	color: #F38900;
+}
+.selector-more-rythm:after{
+	content:"更多"
+}
+.selector-more-rythm.opened:after{
+	content:"收起"
+}
+.selector-container-rythm{
+	height:25px;
+}
+.selector-container-rythm.opened{
+	height:auto;
+}
+.top-label{
+	vertical-align: top;
+	padding:0 5px;
+	line-height: 25px;
+}
+.selector-tags-label{
+	font-size:14px;
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PatientsBehindProbabilityMapper">
+    <!-- 各医院掉队人数 -->
+    <select id="selectDropPatientNumber" resultType="com.ustcsoft.pdqc.web.patientsbehindprobability.Form.PatientsBehindProbabilityForm">
+            SELECT
+            	a.hp_id AS hp_id,
+            	IFNULL(c.dropPatientNum, 0) AS dropPatientNum
+            FROM
+            	pd_d_patient_info a
+            LEFT JOIN (
+            	SELECT
+            		b.hp_id AS hp_id,
+            		COUNT(NAME) AS dropPatientNum
+            	FROM
+            		pd_d_patient_info b
+                    where b.del_flag = '0'
+        <if test="outcome_type != null and outcome_type.size() > 0">
+                    and b.outcome_type in 
+            <foreach collection="outcome_type" item="item" index="index"
+                open="(" separator="," close=")">
+                    #{item}
+            </foreach>
+        </if>
+            	GROUP BY
+            		hp_id
+            ) c ON a.hp_id = c.hp_id
+            where a.del_flag = '0'
+            GROUP BY
+            	hp_id
+            ORDER BY
+            	hp_id ASC
+    </select>
+    
+    <!-- 各医院规模人数 -->
+    <select id="selectPatientNumber" resultType="com.ustcsoft.pdqc.web.patientsbehindprobability.Form.PatientsBehindProbabilityForm">
+            SELECT
+                hp_id AS hp_id,
+                COUNT(NAME) AS patientNum
+            FROM
+                pd_d_patient_info
+                where del_flag = '0'
+            GROUP BY
+                hp_id
+    </select>
+    
+    <!-- 弹出框列表 -->
+    <select id="showRateDetailList" resultType="com.ustcsoft.pdqc.web.patientsbehindprobability.Form.ShowRateDetailListForm">
+             SELECT
+                name AS name,
+                card_no AS card_no,
+                phone_no AS phone_no,
+                address AS address,
+                infection_diseases AS infection_diseases,
+                DATE_FORMAT(
+                    first_dialsys_date,
+                    '%Y-%m-%d'
+                ) AS first_dialsys_date
+            FROM
+                pd_d_patient_info
+            WHERE
+                del_flag = "0"
+        <if test="outcome_type != null and outcome_type.size() > 0">
+                and outcome_type in 
+            <foreach collection="outcome_type" item="item" index="index"
+                open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="hp_id != null and hp_id != '' ">
+                and hp_id = #{hp_id}
+        </if>  
+    </select>
+    </mapper>

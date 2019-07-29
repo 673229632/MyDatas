@@ -1,0 +1,151 @@
+@************************@
+@* 基础上中下布局的模版 *@
+@************************@
+
+@import com.ustcsoft.pdqc.web.common.util.SecurityUtil;
+@import com.ustcsoft.pdqc.web.common.security.LoginUser;
+@import com.ustcsoft.pdqc.core.autogen.entity.PdMRole;
+
+@extends(TopView)
+
+
+<body style="height:100%; margin-bottom:55px;padding-top:65.05px">
+    <!-- 页面顶部导航 -->
+    <nav class="navbar navbar-xs navbar-inverse navbar-fixed-top noprint" role="navigation" id="top-nav">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand dm-fa-md" style="white-space:nowrap;">
+                <h1 class="sys-title">  
+                	@{LoginUser loginUser = SecurityUtil.getLoginUser();}             
+                	科大国创软件股份有限公司
+                </h1>
+                <b class="line">|</b>
+                <h1 class="sys-title">@message("label.common.title.short")</h1>
+            </a>
+        <ul id="left-side-toggle" class="nav navbar-nav">
+          <!--Left Sidebar Toggle Button-->
+          <li class="item">
+              <a id="sidebarLeftToggle" class="nav-button" data-toggle="collapse" data-target=".sidebarLeft">
+                  <span class="sr-only">Toggle navigation</span>
+                  <i class="fa fa-align-justify"></i> 
+              </a> 
+          </li> 
+          <li class="item">
+              <!-- Left Sidebar Toggle Button -->
+              <a class="nav-button" id="fullScreenToggle">
+                  <span class="sr-only">Full Screen</span>
+                  <i class="fa fa-arrows-alt"></i> 
+              </a> 
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="header_container">
+        <ul class="nav navbar-nav">
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="padding-right:20px">
+        	<!-- 皮肤 -->
+     	  	<li class="dropdown">
+            <a class="dropdown-toggle dm-sm" data-toggle="dropdown">
+              <span class="fa fa-cog">皮肤</span> &nbsp;<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a onclick="modifySkin('default');">默认</a></li>
+              <li><a onclick="modifySkin('blue');">深蓝</a></li>
+              <li><a onclick="modifySkin('green');">绿色</a></li>
+              <li><a onclick="modifySkin('gradient');">渐变</a></li>
+              
+            </ul>
+          	</li>
+          	<!-- 用户名 -->
+          	<li class="dropdown">
+            	<a class="dropdown-toggle dm-sm" data-toggle="dropdown">
+                <span class="fa fa-user loginUserDisplayName">
+               		@if (loginUser != null) {
+                    	@loginUser.getUserName()
+                	}
+                </span>
+                <!-- 
+              &nbsp;<b class="caret"></b>
+               -->
+            </a>
+          </li>
+          <!-- 角色列表 -->
+          <li class="dropdown">
+            	<a class="dropdown-toggle dm-sm" data-toggle="dropdown">
+                <span class="fa fa-desktop">
+                	@if (loginUser != null) {
+                    	@loginUser.getRoleName()
+                	}
+                </span>
+              &nbsp;<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            	 @if (loginUser != null) {
+            	 	@for(PdMRole roleInfo : loginUser.getRoleList()){
+		            	<li><a onclick="switchRole('@roleInfo.getRoleNo()')">&nbsp;&nbsp;@roleInfo.getRoleName()</a></li>
+		            }
+            	 }
+            </ul>
+          </li>
+          <!-- 退出 -->
+          <li class="dropdown">
+            <a class="dropdown-toggle dm-sm" data-toggle="dropdown" onclick="MsgBox.confirmToUrl('确认退出系统吗?', '@url("/logout")')">
+                <span class="fa fa-sign-out">退出</span>
+            </a>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+        
+    <!-- 页面中间部分 -->
+    <div class="clearfix noprint" id="body-content" style="height:100%">
+        @render()
+        
+        <!-- 页面消息 -->
+        <div id="bodyMsg">
+                <script>
+                    $(function(){
+                        //bodySuccess('@@flash2.get("success")');
+                    });
+                </script>
+                <script>
+                    $(function(){
+                        //bodyError('@@flash2.get("error")');
+                    });
+                    
+                   //修改皮肤
+                  	function modifySkin(skincss){
+                	   Ajax.ajax({
+        					url:"@url("/systemManage/LoginUserInfo/changgeSkinCss")",
+        					data:{skincss : skincss},
+        					success:function(data){
+        						location.reload();
+        					}
+        				});
+                  	}
+                  	function switchRole(roleid){
+                  		Ajax.ajax({
+        					url:"@url("/switchRole")",
+        					data:{roleid : roleid},
+        					success:function(data){
+        						if(data.data.roletype == "1"){
+        							window.location.href = '@url("/pdinforList")';
+        						}else{
+        							window.location.href = '@url("/workstation/workStationUser")';
+        						}
+        					}
+        				});
+                    }
+                </script>
+        </div>
+    </div>
+        
+    <!-- 页面底部 -->
+    <nav class="navbar navbar-fixed-bottom dm-footer noprint" style="margin-bottom:-15px" role="navigation">
+        <footer class="text-center" style="padding-top:15px;margin-top:-8px">
+            <p>@message("label.common.copyright")</p>
+        </footer>
+    </nav>
+</body>

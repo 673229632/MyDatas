@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- LogBack日志配置 -->
+<configuration>
+    <!-- 属性：工程名称 -->
+    <property name="WebContextName" value="lotus-web" />
+    <!-- 属性：LOG默认路径 -->
+    <property name="LogBase" value="C:/Log/" />
+    <!-- 属性：LOG默认文件名 -->
+    <property name="LogFileName" value="Web" />
+    
+    
+    <!-- 上下文名称 -->
+    <contextName>${WebContextName}</contextName> 
+
+    <!-- Appender：控制台输出 -->
+    <appender name="appenderConsole" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%-5level] %d{yyyyMMdd.HHmmss.SSS} [%thread] %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Appender：业务日志输出 -->
+    <appender name="appenderFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志文件 -->
+        <file>${LogBase}/${WebContextName}/${LogFileName}.log</file>
+        <!-- 按照时间滚动 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 文件命名规则（按天滚动） -->
+            <fileNamePattern>${LogBase}/${LogFileName}-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <!-- 按照文件大小拆分 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 保留 30天数据，默认无限 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%-5level] %date{yyyyMMdd.HHmmss.SSS} [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志级别 -->
+    <root level="INFO">
+        <appender-ref ref="appenderConsole" />
+        <appender-ref ref="appenderFile" />
+    </root>
+
+    <!-- 业务模块 -->
+    <!-- <logger name="com.ustcsoft" level="TRACE"></logger>
+    <logger name="org.rythmengine" level="TRACE"></logger> -->
+    
+    <!-- DAO日志 -->
+    <logger name="com.ustcsoft.pdqc.dao" level="DEBUG" />
+    
+</configuration>

@@ -1,0 +1,352 @@
+@extends(views.common.DialogView,  v_sTitle:"检验检查上报/编辑")
+@import com.ustcsoft.pdqc.web.common.entity.Code
+@import com.ustcsoft.pdqc.web.patient.form.InspectionCheckForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+@args String hpId
+@args String patientId
+@args String checkName
+@args InspectionCheckForm condForm;
+
+@args boolean vis_1;
+@args boolean vis_2;
+@args boolean vis_3;
+@args boolean vis_4;
+@args boolean vis_5;
+@args boolean vis_6;
+@args boolean vis_7;
+@args boolean vis_8;
+@args boolean vis_9;
+
+@widget.ctnr.Form("inspectionCheck"){
+@widget.ctnr.Row(){
+	@widget.ctrl.Hidden(sId:"id",sName:"id",oValue:condForm.getId())
+	@widget.ctrl.Hidden(sId:"patientId",sName:"patientId",oValue:condForm.getPatientId())
+	@widget.ctrl.Hidden(sId:"hpId",sName:"hpId",oValue:condForm.getHpId())
+	@widget.ctrl.Hidden(sId:"checkName",sName:"checkName",oValue:checkName)
+    }
+@widget.ctnr.Row() {
+	@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi4",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi4",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi4",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+}
+@widget.ctnr.Row(){
+@widget.ctnr.BtnBox(bBorder:true,sAlign:"left"){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"inspectionCheckSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+		    }
+	}
+<hr style="height:1px;border:none;border-top:1px ridge #808e99;width:95%;"/>
+@widget.ctnr.Row(){
+@widget.ctnr.Panel(sTitle:"血常规",bCollapsable:true,bVisible:vis_1){
+    @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate1",sId:"tdate1",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate1())(检查日期不输入会导致该页面的数据没有保存)	
+            }
+    @widget.ctnr.Row(){
+			   @widget.ctrl.Input(sLabel:"白细胞:", sGroupCss:"col-md-4 hanzi3",sId:"wbc", sName:"wbc",bDisabled:false,oValue:condForm.getWbc())
+			   @widget.ctrl.Input(sLabel:"红细胞:", sGroupCss:"col-md-4 hanzi3",sId:"rbc", sName:"rbc",bDisabled:false,oValue:condForm.getRbc())
+			   @widget.ctrl.Input(sLabel:"血红蛋白:", sGroupCss:"col-md-4 hanzi4",sId:"hb", sName:"hb",bDisabled:false,oValue:condForm.getHb())
+   			}
+    @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"红细胞压积:", sGroupCss:"col-md-4 hanzi5",sId:"hct", sName:"hct",bDisabled:false,oValue:condForm.getHct())
+			   @widget.ctrl.Input(sLabel:"红细胞平均体积:", sGroupCss:"col-md-4 hanzi7",sId:"mcv", sName:"mcv",bDisabled:false,oValue:condForm.getMcv())
+			   @widget.ctrl.Input(sLabel:"平均血红蛋白量:", sGroupCss:"col-md-4 hanzi7",sId:"mch", sName:"mch",bDisabled:false,oValue:condForm.getMch())             
+    		}
+    @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"平均血红蛋白浓度:", sGroupCss:"col-md-4 hanzi8",sId:"mchc", sName:"mchc",bDisabled:false,oValue:condForm.getMchc())
+			   @widget.ctrl.Input(sLabel:"红细胞体积分布宽度:", sGroupCss:"col-md-4 hanzi9",sId:"rdw", sName:"rdw",bDisabled:false,oValue:condForm.getRdw())
+			   @widget.ctrl.Input(sLabel:"红细胞体积分布宽度SD:", sGroupCss:"col-md-4 hanzi11",sId:"rdwsd", sName:"rdwsd",bDisabled:false,oValue:condForm.getRdwsd())       
+     		}
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"血小板总数:", sGroupCss:"col-md-4 hanzi5",sId:"plt", sName:"plt",bDisabled:false,oValue:condForm.getPlt())
+			   @widget.ctrl.Input(sLabel:"血小板平均体积:", sGroupCss:"col-md-4 hanzi7",sId:"mpv", sName:"mpv",bDisabled:false,oValue:condForm.getMpv())
+			   @widget.ctrl.Input(sLabel:"血小板体积分布宽度:", sGroupCss:"col-md-4 hanzi9",sId:"pdw", sName:"pdw",bDisabled:false,oValue:condForm.getPdw())       
+     		}
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"血小板压积:", sGroupCss:"col-md-4 hanzi5",sId:"pct", sName:"pct",bDisabled:false,oValue:condForm.getPct())
+			   @widget.ctrl.Input(sLabel:"大血小板比率:", sGroupCss:"col-md-4 hanzi6",sId:"plcr", sName:"plcr",bDisabled:false,oValue:condForm.getPlcr())
+			   @widget.ctrl.Input(sLabel:"中性粒细胞百分比:", sGroupCss:"col-md-4 hanzi8",sId:"neutrophil_percentage", sName:"neutrophil_percentage",bDisabled:false,oValue:condForm.getNeutrophil_percentage())       
+     		}
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"淋巴细胞百分比:", sGroupCss:"col-md-4 hanzi7",sId:"lymphocyte_percentage", sName:"lymphocyte_percentage",bDisabled:false,oValue:condForm.getLymphocyte_percentage())
+			   @widget.ctrl.Input(sLabel:"单核细胞百分比:", sGroupCss:"col-md-4 hanzi7",sId:"monocyte_percentage", sName:"monocyte_percentage",bDisabled:false,oValue:condForm.getMonocyte_percentage())
+			   @widget.ctrl.Input(sLabel:"嗜酸细胞百分比:", sGroupCss:"col-md-4 hanzi7",sId:"eosinophil_percentage", sName:"eosinophil_percentage",bDisabled:false,oValue:condForm.getEosinophil_percentage())       
+     		}	
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"嗜碱细胞百分比:", sGroupCss:"col-md-4 hanzi6",sId:"basophil_percentage", sName:"basophil_percentage",bDisabled:false,oValue:condForm.getBasophil_percentage())
+			   @widget.ctrl.Input(sLabel:"中性粒细胞绝对值:", sGroupCss:"col-md-4 hanzi8",sId:"neutrophil_absolute_value", sName:"neutrophil_absolute_value",bDisabled:false,oValue:condForm.getNeutrophil_absolute_value())
+			   @widget.ctrl.Input(sLabel:"淋巴细胞绝对值:", sGroupCss:"col-md-4 hanzi7",sId:"lymphocyte_absolute_value", sName:"lymphocyte_absolute_value",bDisabled:false,oValue:condForm.getLymphocyte_absolute_value())       
+     		}
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"单核细胞绝对值:", sGroupCss:"col-md-4 hanzi7",sId:"monocyte_absolute_value", sName:"monocyte_absolute_value",bDisabled:false,oValue:condForm.getMonocyte_absolute_value())
+			   @widget.ctrl.Input(sLabel:"嗜酸细胞绝对值:", sGroupCss:"col-md-4 hanzi7",sId:"eosinophil_absolute_value", sName:"eosinophil_absolute_value",bDisabled:false,oValue:condForm.getEosinophil_absolute_value())
+			   @widget.ctrl.Input(sLabel:"嗜酸细胞绝对值:", sGroupCss:"col-md-4 hanzi7",sId:"basophil_absolute_value", sName:"basophil_absolute_value",bDisabled:false,oValue:condForm.getBasophil_absolute_value())       
+     		}
+		}
+	}	
+@widget.ctnr.Row(){		
+@widget.ctnr.Panel(sTitle:"生化指标",bCollapsable:true,bVisible:vis_2){
+    @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate2",sId:"tdate2",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate2())(检查日期不输入会导致该页面的数据没有保存)	
+            }
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"丙氨酸氨基转移酶:", sGroupCss:"col-md-4 hanzi8",sId:"alt", sName:"alt",bDisabled:false,oValue:condForm.getAlt())
+			   @widget.ctrl.Input(sLabel:"天门冬氨酸氨基转移酶 :", sGroupCss:"col-md-4 hanzi10",sId:"ast", sName:"ast",bDisabled:false,oValue:condForm.getAst())
+			   @widget.ctrl.Input(sLabel:"血清总蛋白:", sGroupCss:"col-md-4 hanzi5",sId:"tp", sName:"tp",bDisabled:false,oValue:condForm.getTp())       
+     		}
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"血清白蛋白:", sGroupCss:"col-md-4 hanzi5",sId:"alb", sName:"alb",bDisabled:false,oValue:condForm.getAlb())
+			   @widget.ctrl.Input(sLabel:"血清球蛋白:", sGroupCss:"col-md-4 hanzi5",sId:"seroglobulin", sName:"seroglobulin",bDisabled:false,oValue:condForm.getSeroglobulin())
+			   @widget.ctrl.Input(sLabel:"白/球比值:", sGroupCss:"col-md-4 hanzi4",sId:"ag", sName:"ag",bDisabled:false,oValue:condForm.getAg())       
+     		}     		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"总胆红素:", sGroupCss:"col-md-4 hanzi4",sId:"tbil", sName:"tbil",bDisabled:false,oValue:condForm.getTbil())
+			   @widget.ctrl.Input(sLabel:"直接胆红素:", sGroupCss:"col-md-4 hanzi5",sId:"dbil", sName:"dbil",bDisabled:false,oValue:condForm.getDbil())
+			   @widget.ctrl.Input(sLabel:"间接胆红素:", sGroupCss:"col-md-4 hanzi5",sId:"ibil", sName:"ibil",bDisabled:false,oValue:condForm.getIbil())       
+     		}    		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"总胆汁酸:", sGroupCss:"col-md-4 hanzi4",sId:"tba", sName:"tba",bDisabled:false,oValue:condForm.getTba())
+			   @widget.ctrl.Input(sLabel:"血糖:", sGroupCss:"col-md-4 hanzi2",sId:"glu", sName:"glu",bDisabled:false,oValue:condForm.getGlu())
+			   @widget.ctrl.Input(sLabel:"尿素氮:", sGroupCss:"col-md-4 hanzi3",sId:"bun", sName:"bun",bDisabled:false,oValue:condForm.getBun())       
+     		}    		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"肌酐(酶法):", sGroupCss:"col-md-4 hanzi4",sId:"cre", sName:"cre",bDisabled:false,oValue:condForm.getCre())
+			   @widget.ctrl.Input(sLabel:"尿酸:", sGroupCss:"col-md-4 hanzi2",sId:"ua", sName:"ua",bDisabled:false,oValue:condForm.getUa())
+			   @widget.ctrl.Input(sLabel:"总二氧化碳:", sGroupCss:"col-md-4 hanzi5",sId:"co2", sName:"co2",bDisabled:false,oValue:condForm.getCo2())       
+     		}     		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"碱性磷酸酶:", sGroupCss:"col-md-4 hanzi5",sId:"alp", sName:"alp",bDisabled:false,oValue:condForm.getAlp())
+			   @widget.ctrl.Input(sLabel:"γ谷氨酰转肽酶:", sGroupCss:"col-md-4 hanzi7",sId:"ggt", sName:"ggt",bDisabled:false,oValue:condForm.getGgt())
+			   @widget.ctrl.Input(sLabel:"钾:", sGroupCss:"col-md-4 hanzi1",sId:"k", sName:"k",bDisabled:false,oValue:condForm.getK())       
+     		}    		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"钠:", sGroupCss:"col-md-4 hanzi1",sId:"na", sName:"na",bDisabled:false,oValue:condForm.getNa())
+			   @widget.ctrl.Input(sLabel:"氯:", sGroupCss:"col-md-4 hanzi1",sId:"cl", sName:"cl",bDisabled:false,oValue:condForm.getCl())
+			   @widget.ctrl.Input(sLabel:"钙:", sGroupCss:"col-md-4 hanzi1",sId:"ca", sName:"ca",bDisabled:false,oValue:condForm.getCa())       
+     		}     		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"磷:", sGroupCss:"col-md-4 hanzi1",sId:"p", sName:"p",bDisabled:false,oValue:condForm.getP())
+			   @widget.ctrl.Input(sLabel:"血清镁:", sGroupCss:"col-md-4 hanzi3",sId:"mg", sName:"mg",bDisabled:false,oValue:condForm.getMg())
+			   @widget.ctrl.Input(sLabel:"肌酸激酶:", sGroupCss:"col-md-4 hanzi4",sId:"ck", sName:"ck",bDisabled:false,oValue:condForm.getCk())       
+     		}     		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"乳酸脱氢酶:", sGroupCss:"col-md-4 hanzi5",sId:"ldh", sName:"ldh",bDisabled:false,oValue:condForm.getLdh())
+			   @widget.ctrl.Input(sLabel:"α-羟丁酸脱氢酶:", sGroupCss:"col-md-4 hanzi7",sId:"ahbdh", sName:"ahbdh",bDisabled:false,oValue:condForm.getAhbdh())
+			   @widget.ctrl.Input(sLabel:"肌酸激酶同工酶:", sGroupCss:"col-md-4 hanzi7",sId:"creatine_kinase_isoenzyme", sName:"creatine_kinase_isoenzyme",bDisabled:false,oValue:condForm.getCreatine_kinase_isoenzyme())       
+     		}    		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"总胆固醇:", sGroupCss:"col-md-4 hanzi4",sId:"tc", sName:"tc",bDisabled:false,oValue:condForm.getTc())
+			   @widget.ctrl.Input(sLabel:"甘油三酯:", sGroupCss:"col-md-4 hanzi4",sId:"tg", sName:"tg",bDisabled:false,oValue:condForm.getTg())
+			   @widget.ctrl.Input(sLabel:"高密度脂蛋白胆固醇:", sGroupCss:"col-md-4 hanzi9",sId:"hdlc", sName:"hdlc",bDisabled:false,oValue:condForm.getHdlc())       
+     		}     		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"低密度脂蛋白胆固醇:", sGroupCss:"col-md-4 hanzi9",sId:"ldlc", sName:"ldlc",bDisabled:false,oValue:condForm.getLdlc())
+			   @widget.ctrl.Input(sLabel:"载脂蛋白A1:", sGroupCss:"col-md-4 hanzi6",sId:"apolipoprotein_a1", sName:"apolipoprotein_a1",bDisabled:false,oValue:condForm.getApolipoprotein_a1())
+			   @widget.ctrl.Input(sLabel:"载脂蛋白B:", sGroupCss:"col-md-4 hanzi5",sId:"apolipoprotein_b", sName:"apolipoprotein_b",bDisabled:false,oValue:condForm.getApolipoprotein_b())       
+     		}     		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"脂蛋白(a):", sGroupCss:"col-md-4 hanzi4",sId:"lpa", sName:"lpa",bDisabled:false,oValue:condForm.getLpa())
+			   @widget.ctrl.Input(sLabel:"载脂蛋白E:", sGroupCss:"col-md-4 hanzi5",sId:"apolipoprotein_e", sName:"apolipoprotein_e",bDisabled:false,oValue:condForm.getApolipoprotein_e())
+			   @widget.ctrl.Input(sLabel:"前白蛋白:", sGroupCss:"col-md-4 hanzi4",sId:"pa", sName:"pa",bDisabled:false,oValue:condForm.getPa())       
+     		}
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"腺苷脱氨酶:", sGroupCss:"col-md-4 hanzi5",sId:"ada", sName:"ada",bDisabled:false,oValue:condForm.getAda())
+			   @widget.ctrl.Input(sLabel:"β2微球蛋白:", sGroupCss:"col-md-4 hanzi6",sId:"microglobulin_b2", sName:"microglobulin_b2",bDisabled:false,oValue:condForm.getMicroglobulin_b2())
+			   @widget.ctrl.Input(sLabel:"血清α-L-岩藻糖苷酶:", sGroupCss:"col-md-4 hanzi9",sId:"afu", sName:"afu",bDisabled:false,oValue:condForm.getAfu())       
+     		}       		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"血清胱抑素:", sGroupCss:"col-md-4 hanzi5",sId:"cystatin", sName:"cystatin",bDisabled:false,oValue:condForm.getCystatin())
+			   @widget.ctrl.Input(sLabel:"5核苷酸酶:", sGroupCss:"col-md-4 hanzi5",sId:"nt5", sName:"nt5",bDisabled:false,oValue:condForm.getNt5())
+			   @widget.ctrl.Input(sLabel:"超敏C反应蛋白:", sGroupCss:"col-md-4 hanzi7",sId:"hscrp", sName:"hscrp",bDisabled:false,oValue:condForm.getHscrp())       
+     		}      		
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"β羟丁酸:", sGroupCss:"col-md-4 hanzi4",sId:"bhb", sName:"bhb",bDisabled:false,oValue:condForm.getBhb())
+			   @widget.ctrl.Input(sLabel:"单胺氧化酶:", sGroupCss:"col-md-4 hanzi5",sId:"mao", sName:"mao",bDisabled:false,oValue:condForm.getMao())
+			   @widget.ctrl.Input(sLabel:"唾液酸:", sGroupCss:"col-md-4 hanzi3",sId:"sialic_acid", sName:"sialic_acid",bDisabled:false,oValue:condForm.getSialic_acid())       
+     		}  
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"备注:", sGroupCss:"col-md-12 hanzi2",sId:"others2", sName:"others2",bDisabled:false,oValue:condForm.getOthers2())
+     		}		     		    		
+       }
+     }  
+@widget.ctnr.Row(){     
+@widget.ctnr.Panel(sTitle:"出凝血功能",bCollapsable:true,bVisible:vis_3){
+     @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate3",sId:"tdate3",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate3())(检查日期不输入会导致该页面的数据没有保存)	
+            }
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"纤维蛋白原:", sGroupCss:"col-md-4 hanzi5",sId:"fib", sName:"fib",bDisabled:false,oValue:condForm.getFib())
+			   @widget.ctrl.Input(sLabel:"活化部分凝血活酶时间:", sGroupCss:"col-md-4 hanzi10",sId:"aptt", sName:"aptt",bDisabled:false,oValue:condForm.getAptt())
+			   @widget.ctrl.Input(sLabel:"凝血酶原活动度:", sGroupCss:"col-md-4 hanzi7",sId:"pta", sName:"pta",bDisabled:false,oValue:condForm.getPta())       
+     		}            
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"凝血酶原时间:", sGroupCss:"col-md-4 hanzi6",sId:"pt", sName:"pt",bDisabled:false,oValue:condForm.getPt())
+			   @widget.ctrl.Input(sLabel:"凝血酶时间:", sGroupCss:"col-md-4 hanzi5",sId:"tt", sName:"tt",bDisabled:false,oValue:condForm.getTt())
+			   @widget.ctrl.Input(sLabel:"国际标准化比值:", sGroupCss:"col-md-4 hanzi7",sId:"inr", sName:"inr",bDisabled:false,oValue:condForm.getInr())       
+     		}            
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"纤维蛋白(原)降解产物:", sGroupCss:"col-md-4 hanzi9",sId:"fdp", sName:"fdp",bDisabled:false,oValue:condForm.getFdp())
+			   @widget.ctrl.Input(sLabel:"DD二聚体:", sGroupCss:"col-md-4 hanzi5",sId:"ddimer", sName:"ddimer",bDisabled:false,oValue:condForm.getDdimer())
+			   @widget.ctrl.Input(sLabel:"血浆抗凝血酶Ⅲ活性测定:", sGroupCss:"col-md-4 hanzi11",sId:"at3", sName:"at3",bDisabled:false,oValue:condForm.getAt3())       
+     		}            
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"α2纤溶酶抑制物活性:", sGroupCss:"col-md-4 hanzi10",sId:"plasminogen_inhibitor_a2", sName:"plasminogen_inhibitor_a2",bDisabled:false,oValue:condForm.getPlasminogen_inhibitor_a2())
+			   @widget.ctrl.Input(sLabel:"纤溶酶原活性:", sGroupCss:"col-md-4 hanzi6",sId:"plga", sName:"plga",bDisabled:false,oValue:condForm.getPlga())
+     		}           
+     @widget.ctnr.Row(){
+			   @widget.ctrl.Input(sLabel:"备注:", sGroupCss:"col-md-12 hanzi2",sId:"others3", sName:"others3",bDisabled:false,oValue:condForm.getOthers3())       
+     		}            
+       }
+     }  
+@widget.ctnr.Row(){    
+@widget.ctnr.Panel(sTitle:"传染性疾病筛选",bCollapsable:true,bVisible:vis_4){
+    @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate4",sId:"tdate4",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate4())(检查日期不输入会导致该页面的数据没有保存)	
+            }
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"乙肝表面抗原（HBsAg）:", sGroupCss:"col-md-4 hanzi11",sId:"hbsag", sName:"hbsag",bDisabled:false,oValue:condForm.getHbsag())
+			   @widget.ctrl.Input(sLabel:"乙型肝炎表面抗体（HBsAb）:", sGroupCss:"col-md-4 hanzi13",sId:"hbsab", sName:"hbsab",bDisabled:false,oValue:condForm.getHbsab())
+			   @widget.ctrl.Input(sLabel:"乙型肝炎E抗原（HBeAg）:", sGroupCss:"col-md-4 hanzi12",sId:"hbeag", sName:"hbeag",bDisabled:false,oValue:condForm.getHbeag())       
+     		}           
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"乙型肝炎E抗体（HBeAb）:", sGroupCss:"col-md-4 hanzi11",sId:"hbeab", sName:"hbeab",bDisabled:false,oValue:condForm.getHbeab())
+			   @widget.ctrl.Input(sLabel:"乙肝核心抗体（HBcAb）:", sGroupCss:"col-md-4 hanzi11",sId:"hbcab", sName:"hbcab",bDisabled:false,oValue:condForm.getHbcab())
+			   @widget.ctrl.Input(sLabel:"乙型肝炎病毒DNA拷贝数（HBV-DNAse）:", sGroupCss:"col-md-4 hanzi11",sId:"hbvdnase", sName:"hbvdnase",bDisabled:false,oValue:condForm.getHbvdnase())       
+     		}           
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"甲型肝炎病毒 (HAV ):", sGroupCss:"col-md-4 hanzi9",sId:"hav", sName:"hav",bDisabled:false,oValue:condForm.getHav())
+			   @widget.ctrl.Input(sLabel:"HBcAb-IgM:", sGroupCss:"col-md-4 hanzi5",sId:"hbcabigm", sName:"hbcabigm",bDisabled:false,oValue:condForm.getHbcabigm())
+			   @widget.ctrl.Input(sLabel:"HCV-IgG:", sGroupCss:"col-md-4 hanzi6",sId:"hcvigg", sName:"hcvigg",bDisabled:false,oValue:condForm.getHcvigg())       
+     		}           
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"HCV-IgM:", sGroupCss:"col-md-4 hanzi6",sId:"hcvigm", sName:"hcvigm",bDisabled:false,oValue:condForm.getHcvigm())
+			   @widget.ctrl.Input(sLabel:"HDV:", sGroupCss:"col-md-4 hanzi3",sId:"hdv", sName:"hdv",bDisabled:false,oValue:condForm.getHdv())
+			   @widget.ctrl.Input(sLabel:"HEV:", sGroupCss:"col-md-4 hanzi3",sId:"hev", sName:"hev",bDisabled:false,oValue:condForm.getHev())       
+     		}           
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"HGV:", sGroupCss:"col-md-4 hanzi3",sId:"hgv", sName:"hgv",bDisabled:false,oValue:condForm.getHgv())
+			   @widget.ctrl.Input(sLabel:"HIV:", sGroupCss:"col-md-4 hanzi3",sId:"hiv", sName:"hiv",bDisabled:false,oValue:condForm.getHiv())
+			   @widget.ctrl.Input(sLabel:"梅毒螺旋体抗体:", sGroupCss:"col-md-4 hanzi7",sId:"tpab", sName:"tpab",bDisabled:false,oValue:condForm.getTpab())       
+     		}            
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"备注:", sGroupCss:"col-md-12 hanzi2",sId:"", sName:"",bDisabled:false,oValue:"")
+     		}           
+       } 
+     }  
+@widget.ctnr.Row(){    
+@widget.ctnr.Panel(sTitle:"尿常规",bCollapsable:true,bVisible:vis_5){
+    @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate5",sId:"tdate5",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate5())(检查日期不输入会导致该页面的数据没有保存)	
+            }
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"比重:", sGroupCss:"col-md-4 hanzi2",sId:"rate", sName:"rate",bDisabled:false,oValue:condForm.getRate())
+			   @widget.ctrl.Input(sLabel:"蛋白:", sGroupCss:"col-md-4 hanzi2",sId:"protein", sName:"protein",bDisabled:false,oValue:condForm.getProtein())
+     		}           
+     @widget.ctnr.Row(){
+     		   @widget.ctrl.Check(sLabel:"镜检红细胞:",sId:"erythrocytes",sName:"erythrocytes",sOptionWidth:"80px",oOptions:"{'1':'-','2':'±','3':'＋','4':'++','5':'+++','6':'++++'}",sGroupCss:"col-8 hanzi5",oInitValue:condForm.getErythrocytes())
+     		}             
+     @widget.ctnr.Row(){
+			    @widget.ctrl.Check(sLabel:"镜检白细胞:",sId:"leukocyte",sName:"leukocyte",sOptionWidth:"80px",oOptions:"{'1':'-','2':'±','3':'＋','4':'++','5':'+++','6':'++++'}",sGroupCss:"col-8 hanzi5",oInitValue:condForm.getLeukocyte())      
+     		}            
+     @widget.ctnr.Row(){
+			  @widget.ctrl.Input(sLabel:"备注:", sGroupCss:"col-md-12 hanzi2",sId:"", sName:"",bDisabled:false,oValue:"")
+     		}            
+       }   
+   }    
+@widget.ctnr.Row(){  
+@widget.ctnr.Panel(sTitle:"大便常规",bCollapsable:true,bVisible:vis_6){
+    @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate6",sId:"tdate6",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate6())(检查日期不输入会导致该页面的数据没有保存)	
+            }
+     @widget.ctnr.Row(){
+			    @widget.ctrl.Check(sLabel:"隐血实验:",sId:"protein6",sName:"protein6",sOptionWidth:"80px",oOptions:"{'1':'-','2':'＋'}",sGroupCss:"col-8 hanzi4",oInitValue:condForm.getProtein6())      
+     		}           
+     @widget.ctnr.Row(){
+			    @widget.ctrl.Check(sLabel:"红细胞:",sId:"erythrocytes6",sName:"erythrocytes6",sOptionWidth:"80px",oOptions:"{'1':'-','2':'＋'}",sGroupCss:"col-8 hanzi4",oInitValue:condForm.getErythrocytes6())      
+     		}           
+     @widget.ctnr.Row(){
+			    @widget.ctrl.Check(sLabel:"白细胞:",sId:"leukocyte6",sName:"leukocyte6",sOptionWidth:"80px",oOptions:"{'1':'-','2':'＋'}",sGroupCss:"col-8 hanzi4",oInitValue:condForm.getLeukocyte6())      
+     		}                      
+       }
+     }  
+@widget.ctnr.Row(){
+@widget.ctnr.Panel(sTitle:"肾脏B超",bCollapsable:true,bVisible:vis_7){
+    @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate7",sId:"tdate7",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate7())(检查日期不输入会导致该页面的数据没有保存)	
+            }
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"右肾大小（长）:", sGroupCss:"col-md-4 hanzi7",sId:"rlength", sName:"rlength",bDisabled:false,oValue:condForm.getRlength(),sUnitString:"cm")
+			   @widget.ctrl.Input(sLabel:"右肾大小（宽）:", sGroupCss:"col-md-4 hanzi7",sId:"rwidth", sName:"rwidth",bDisabled:false,oValue:condForm.getRwidth(),sUnitString:"cm")
+     		}            
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"左肾大小（长）:", sGroupCss:"col-md-4 hanzi7",sId:"llength", sName:"llength",bDisabled:false,oValue:condForm.getLlength(),sUnitString:"cm")
+			   @widget.ctrl.Input(sLabel:"左肾大小（宽）:", sGroupCss:"col-md-4 hanzi7",sId:"lwidth", sName:"lwidth",bDisabled:false,oValue:condForm.getLwidth(),sUnitString:"cm")
+     		}           
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"肾脏B超其他:", sGroupCss:"col-md-12 hanzi7",sId:"others7", sName:"others7",bDisabled:false,oValue:condForm.getOthers7())
+     		}       
+       }
+       }
+@widget.ctnr.Row(){  
+@widget.ctnr.Panel(sTitle:"胸部X线",bCollapsable:true,bVisible:vis_8){
+    @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate8",sId:"tdate8",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate8())(检查日期不输入会导致该页面的数据没有保存)	
+            }          
+     @widget.ctnr.Row(){
+			   @widget.ctrl.SelectPicker(sLabel:"诊断:", sGroupCss:"col-md-4 hanzi2",sId:"diagnosis8", sName:"diagnosis8",bDisabled:false,bShowEmptyOption:false,bMultiple:true,sInitValue:condForm.getDiagnosis8(),oOptions:"{'1':'未见异常','2':'胸腔积液','3':'肺部感染','4':'结核','5':'心包积液','6':'心脏扩大','7':'其他'}")
+     		}           
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"其他:", sGroupCss:"col-md-12 hanzi2",sId:"others8", sName:"others8",bDisabled:false,oValue:condForm.getOthers8())
+     		}           
+       }
+       }  
+@widget.ctnr.Row(){        
+@widget.ctnr.Panel(sTitle:"心电图",bCollapsable:true,bVisible:vis_9){
+    @widget.ctnr.Row(){
+               @widget.ctrl.DatePicker(sLabel:"检查日期:",sGroupCss:"col-md-4 hanzi4",sName:"tdate9",sId:"tdate9",sFormat:"YYYY-MM-DD",oValue:condForm.getTdate9())(检查日期不输入会导致该页面的数据没有保存)	
+            }
+     @widget.ctnr.Row(){
+			   @widget.ctrl.SelectPicker(sLabel:"诊断:", sGroupCss:"col-md-4 hanzi2",sId:"diagnosis9", sName:"diagnosis9",bDisabled:false,bShowEmptyOption:false,bMultiple:true,sInitValue:condForm.getDiagnosis9(),oOptions:"{'1':'正常','2':'左室高电压','3':'ST-T改变','4':'异常Q波','5':'心律失常','6':'其他'}")
+     		}           
+     @widget.ctnr.Row(){
+ 			   @widget.ctrl.Input(sLabel:"其他:", sGroupCss:"col-md-12 hanzi2",sId:"others9", sName:"others9",bDisabled:false,oValue:condForm.getOthers9())
+     		}           
+         }   
+       }                
+	}
+	
+	 <script type="text/javascript">
+		//保存
+		function inspectionCheckSave(){debugger
+			var patientId=$("#patientId").val();
+			$('#inspectionCheck').bootstrapValidator('validate');
+			var isValid = $('#inspectionCheck').data('bootstrapValidator').isValid();
+			if(!isValid){
+		    	return;
+		    }
+			var sConidtion = $('#inspectionCheck').serialize();
+			Ajax.ajax({
+				url : '@url("/patientOverView/inspectionCheck")',
+				data : sConidtion,
+				success : function(data) {
+					if (data.retCode == 0) {
+						parent.MsgBox.success(data.retMsg,function(){
+		                    parent.$("#InspectionCheck-result2").bootstrapTable('refresh', {query: {patientId : patientId}});
+		                    parent.$("#InspectionCheck-result").bootstrapTable('refresh');
+		                    Dialog.closeSelf();
+		                });
+					} else {
+						MsgBox.warning(data.retMsg);
+					}
+				}
+			});
+		}
+		
+		$(document).ready(function(){
+		    //给panel绑定点击事件
+		    $(".panel-heading").bind("click",function(){
+				this.childNodes[1].childNodes[3].click();
+		})
+		})
+	 </script>

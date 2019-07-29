@@ -1,0 +1,47 @@
+//设置字符长度(含宽度)
+function setLengthLimitWithWidth(value, row, index,length,width){
+     if(value == null){
+         return "<div style='width:"+width+"px;' class='td-ellipsis' title=''></div>";
+     }else if(value.length>length){
+         return "<div style='width:"+width+"px;' class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+     }else{
+         return "<div style='width:"+width+"px;white-space:nowrap' class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+     }
+}
+
+//设置字符长度
+function setLengthLimit(value, row, index,length){
+     if(value == null){
+         return "<div style='white-space:nowrap' class='td-ellipsis' title=''></div>";
+     }else if(value.length>length){
+         return "<div style='white-space:nowrap' class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+     }else{
+         return "<div style='white-space:nowrap' class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+     }
+}
+
+,formatter:function (value, row, index){
+                           return setLengthLimit(value, row, index,20);
+                    }
+					
+					
+$("#search_result").on('load-success.bs.table',function(data){
+			//合并表格
+			$('#search_result').bootstrapTable('hideColumn', 'kpicode');
+			var searchresult_table = $("#search_result").bootstrapTable('getData');
+			var num = 1;
+			var valuenoo = "";
+			debugger
+			for(var i =0 ; i< searchresult_table.length; i ++){
+			    
+			    if(valuenoo == searchresult_table[i].noo){
+			        num ++;
+			    }
+			    if(valuenoo != searchresult_table[i].noo && i > 1){
+			        $('#search_result').bootstrapTable('mergeCells', { index: (i-num), field: 'name', colspan: 0, rowspan: num});
+			        num = 1;
+			    }
+			    valuenoo = searchresult_table[i].noo;
+			}
+			$('td').css("vertical-align","middle");
+		});

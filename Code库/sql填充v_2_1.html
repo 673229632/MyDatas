@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SQL填充</title>
+</head>
+<style>
+    .css {
+        font-size: 15px;
+        height: 100%;
+        width: 100%
+    }
+	.tablecss {
+		height: 450px;
+        width: 90%;
+		margin-left: 5%;
+	}
+	
+	textarea {
+		border: 5px #ebebeb solid;
+	}
+	
+	td {
+		padding: 20px;
+	}
+	
+	button {
+		background-color: #4CAF50; /* Green */
+		border: none;
+		color: white;
+		padding: 5px 10px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		cursor: pointer;
+		border-radius: 8px;
+	}
+	
+	.biaoti {
+		width: 100%;
+		text-align: left;
+		padding-left: 5%;
+		font-size: 22px;
+		margin-bottom: 20px;
+		margin-top: 20px;
+	}
+</style>
+<body align="center">
+<div class="biaoti">SQL填充  v2.1</div>
+<table class="tablecss" border="1" cellspacing="0">
+	<tr>
+		<td style="height: 400px;">
+			<textarea id="sql" class="css" placeholder="粘贴sql语句"></textarea>
+		</td>
+		<td style="width: 40%;">
+			<textarea id="result" class="css" placeholder="结果" style="height: 380px;"></textarea>
+			<div>
+				<button id="clear">清空</button>
+				<button id="btn">确定</button>
+			</div>
+		</td>
+	</tr>
+</table>
+<div>
+	<span class="biaoti" style="font-size:15px;width:90%;float: left;">提示: 直接拷贝出控制台的sql以及参数的两行日志</span>
+</div>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+    $(function(){
+        $("#btn").click(function(){
+			var str = $("#sql").val();
+			
+			//将str分成两部分第一部分从开始到Parameters
+			var num = str.indexOf('Parameters');
+			
+			var sql = str.substring(0,str.indexOf('Parameters'));
+			
+			var num = sql.indexOf('Preparing:');
+			if (num != -1) {
+				sql = sql.substring(sql.indexOf('Preparing:')+10,sql.indexOf('\n'));
+			} else {
+				sql = sql.substring(0,sql.indexOf('\n'));
+			}
+			
+			var parameters = str.substring(str.indexOf('Parameters'),str.length);
+			
+			var num = sql.indexOf('\n:');
+			if (num != -1) {
+				parameters = sql.substring(0,sql.indexOf('\n'));
+			}
+			
+			//var sql = str.substring(str.indexOf('Preparing:')+10,str.indexOf('\n'));
+			
+			//var parameters = str.substring(str.indexOf('Parameters'),str.length);
+
+			if(parameters == ""){
+				return;
+			}
+			parameters = parameters.trim();
+			parameters = parameters.replace(/Parameters:/g,"");
+			
+			var canshu = parameters.split(",");
+			$.each(canshu ,function(index,value){
+				var str;
+                /*if(value.indexOf("(String)") > 0){
+					str = value.replace(/\(String\)/g,"");
+					str = "'" + str + "'";
+				}else if(value.indexOf("(Timestamp)") > 0){
+					str = value.replace(/\(Timestamp\)/g,"");
+					str = "'" + str + "'";
+				}else */
+				if(value.indexOf("(Integer)") > 0){
+					str = value.replace(/\(Integer\)/g,"");
+				}else{
+					str = value.substring(0,value.indexOf('('));
+					str = "'" + str + "'";
+				}
+				str = str.replace(/ /,"");
+				sql = sql.replace(/\?/,str);
+            });
+			$("#result").val(sql.trim());
+					
+        });
+		
+		$("#clear").click(function(){
+			$("#sql").val("");
+			$("#parameters").val("");
+			$("#result").val("");   
+		});
+    });
+</script>
+</html>
+
+

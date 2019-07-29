@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdMKpisegMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdMKpiseg">
+    <id column="kpi_id" jdbcType="VARCHAR" property="kpiId" />
+    <result column="sub_code" jdbcType="CHAR" property="subCode" />
+    <result column="sub_name" jdbcType="VARCHAR" property="subName" />
+    <result column="segment_code" jdbcType="VARCHAR" property="segmentCode" />
+    <result column="segment_name" jdbcType="VARCHAR" property="segmentName" />
+    <result column="unit_code" jdbcType="CHAR" property="unitCode" />
+    <result column="unit_name" jdbcType="VARCHAR" property="unitName" />
+    <result column="min_value" jdbcType="VARCHAR" property="minValue" />
+    <result column="max_value" jdbcType="VARCHAR" property="maxValue" />
+    <result column="order_index" jdbcType="BIGINT" property="orderIndex" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="BIGINT" property="rowVersion" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    kpi_id, sub_code, sub_name, segment_code, segment_name, unit_code, unit_name, min_value, 
+    max_value, order_index, del_flag, created_by, date_created, modified_by, date_modified, 
+    row_version
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpisegExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_m_kpiseg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpisegKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_m_kpiseg
+    where kpi_id = #{kpiId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpisegKey">
+    delete from pd_m_kpiseg
+    where kpi_id = #{kpiId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpisegExample">
+    delete from pd_m_kpiseg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpiseg">
+    insert into pd_m_kpiseg (kpi_id, sub_code, sub_name, 
+      segment_code, segment_name, unit_code, 
+      unit_name, min_value, max_value, 
+      order_index, del_flag, created_by, 
+      date_created, modified_by, date_modified, 
+      row_version)
+    values (#{kpiId,jdbcType=VARCHAR}, #{subCode,jdbcType=CHAR}, #{subName,jdbcType=VARCHAR}, 
+      #{segmentCode,jdbcType=VARCHAR}, #{segmentName,jdbcType=VARCHAR}, #{unitCode,jdbcType=CHAR}, 
+      #{unitName,jdbcType=VARCHAR}, #{minValue,jdbcType=VARCHAR}, #{maxValue,jdbcType=VARCHAR}, 
+      #{orderIndex,jdbcType=BIGINT}, #{delFlag,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{dateCreated,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, 
+      #{rowVersion,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpiseg">
+    insert into pd_m_kpiseg
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="kpiId != null">
+        kpi_id,
+      </if>
+      <if test="subCode != null">
+        sub_code,
+      </if>
+      <if test="subName != null">
+        sub_name,
+      </if>
+      <if test="segmentCode != null">
+        segment_code,
+      </if>
+      <if test="segmentName != null">
+        segment_name,
+      </if>
+      <if test="unitCode != null">
+        unit_code,
+      </if>
+      <if test="unitName != null">
+        unit_name,
+      </if>
+      <if test="minValue != null">
+        min_value,
+      </if>
+      <if test="maxValue != null">
+        max_value,
+      </if>
+      <if test="orderIndex != null">
+        order_index,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="kpiId != null">
+        #{kpiId,jdbcType=VARCHAR},
+      </if>
+      <if test="subCode != null">
+        #{subCode,jdbcType=CHAR},
+      </if>
+      <if test="subName != null">
+        #{subName,jdbcType=VARCHAR},
+      </if>
+      <if test="segmentCode != null">
+        #{segmentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="segmentName != null">
+        #{segmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitCode != null">
+        #{unitCode,jdbcType=CHAR},
+      </if>
+      <if test="unitName != null">
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="minValue != null">
+        #{minValue,jdbcType=VARCHAR},
+      </if>
+      <if test="maxValue != null">
+        #{maxValue,jdbcType=VARCHAR},
+      </if>
+      <if test="orderIndex != null">
+        #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpisegExample" resultType="java.lang.Integer">
+    select count(*) from pd_m_kpiseg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_m_kpiseg
+    <set>
+      <if test="record._selectiveMark.kpiId != null">
+        kpi_id = #{record.kpiId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.subCode != null">
+        sub_code = #{record.subCode,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.subName != null">
+        sub_name = #{record.subName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.segmentCode != null">
+        segment_code = #{record.segmentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.segmentName != null">
+        segment_name = #{record.segmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.unitCode != null">
+        unit_code = #{record.unitCode,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.unitName != null">
+        unit_name = #{record.unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.minValue != null">
+        min_value = #{record.minValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.maxValue != null">
+        max_value = #{record.maxValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orderIndex != null">
+        order_index = #{record.orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_m_kpiseg
+    set kpi_id = #{record.kpiId,jdbcType=VARCHAR},
+      sub_code = #{record.subCode,jdbcType=CHAR},
+      sub_name = #{record.subName,jdbcType=VARCHAR},
+      segment_code = #{record.segmentCode,jdbcType=VARCHAR},
+      segment_name = #{record.segmentName,jdbcType=VARCHAR},
+      unit_code = #{record.unitCode,jdbcType=CHAR},
+      unit_name = #{record.unitName,jdbcType=VARCHAR},
+      min_value = #{record.minValue,jdbcType=VARCHAR},
+      max_value = #{record.maxValue,jdbcType=VARCHAR},
+      order_index = #{record.orderIndex,jdbcType=BIGINT},
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpiseg">
+    update pd_m_kpiseg
+    <set>
+      <if test="_selectiveMark.subCode != null">
+        sub_code = #{subCode,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.subName != null">
+        sub_name = #{subName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.segmentCode != null">
+        segment_code = #{segmentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.segmentName != null">
+        segment_name = #{segmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.unitCode != null">
+        unit_code = #{unitCode,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.unitName != null">
+        unit_name = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.minValue != null">
+        min_value = #{minValue,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.maxValue != null">
+        max_value = #{maxValue,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.orderIndex != null">
+        order_index = #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=BIGINT},
+      </if>
+    </set>
+    where kpi_id = #{kpiId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMKpiseg">
+    update pd_m_kpiseg
+    set sub_code = #{subCode,jdbcType=CHAR},
+      sub_name = #{subName,jdbcType=VARCHAR},
+      segment_code = #{segmentCode,jdbcType=VARCHAR},
+      segment_name = #{segmentName,jdbcType=VARCHAR},
+      unit_code = #{unitCode,jdbcType=CHAR},
+      unit_name = #{unitName,jdbcType=VARCHAR},
+      min_value = #{minValue,jdbcType=VARCHAR},
+      max_value = #{maxValue,jdbcType=VARCHAR},
+      order_index = #{orderIndex,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=BIGINT}
+    where kpi_id = #{kpiId,jdbcType=VARCHAR}
+  </update>
+</mapper>

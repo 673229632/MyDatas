@@ -1,0 +1,51 @@
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+@args String id
+@args String pid
+@args String treeNo
+@args Date executeTime;
+
+@widget.ctnr.Row(){
+	@widget.ctnr.Form("result_form"){
+		@widget.ctrl.Hidden({sLabel:"id:", sName:"id", sId:"id", sGroupCss:"col-3 hanzi4",oValue:id})
+		@widget.ctrl.Hidden({sLabel:"pid:", sName:"pid", sId:"pid", sGroupCss:"col-3 hanzi4",oValue:pid})
+		@widget.ctrl.Hidden({sLabel:"treeNo:", sName:"treeNo", sId:"pid", sGroupCss:"col-3 hanzi4",oValue:treeNo})
+		@widget.ctrl.DatePicker(sLabel:"计划时间:",sGroupCss:"col-6 hanzi4",sName:"executeTime",sId:"executeTime",
+  				sFormat:"YYYY-MM-DD",oValue:executeTime)
+	}
+	@widget.ctnr.BtnBox(sAlign:"center"){
+		@widget.ctrl.Button({sLabel:"确定", sBtncss:"btn-normal", sOnClick:"saveExecuteTime", sId:"saveExecuteTimeBtn"})
+		@widget.ctrl.Button({sLabel:"关闭", sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()", sId:"closeDialogBtn"})
+	}
+}
+<!-- 脚本 -->
+<script>
+
+//保存,编辑
+function saveExecuteTime(){
+	debugger
+	$('#result_form').bootstrapValidator('validate');
+	var isValid = $('#result_form').data('bootstrapValidator').isValid();
+    if(!isValid){
+    	return;
+    }
+    var sConidtion = $("#result_form").serializeObject();
+    Ajax.ajax({
+		url : '@url("/inspectionArrangement/addTime")',
+			data : sConidtion,
+		success : function(data) {
+			if(data.retCode != -1){
+				if (data.successCount > 0) {
+				    parent.MsgBox.success("保存成功",function(){
+                        parent.freshtable();
+                        Dialog.closeSelf();
+                    });
+				} else {
+					MsgBox.warning("保存失败");
+				}
+			}
+		}
+	});
+}
+</script>

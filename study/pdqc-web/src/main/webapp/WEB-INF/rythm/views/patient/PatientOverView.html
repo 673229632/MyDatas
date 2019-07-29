@@ -1,0 +1,1455 @@
+@extends(views.common.MainView, v_sTitle:"信息总览")
+@import widget.ctnr.*;
+@import widget.ctrl.*;
+@import java.util.List
+@import com.ustcsoft.pdqc.core.autogen.entity.PdMCode
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@args List<PdMCode> mCodes
+@args List<Code> hospitalOptions
+@widget.ctnr.Row() {
+	@widget.ctrl.Hidden({sId:"chanceTab",sName:"chanceTab",oValue:"转归信息"})
+	
+	@widget.ctnr.Box(){
+		@widget.ctnr.Form("search_form"){
+			@widget.ctrl.SelectPicker(sLabel:"所属医院:",bShowEmptyOption:false,sId:"hospitalNo",sName:"hospitalNo",sGroupCss:"col-3 hanzi5", oOptions:hospitalOptions)
+			@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-3 hanzi5", sMaxLength="40",sId:"patientName", sName:"patientName",sPlaceHolder: "请输入患者姓名或拼音")
+		}
+		@widget.ctnr.Column(sAlign:"right",sCss:"col-2",sId:"btncolumn"){
+        	@widget.ctrl.Button({sLabel:"查询",sId:"btnSearch",sOnClick:"btnSearch"})
+       		@widget.ctrl.Button({sLabel:"信息录入",sId:"informationInput", sBtncss:"btn-normal",sOnClick:"informationInput"})
+    	}
+	}
+}
+
+@widget.ctnr.Row() {
+	@widget.ctnr.Column(sCss:"col-12") {
+		@widget.ctnr.Tabs(sId:"patientOverViewTab"){
+			@for(PdMCode code:mCodes){
+				@args String tabId
+				@args String codeVal
+				@{
+					codeVal=code.getCode();
+					tabId="tab_" + codeVal;
+				}
+				@widget.ctnr.Tab(sId:tabId,sTitle:code.getValue()){
+					<!--转归信息 -->
+					@if(("XX-TYPE-001").equals(codeVal)){
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getPatientData",sOnClickRow:"look",
+									iPageSize:10,sSidePagination:"server",bPagination:false){
+								@widget.ctnr.Columns(){
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名'},
+									{field: 'outComeDate',title: '上报日期',formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"addchild")
+									}
+								}			
+							}
+						
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"search-result2",sCss:"no-pagination-left",sUrl:"/patientOverView/searchChildOutcome",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+											@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editChildRow"),
+								            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteChildRow",sInnerType:"DEL",sPopPlace:"right")
+								        },
+								    {field: 'id',title: 'id',visible:false},
+								    {field: 'patientName',title: '患者姓名',align:'left'},
+								    {field: 'patientId',title: '患者id',visible:false},
+								    {field: 'tdate',title: '转归日期',align:'left',formatter:function(value, row, index){
+								    	var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+								    }},
+							        {field: 'outComeType',title: '转归类型',align:'left',formatter:function(value, row, index){
+							        	if(value==null){
+							        		return "";
+							        	}else if("PD_OUT_1" == value){
+										    return "在科患者";
+										}else if("PD_OUT_2" == value){
+											return "退出患者";
+										}else if("PD_OUT_3" == value){
+											return "死亡患者";
+										}else{
+											return "转出患者";
+										}
+							            
+							        }},
+									{field: 'reason',title: '原因',align:'left',formatter:function(value, row, index){
+										var outComeType=row.outComeType;
+										if(outComeType == "PD_OUT_1"){
+											return "";
+										}else if(outComeType == "PD_OUT_2"){
+											var reasons=value.split(",");
+											if(reasons.length == 1){
+												return ""
+											}else{
+												var reasonChild=reasons[1];
+												var reasonChild01=reasonChild.split(":");
+												if(reasonChild01[0] == "PD_OUT_2_1"){
+													return "治愈";
+												}else if(reasonChild01[0] == "PD_OUT_2_2"){
+													return "肾移植";
+												}else if(reasonChild01[0] == "PD_OUT_2_3"){
+													return "转为血液透析";
+												}else if(reasonChild01[0] == "PD_OUT_2_4"){
+													return "放弃治疗";
+												}else{
+													if(reasonChild01[1] == "null"){
+														return "其它:~";
+													}else{
+														var other="其它:"+reasonChild01[1];
+														return other;
+													}
+												}
+											}
+										}else if(outComeType == "PD_OUT_3"){
+											var reasons=value.split(",");
+											if(reasons.length == 1){
+												return "";
+											}else if(reasons.length == 2){
+												var reasonChild=reasons[1];
+												var reasonChild01=reasonChild.split(":");
+												if(reasonChild01[0] == "PD_OUT_3_1"){
+													return "心血管事件";
+												}else if(reasonChild01[0] == "PD_OUT_3_2"){
+													return "脑血管事件";
+												}else if(reasonChild01[0] == "PD_OUT_3_3"){
+													return "感染";
+												}else{
+													return "消化道出血等出血性疾病";
+												}
+											}else{
+												var reasonChild=reasons[2];
+												var reasonChild01=reasonChild.split(":");
+												if(reasonChild01[1] == "null"){
+													return "其它:~"
+												}else{
+													var other="其它:"+reasonChild01[1];
+													return other;
+												}
+											} 
+										}else{
+											var reasons=value.split(",");
+											var place="";
+											var turnOverReason="";
+											if(reasons.length == 2){
+												var reasons01=reasons[0];
+												var reasons02=reasons[1];
+												var reasonsChild01=reasons01.split(":");
+												var reasonsChild02=reasons02.split(":");
+												if(reasonsChild01[1] == "PD_OUT_4_1_1"){
+													place="本市其他医院";
+												}else if(reasonsChild01[1] == "PD_OUT_4_1_2"){
+													place="本省其他城市";
+												}else if(reasonsChild01[1] == "PD_OUT_4_1_3"){
+													place="外省";
+												}else if(reasonsChild01[1] == "PD_OUT_4_1_4"){
+													place="国外";
+												}
+												
+												if(reasonsChild02[1] == "PD_OUT_4_2_1"){
+													turnOverReason="医保医院变更";
+												}else if(reasonsChild02[1] == "PD_OUT_4_2_2"){
+													turnOverReason="住所变更";
+												}else if(reasonsChild02[1] == "PD_OUT_4_2_3"){
+													turnOverReason="患者自主选择";
+												}
+											}else if(reasons.length == 3){
+												var reasons01=reasons[0];
+												var reasons02=reasons[2];
+												var reasonsChild01=reasons01.split(":");
+												var reasonsChild02=reasons02.split(":");
+												if(reasonsChild01[1] == "PD_OUT_4_1_1"){
+													place="本市其他医院";
+												}else if(reasonsChild01[1] == "PD_OUT_4_1_2"){
+													place="本省其他城市";
+												}else if(reasonsChild01[1] == "PD_OUT_4_1_3"){
+													place="外省";
+												}else if(reasonsChild01[1] == "PD_OUT_4_1_4"){
+													place="国外";
+												}
+												
+												if(reasonsChild02[1] == "null"){
+													turnOverReason="其它:~";
+												}else{
+													turnOverReason="其它:"+reasonsChild02[1];
+												}
+											}else{
+												return "";
+											}
+											var all=place+","+turnOverReason;
+											return all;
+										}
+										
+									}}
+								}
+					   	  	}
+				   	  	}
+					}else if(("XX-TYPE-002").equals(codeVal)){ 
+						<!--置管手术 -->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"patient-result",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getCatheterOperationPatient",
+							sOnClickRow:"look1",iPageSize:10,sSidePagination:"server",bPagination:false){
+								@widget.ctnr.Columns(){
+									{field: 'id',title: 'id',visible:false},
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名',sortable: true},
+									{field: 'outComeDate',title: '上报日期',sortable: true,formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"catheterOperationReport")
+									}
+								}			
+							}
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"patient-result2",sCss:"no-pagination-left",sUrl:"/patientOverView/catheterOperation",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+											@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editCatheterOperation"),
+								            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteCatheterOperation",sInnerType:"DEL",sPopPlace:"right")
+								        },
+								    {field: 'patientName',title: '患者姓名',align:'center'},
+								    {field: 'catheterdate',title: '置管日期',align:'center',formatter:function(value, row, index){
+								    	var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+								    }},
+									{field: 'catheterhospital',title: '置管医院',align:'center'},
+									{field: 'catheterdoctor',title: '置管医生',align:'center'},
+									{field: 'operationtype',title: '手术类型',align:'center',formatter:function(value, row, index){
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else if(value == '1'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>置管</div>"; 
+							  			}else if(value == '2'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>拔管</div>"; 
+							  			}else if(value == '3'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>拔管+重置管</div>"; 
+							  			}else if(value == '4'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>再置管</div>"; 
+							  			}
+								    }},
+									{field: 'catheterway',title: '置管方法',align:'center',formatter:function(value, row, index){
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else if(value == '1'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>手术法</div>"; 
+							  			}else if(value == '2'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>穿刺法</div>"; 
+							  			}else if(value == '3'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>腹腔镜法</div>"; 
+							  			}
+								    }},
+									{field: 'reason',title: '置管方法选择原因',align:'center'},
+									{field: 'anesthesiamethod',title: '麻醉方式',align:'center',formatter:function(value, row, index){
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else if(value == '1'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>百特双联</div>"; 
+							  			}else if(value == '2'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>长富双联</div>"; 
+							  			}else if(value == '3'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>华仁双联</div>"; 
+							  			}else if(value == '4'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>其他</div>"; 
+							  			}
+								    }},
+									{field: 'dialysissystems',title: '透析系统',align:'center'},
+									{field: 'dialysisstage',title: '透析初始阶段',align:'center'}
+								}
+					   	  	}
+				   	  	}
+					
+					}else if(("XX-TYPE-003").equals(codeVal)){
+						<!--透析方案 -->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"dialysis-result",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getDialysisPatient",sOnClickRow:"look2",iPageSize:10,sSidePagination:"server",bPagination:false){
+								@widget.ctnr.Columns(){
+									{field: 'id',title: 'id',visible:false},
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名',sortable: true},
+									{field: 'outComeDate',title: '上报日期',sortable: true,formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"dialysisPatientReport")
+									}
+								}			
+							}
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"dialysis-result2",sCss:"no-pagination-left",sUrl:"/patientOverView/getDialysisSolution",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+											@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editDialysisSolution"),
+								            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteDialysisSolution",sInnerType:"DEL",sPopPlace:"right")
+								        },
+								    {field: 'patientName',title: '患者姓名',align:'center'},
+								    {field: 'tdate',title: '日期',align:'center',formatter:function(value, row, index){
+								    	var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+								    }},
+									{field: 'type',title: '腹透类型',align:'center',formatter:function(value, row, index){
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else if(value == '1'){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>CAPD</div>"; 
+							  			}
+							  		}},
+									{field: 'amount1',title: '1.5%×2L×?',align:'center'},
+									{field: 'amount2',title: '2.5%×2L×?',align:'center'},
+									{field: 'amount3',title: '4.25%×2L×?',align:'center'}
+								}
+					   	  	}
+						}
+					}else if(("XX-TYPE-004").equals(codeVal)){
+						<!--用药处方-->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"medicationlist-result",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getMedicationPatient",sOnClickRow:"lookMedication",iPageSize:10,sSidePagination:"server"){
+								@widget.ctnr.Columns(){
+									{field: 'id',title: 'id',visible:false},
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名'},
+									{field: 'reportDate',title: '上报日期',formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"reportMedication")
+									}
+								}			
+							}
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"medicationinfo-result",sCss:"no-pagination-left",sUrl:"/patientOverView/getMedicationList",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+											@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editMedication"),
+								            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteMedication",sInnerType:"DEL",sPopPlace:"right")
+								        },
+								    {field: 'id',title: 'id',align:'left',visible:false},
+								    {field: 'patientName',title: '患者姓名',align:'left'},
+								    {field: 'ptId',title: '患者id',align:'left',visible:false},
+								    {field: 'tdate',title: '日期',align:'left',formatter:function(value, row, index){
+								    	var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+								    }},
+									{field: 'type',title: '类型',align:'left'},
+									{field: 'drugName',title: '医嘱名称',align:'left'},
+									{field: 'frequency',title: '频次',align:'left'},
+									{field: 'method',title: '用法',align:'left'},
+									{field: 'singleDose',title: '用量',align:'left'}
+								}
+					   	  	}
+				   	  	}
+					}else if(("XX-TYPE-005").equals(codeVal)){
+						<!--患者随访-->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"followUp_result",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getFollowUpPatient",sOnClickRow:"lookFollowUp",iPageSize:10,sSidePagination:"server"){
+								@widget.ctnr.Columns(){
+									{field: 'id',title: 'id',visible:false},
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名'},
+									{field: 'outComeDate',title: '上报日期',formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;	
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"followUpPatientEdit")
+									}
+								}			
+							}
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"followUp_result2",sCss:"no-pagination-left",sUrl:"/patientOverView/getFollowUpSolution",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@Config(){
+					                rowStyle: function (row, index) {
+					                     return {
+									            css: {
+									                "white-space" :"nowrap"
+									            }
+									        };
+						                }
+						            }
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(sStyle:"white-space: nowrap;"){
+											@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editFollowUpPatient",,sPopPlace:"left"),
+								            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"delFollowUpPatient",sInnerType:"DEL",sPopPlace:"right")
+								        },
+								    {field: 'id',title: 'id',visible:false},
+								    {field: 'patientId',title: 'patientId',visible:false},
+								    {field: 'patientName',title: '患者姓名',align:'left',width:200},
+								    {field: 'followUpDate',title: '日期',align:'left',formatter:function(value, row, index){
+								    	var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+								    }},
+									{field: 'emergency',title: '突发情况',align:'left',formatter:function(value, row, index){
+							 			if(value=='0'){
+							 				return "否";
+							 			}else if(value == '1'){
+							  				return "是，"+row.emergencyDetail; 
+							  			}
+							  		}},
+							  		{field: 'emergencyDetail',title: '突发事件描述',align:'left',visible:false},
+							  		{field: 'illnessChange',title: '近期病情变化',align:'left',formatter:function(value, row, index){
+							 			if(value=='0'){
+							 				return "否";
+							 			}else if(value == '1'){
+							  				return "是，"+row.illnessChangeDetail; 
+							  			}
+							  		}},
+							  		{field: 'illnessChangeDetail',title: '近期病情变化描述 ',align:'left',visible:false},
+							  		{field: 'sleepQuality',title: '睡眠',align:'left',formatter:function(value, row, index){
+							 			if(value=='0'){
+							 				return "不变";
+							 			}else if(value == '1'){
+							  				return "变好"; 
+							  			}else if(value == '2'){
+							  				return "变差";
+							  			}else{
+							  				return "";
+							  			}
+							  		}},
+							  		{field: 'emotion',title: '情绪',align:'left',formatter:function(value, row, index){
+							 			if(value=='0'){
+							 				return "不变";
+							 			}else if(value == '1'){
+							  				return "变好"; 
+							  			}else if(value == '2'){
+							  				return "变差";
+							  			}else{
+							  				return "";
+							  			}	
+							  		}},
+							  		{field: 'appelity',title: '食欲及饮食情况',align:'left',formatter:function(value, row, index){
+							 			if(value=='0'){
+							 				return "不变";
+							 			}else if(value == '1'){
+							  				return "变好"; 
+							  			}else if(value == '2'){
+							  				return "变差";
+							  			}else{
+							  				return "";
+							  			}
+							  		}},
+							  		{field: 'activityAmount',title: '活动量',align:'left',formatter:function(value, row, index){
+							 			if(value=='0'){
+							 				return "不变";
+							 			}else if(value == '1'){
+							  				return "变好"; 
+							  			}else if(value == '2'){
+							  				return "变差";
+							  			}else{
+							  				return "";
+							  			}
+							  		}},
+							  		{field: 'bloodPressure',title: '血压',align:'left'},
+							  		{field: 'bloodGlucose',title: '血糖',align:'left'},
+							  		{field: 'weight',title: '体重',align:'left'},
+							  		{field: 'ultrafiltration',title: '超滤量',align:'left'},
+							  		{field: 'urinaryProduction',title: '尿量',align:'left'},
+							  		{field: 'unwellChiefComplaint',title: '突出不适主诉 ',align:'left'},
+							  		{field: 'followupProblem',title: '随访主要问题',align:'left'},
+							  		{field: 'publicityEducationFocus',title: '宣教重点',align:'left'},
+								}
+					   	  	}
+						}
+					}else if(("XX-TYPE-006").equals(codeVal)){
+						<!--门诊评估-->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"outPatient",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getOutPatientData",sOnClickRow:"OutPatientLook",
+									iPageSize:10,sSidePagination:"server",bPagination:false,bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名'},
+									{field: 'outComeDate',title: '上报日期',formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"addOutPatientChild")
+									}
+								}			
+							}
+						
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"outPatient2",sCss:"no-pagination-left",sUrl:"/patientOverView/searchOutPatientEval",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editOutPatientChildRow"),
+										@widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteOutPatientChildRow",sInnerType:"DEL",sPopPlace:"right")
+									},
+									{field: 'id',title: 'id',visible:false},
+									{field: 'patientName',title: '患者姓名',align:'left',width:200},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientTDate',title: '门诊日期',align:'left',formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+										var year=date.getFullYear();
+										var month =date.getMonth() +1;
+										var day =date.getDate();
+										if(value==null){
+											return "<div class='td-ellipsis' title=''></div>";
+										}else{
+											return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+										}
+									}},
+									{field: 'weight',title: '体重',align:'left'},
+									{field: 'bmi',title: 'BMI',align:'left'},
+									{field: 'bloodPressure',title: '血压',align:'left'},
+									{field: 'ultrafiltration',title: '超滤量',align:'left'},
+									{field: 'urinaryProduction',title: '尿量',align:'left'},
+									{field: 'cardiacFunctionLevel',title: '心功能分级',align:'left',formatter:function(value, row, index){
+										if(value == null){
+											return "";
+										}else if(value == "0"){
+											return "I级";
+										}else if(value == "1"){
+											return "II级";
+										}else if(value == "2"){
+											return "III级";
+										}
+									}},
+									{field: 'edemaGrade',title: '水肿等级',align:'left',formatter:function(value, row, index){
+										if(value == null){
+											return "";
+										}else if(value == "0"){
+											return "I级";
+										}else if(value == "1"){
+											return "II级";
+										}else if(value == "2"){
+											return "III级";
+										}
+									}},
+									{field: 'alimentarySymptoms',title: '消化道症状',align:'left',formatter:function(value, row, index){
+										if(value == null){
+											return "";
+										}else if(value == "0"){
+											return "I级";
+										}else if(value == "1"){
+											return "II级";
+										}else if(value == "2"){
+											return "III级";
+										}
+									}},
+									{field: 'otherSymptoms',title: '其他症状',align:'left'},
+									{field: 'catheterOutAssessment',title: '出口处评估',align:'left',formatter:function(value, row, index){
+										if(value == null){
+											return "";
+										}else if(value == "0"){
+											return "I级";
+										}else if(value == "1"){
+											return "II级";
+										}else if(value == "2"){
+											return "III级";
+										}
+									
+									}},
+									{field: 'catheterOutScore',title: '隧道口评分',align:'left'},
+									{field: 'weightChange',title: '体重改变',align:'left',formatter:function(value, row, index){
+										if(value == null){
+											return "";
+										}else if(value == "0"){
+											return "I级";
+										}else if(value == "1"){
+											return "II级";
+										}else if(value == "2"){
+											return "III级";
+										}
+									
+									}},
+									{field: 'dietChange',title: '饮食改变',align:'left',formatter:function(value, row, index){
+										if(value == null){
+											return "";
+										}else if(value == "0"){
+											return "I级";
+										}else if(value == "1"){
+											return "II级";
+										}else if(value == "2"){
+											return "III级";
+										}
+									}},
+									{field: 'gastrointestinalSymptoms',title: '胃肠道症状',align:'left',formatter:function(value, row, index){
+										if(value == null){
+											return "";
+										}else if(value == "0"){
+											return "I级";
+										}else if(value == "1"){
+											return "II级";
+										}else if(value == "2"){
+											return "III级";
+										}
+									}}
+								}
+							
+							}
+						
+						}
+					}else if(("XX-TYPE-007").equals(codeVal)){
+						<!--腹透充分性-->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"peritonealDialysis",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getPeritonealDialysisData",sOnClickRow:"",
+									iPageSize:10,sSidePagination:"server",bPagination:false,bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名'},
+									{field: 'outComeDate',title: '上报日期',formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"addPeritonealDialysisChild")
+									}
+								}			
+							}
+						
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"peritonealDialysis2",sCss:"no-pagination-left",sUrl:"/patientOverView/searchPeritonealDialysisEval",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editOutPatientChildRow"),
+										@widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteOutPatientChildRow",sInnerType:"DEL",sPopPlace:"right")
+									},
+									{field: 'id',title: 'id',visible:false},
+									{field: 'patientName',title: '患者姓名',align:'left'},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientEvalDate',title: '门诊日期',align:'left',formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+										var year=date.getFullYear();
+										var month =date.getMonth() +1;
+										var day =date.getDate();
+										if(value==null){
+											return "<div class='td-ellipsis' title=''></div>";
+										}else{
+											return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+										}
+									}},
+									{field: 'weight',title: '体重',align:'left'},
+									{field: 'bmi',title: 'BMI',align:'left'},
+									{field: 'bloodPressure',title: '血压',align:'left'},
+									{field: 'ultrafiltration',title: '超滤量',align:'left'},
+									{field: 'urinaryProduction',title: '尿量',align:'left'},
+									{field: 'cardiacFunctionLevel',title: '心功能分级',align:'left'},
+									{field: 'edemaGrade',title: '水肿等级',align:'left'},
+									{field: 'alimentarySymptoms',title: '消化道症状',align:'left'},
+									{field: 'otherSymptoms',title: '其他症状',align:'left'},
+									{field: 'catheterOutAssessment',title: '出口处评估',align:'left'},
+									{field: 'catheterOutScore',title: '隧道口评分',align:'left'},
+									{field: 'weightChange',title: '体重改变',align:'left'},
+									{field: 'dietChange',title: '饮食改变',align:'left'},
+									{field: 'gastrointestinalSymptoms',title: '胃肠道症状',align:'left'}
+								}
+							
+							}
+						
+						}
+					}else if(("XX-TYPE-008").equals(codeVal)){
+						<!--腹膜平衡试验-->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"experiment-result",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getExperimentPatient",sOnClickRow:"look8",iPageSize:10,sSidePagination:"server",bPagination:false){
+								@widget.ctnr.Columns(){
+									{field: 'id',title: 'id',visible:false},
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名',sortable: true},
+									{field: 'outComeDate',title: '上报日期',sortable: true,formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"balanceExperimentReport")
+									}
+								}			
+							}
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"experiment-result2",sCss:"no-pagination-left",sUrl:"/patientOverView/getBalanceExperiment",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+											@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editBalanceExperiment"),
+								            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteBalanceExperiment",sInnerType:"DEL",sPopPlace:"right")
+								        },
+								    {field: 'patientName',title: '患者姓名',align:'center'},
+								    {field: 'tdate',title: '日期',align:'center',formatter:function(value, row, index){
+								    	var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+								    }},
+									{field: 'value',title: 'D/P',align:'center'},
+									{field: 'peritonealTransportRate',title: '腹膜转运类型',align:'center',formatter:function(value, row, index){
+							 			if(value == null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else if(value == "1"){
+							  				return "<div style='width:120px;' class='td-ellipsis' title=''>高转运（H）</div>"; 
+							  			}else if(value == "2"){
+							  				return "<div style='width:120px;' class='td-ellipsis' title=''>高平均转运（HA）</div>"; 
+								 		}else if(value == "3"){
+								 			return "<div style='width:120px;' class='td-ellipsis' title=''>均值（A）</div>"; 
+								   		}else if(value == "4"){
+								 			return "<div style='width:120px;' class='td-ellipsis' title=''>低平均转运（LA）</div>"; 
+								   		}else if(value == "5"){
+								 			return "<div style='width:120px;' class='td-ellipsis' title=''>低转运（L）</div>"; 
+								   		}
+									}
+					   	  		}
+							}
+						}	
+					}				
+					}else if(("XX-TYPE-009").equals(codeVal)){
+						<!--合并症-->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"complication-result",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getComplicationPatient",sOnClickRow:"look9",iPageSize:10,sSidePagination:"server",bPagination:false){
+								@widget.ctnr.Columns(){
+									{field: 'id',title: 'id',visible:false},
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名',sortable: true},
+									{field: 'outComeDate',title: '上报日期',sortable: true,formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"complicationReport")
+									}
+								}			
+							}
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"complication-result2",sCss:"no-pagination-left",sUrl:"/patientOverView/getComplication",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+											@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editComplication"),
+								            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteComplication",sInnerType:"DEL",sPopPlace:"right")
+								        },
+								    {field: 'patientName',title: '患者姓名',align:'center'},
+								    {field: 'tdate',title: '日期',align:'center',formatter:function(value, row, index){
+								    	var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+								    }},
+									{field: 'type',title: '临床事件类别',align:'center',formatter:function(value, row, index){
+							 			if(value == null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else if(value == "1"){
+							  				return "<div style='width:160px;' class='td-ellipsis' title=''>导管出口处及隧道感染</div>"; 
+							  			}else if(value == "2"){
+							  				return "<div style='width:160px;' class='td-ellipsis' title=''>腹膜透析相关感染性腹膜炎</div>"; 
+							  			}
+								    }},
+									{field: 'reason',title: '原因',align:'center',formatter:function (value, row, index){
+                           				return setLengthLimit(value, row, index,10);
+            						}},
+									{field: 'isHospitalization',title: '是否住院',align:'center',formatter:function(value, row, index){
+							 			if(value == null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else if(value == "0"){
+							  				return "<div style='width:30px;' class='td-ellipsis' title=''>否</div>"; 
+							  			}else if(value == "1"){
+							  				return "<div style='width:30px;' class='td-ellipsis' title=''>是</div>"; 
+							  			}
+								    }},
+									{field: 'antibioticTreatment',title: '抗生素方案',align:'center',formatter:function (value, row, index){
+                           				return setLengthLimit(value, row, index,10);
+            						}},
+									{field: 'treatment',title: '治疗措施',align:'center'},
+									{field: 'outcomeType',title: '转归',align:'center',formatter:function(value, row, index){
+							 			if(value == null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else if(value == "1"){
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>转血透</div>"; 
+							  			}
+								    }}
+							}
+						}	
+					}										
+					}else if(("XX-TYPE-010").equals(codeVal)){
+						<!--检验检查-->
+						@widget.ctnr.Column(sCss:"col-3") {
+							@widget.ctrl.Table(sId:"InspectionCheck-result",sQueryParamFunction:"createQueryParams",sUrl:"/patientOverView/getInspectionCheckPatient",sOnClickRow:"look10",iPageSize:10,sSidePagination:"server",bPagination:false){
+								@widget.ctnr.Columns(){
+									{field: 'id',title: 'id',visible:false},
+									{field: 'state',align:'center',checkbox: true},
+									{field: 'patientId',title: '患者id',visible:false},
+									{field: 'patientName',title: '患者姓名',sortable: true},
+									{field: 'outComeDate',title: '上报日期',sortable: true,formatter:function(value, row, index){
+										var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+									}},
+									@widget.ctnr.OptColumn(){
+										@widget.ctrl.IconLink(sLabel:"上报", sIconCss:"fa fa-plus",sOnClick:"inspectionCheckReport")
+									}
+								}			
+							}
+						}
+						@widget.ctnr.Column(sCss:"col-9") {
+							@widget.ctrl.Table(sId:"InspectionCheck-result2",sCss:"no-pagination-left",sUrl:"/patientOverView/getInspectionCheckList",iPageSize:10,sSidePagination:"client",bLoadDataFirst:false){
+								@Config(){
+					                rowStyle: function (row, index) {
+				                     return {
+								            css: {
+								                "white-space" :"nowrap"
+								            }
+								        };
+					                }
+					            }
+								@widget.ctnr.Columns(){
+									@widget.ctnr.OptColumn(){
+											@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editInspectionCheck"),
+								            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"deleteInspectionCheck",sInnerType:"DEL",sPopPlace:"right")
+								        },
+								    {field: 'patientName',title: '患者姓名',align:'center'},
+								    {field: 'tdate',title: '日期',align:'center',formatter:function(value, row, index){
+								    	var date = new Date();
+										date.setTime(value);
+							 			var year=date.getFullYear();
+							 			var month =date.getMonth() +1;
+							 			var day =date.getDate();
+							 			if(value==null){
+							 				return "<div class='td-ellipsis' title=''></div>";
+							 			}else{
+							  				return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+							  			}
+								    }},
+									{field: 'inspectionCheck',title: '检验检查',align:'left'},
+									{field: 'detail',title: '明细',align:'left'}
+							}
+						}	
+					}																
+					}
+				}
+			
+			}
+		}
+	  }
+}
+<script type="text/javascript">
+	/* $(function(){
+		var id=$(".tab-pane.fade.active").attr("id");
+		alert(id);
+		
+	}); */
+	//点击头刷新事件	
+	$("#patientOverViewTab").on("click","li",function(){
+		var text=$(this).text();
+		$("#chanceTab").val(text);
+		if(text=="转归信息"){
+			$('#search-result').bootstrapTable('refresh');
+		}else if(text == '置管手术'){
+			$('#patient-result').bootstrapTable('refresh');	
+		}else if(text == '透析方案'){
+			$('#dialysis-result').bootstrapTable('refresh');	
+		}else if(text == '腹膜平衡实验'){
+			$('#experiment-result').bootstrapTable('refresh');	
+		}else if(text == '合并症'){
+			$('#complication-result').bootstrapTable('refresh');	
+		}else if(text=="门诊评估"){
+			$('#outPatient').bootstrapTable('refresh');
+			$('#outPatient2').bootstrapTable('refresh');
+		}else if(text == "检验检查"){
+			$('#InspectionCheck-result').bootstrapTable('refresh');
+		}else if(text == "腹透充分性"){
+			$('#peritonealDialysis').bootstrapTable('refresh');
+		}
+	 });
+	//删除事件
+	function deleteChildRow(row){
+		MsgBox.confirm("确认删除该转归信息吗？", function(isConfirm) {
+			if (isConfirm) {
+				var sConidtion = {
+						id : row.id
+						};
+				Ajax.ajax({
+					url : '@url("/patientOverView/deleteOutComeRow")',
+					data : sConidtion,
+					success : function(data) {
+						if (data.successCount > 0) {
+							debugger;
+							MsgBox.success(data.retMsg);
+							$("#search-result2").bootstrapTable('refresh',{query: {patientId:row.patientId}});
+						} else {
+							MsgBox.warning(data.retMsg);
+						}
+					}
+				})
+			}
+		});
+	}
+	function createQueryParams(params){
+		return buildQueryParam('#search_form', params);
+	}
+	//点击某一行查看
+	function look(row){
+		var patientId = row.patientId;
+		$("#search-result2").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	//点击某一行查看(门诊评估)
+	function OutPatientLook(row){
+		var patientId = row.patientId;
+		$("#outPatient2").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	//上报
+	function addchild(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/addChildOutComeProject")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'转归信息上报'
+		});
+	}
+	//上报(门诊评估)
+	function addOutPatientChild(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/addOutPatientChildProject")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'门诊评估上报'
+		});
+	}
+	//门诊评估(编辑)
+	function editOutPatientChildRow(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/addOutPatientChildProject")'+ '?editflag=1&patientId=' + patientId + '&id='+row.id,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'门诊评估编辑'
+		});
+	}
+	//门诊评估(删除)
+	function deleteOutPatientChildRow(row){
+		MsgBox.confirm("确认删除该门诊评估吗？", function(isConfirm) {
+			if (isConfirm) {
+				var sConidtion = {
+						id : row.id
+						};
+				Ajax.ajax({
+					url : '@url("/patientOverView/deleteOutPatientChildRow")',
+					data : sConidtion,
+					success : function(data) {
+						if (data.successCount > 0) {
+							MsgBox.success(data.retMsg);
+							$("#outPatient").bootstrapTable('refresh');
+							$("#outPatient2").bootstrapTable('refresh', {query: {patientId :row.patientId}});
+						} else {
+							MsgBox.warning(data.retMsg);
+						}
+					}
+				})
+			}
+		});
+	}
+	/* 点击修改编辑修改子项目信息*/
+	function editChildRow(row) {
+		Dialog.open('@url("/patientOverView/addChildOutComeProject")' + '?editflag=1&id=' + row.id,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'转归信息编辑'
+		});
+	}
+	//置管手术行事件
+	function look1(row){
+		var patientId = row.patientId;
+		$("#patient-result2").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	//置管手术上报按钮
+	function catheterOperationReport(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/catheterOperationReport")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'置管手术上报'
+		});
+	}
+	//置管手术编辑按钮
+	function editCatheterOperation(row){
+		Dialog.open('@url("/patientOverView/catheterOperationReport")'+ '?editflag=1&id=' + row.id+'&patientId='+row.patientId,{
+			   iframeHeight : 550,
+			   iframeWidth : 200,
+			   title:'编辑置管手术'
+			});
+	}
+	
+	// 删除角色置管手术
+	function deleteCatheterOperation(row) {
+		Ajax.ajax({
+			url : '@url("/patientOverView/deleteCatheterOperation")',
+			data : {id : row.id},
+			  success : function(data) {
+		            if(data.successCount > 0){
+		                MsgBox.success(data.retMsg,function(){
+		                    $('#patient-result2').bootstrapTable('refresh');
+		                });
+		            }else {
+		            	MsgBox.warning(data.retMsg);
+		            }
+		        }
+		});
+	}
+	//透析方案行事件
+	function look2(row){
+		var patientId = row.patientId;
+		$("#dialysis-result2").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	
+	//透析方案上报按钮
+	function dialysisPatientReport(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/dialysisPatientReport")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'透析方案上报'
+		});
+	}
+	//腹透充分性上报
+	function addPeritonealDialysisChild(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/peritonealDialysisReport")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'腹透充分性上报'
+		});
+	}
+	//透析方案编辑按钮
+	function editDialysisSolution(row){
+		Dialog.open('@url("/patientOverView/dialysisPatientReport")'+ '?editflag=1&id=' + row.id+'&patientId=' + row.patientId,{
+			   iframeHeight : 550,
+			   iframeWidth : 200,
+			   title:'编辑透析方案'
+			});
+	}
+	
+	// 删除透析方案
+	function deleteDialysisSolution(row) {
+		Ajax.ajax({
+			url : '@url("/patientOverView/deleteDialysisSolution")',
+			data : {id : row.id},
+			  success : function(data) {
+		            if(data.successCount > 0){
+		                MsgBox.success(data.retMsg,function(){
+		                    $('#dialysis-result2').bootstrapTable('refresh');
+		                });
+		            }else {
+		            	MsgBox.warning(data.retMsg);
+		            }
+		        }
+		});
+	}
+	//腹膜平衡实验行事件
+	function look8(row){
+		var patientId = row.patientId;
+		$("#experiment-result2").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	
+	//腹膜平衡实验上报按钮
+	function balanceExperimentReport(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/balanceExperimentReport")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'腹膜平衡实验数据上报'
+		});
+	}
+	
+	//腹膜平衡实验编辑按钮
+	function editBalanceExperiment(row){
+		Dialog.open('@url("/patientOverView/balanceExperimentReport")'+ '?editflag=1&id=' + row.id+'&patientId=' + row.patientId,{
+			   iframeHeight : 550,
+			   iframeWidth : 200,
+			   title:'编辑腹膜平衡实验数据'
+			});
+	}
+	
+	//删除平衡实验数据事件
+	function deleteBalanceExperiment(row){
+				Ajax.ajax({
+					url : '@url("/patientOverView/deleteBalanceExperiment")',
+					data : {id : row.id},
+					success : function(data) {
+						if (data.successCount > 0) {
+							MsgBox.success(data.retMsg);
+							$("#experiment-result2").bootstrapTable('refresh',{query: {patientId:row.patientId}});
+						} else {
+							MsgBox.warning(data.retMsg);
+						}
+					}
+				})
+	}
+	
+	//合并症行事件
+	function look9(row){
+		var patientId = row.patientId;
+		$("#complication-result2").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	
+	//合并症上报按钮
+	function complicationReport(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/complicationReport")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'合并症数据上报'
+		});
+	}
+	
+	//合并症编辑按钮
+	function editComplication(row){
+		Dialog.open('@url("/patientOverView/complicationReport")'+ '?editflag=1&id=' + row.id+'&patientId=' + row.patientId,{
+			   iframeHeight : 550,
+			   iframeWidth : 200,
+			   title:'合并症数据编辑'
+			});
+	}
+	
+	// 删除合并症
+	function deleteComplication(row) {
+		Ajax.ajax({
+			url : '@url("/patientOverView/deleteComplication")',
+			data : {id : row.id},
+			  success : function(data) {
+		            if(data.successCount > 0){
+		                MsgBox.success(data.retMsg,function(){
+		                    $('#complication-result2').bootstrapTable('refresh');
+		                });
+		            }else {
+		            	MsgBox.warning(data.retMsg);
+		            }
+		        }
+		});
+	}
+	
+	// 查询按钮的点击事件
+	function btnSearch(){
+		var text = $("#chanceTab").val();
+		if(text=="转归信息"){
+			$('#search-result').bootstrapTable('refresh');
+		}else if(text == '置管手术'){
+			$('#patient-result').bootstrapTable('refresh');	
+		}else if(text == '透析方案'){
+			$('#dialysis-result').bootstrapTable('refresh');	
+		}else if(text == '腹膜平衡实验'){
+			$('#experiment-result').bootstrapTable('refresh');	
+		}else if(text == '合并症'){
+			$('#complication-result').bootstrapTable('refresh');	
+		}else if(text == '检验检查'){
+			$('#InspectionCheck-result').bootstrapTable('refresh');	
+		}else if(text == '患者随访'){
+			$("#followUp_result").bootstrapTable('refresh');
+		}else if(text == '门诊评估'){
+			$("#outPatient").bootstrapTable('refresh');
+		}
+	}
+	//设置字段"原因"长度
+	function setLengthLimit(value, row, index,length){
+	     if(value == null){
+	         return "<div class='td-ellipsis' ></div>";
+	     }else if(value.length>length){
+	         return "<div style='width:160px;' class='td-ellipsis' >"+value.substring(0,length-1)+"...</div>";
+	     }else{
+	         return "<div style='width:160px;' class='td-ellipsis' >"+value+"</div>";
+	     }
+	}
+	
+	//检验检查行事件
+	function look10(row){
+		var patientId = row.patientId;
+		$("#InspectionCheck-result2").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	
+	//检验检查上报
+	function inspectionCheckReport(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/inspectionCheckReport")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'检验检查数据上报'
+		});
+	}
+	
+	//检验检查编辑按钮
+	function editInspectionCheck(row){
+		Dialog.open('@url("/patientOverView/inspectionCheckReport")'+ '?editflag=1&id=' + row.id+'&patientId=' + row.patientId,{
+			   iframeHeight : 550,
+			   iframeWidth : 200,
+			   title:'检验检查数据编辑'
+			});
+	}
+	$("#btnSearch").click(function() {
+		$('#medicationlist-result').bootstrapTable('refresh');
+	})
+	
+	
+	// 上报用药处方
+	function reportMedication(row) {
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/editMedication")'+ '?patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'用药处方上报'
+		});
+	}
+	//用药处方编辑按钮
+	function editMedication(row){
+		Dialog.open('@url("/patientOverView/editMedication")'+ '?&id=' + row.id,{
+		   iframeHeight : 550,
+		   iframeWidth : 200,
+		   title:'编辑用药处方'
+		});
+	}
+	// 用药处方事件
+	function lookMedication(row) {
+		var patientId = row.patientId;
+		$("#medicationinfo-result").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	// 刷新患者列表（用药处方）
+	function freshtableMedication() {
+		$("#medicationlist-result").bootstrapTable('refresh');
+	}
+	// 刷新用药处方列表
+	function freshtablePntMedication(patientId) {
+		$("#medicationinfo-result").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	
+	// 删除用药处方
+	function deleteMedication(row) {
+		debugger;
+		var ptId = row.ptId;
+		Ajax.ajax({
+			url : '@url("/patientOverView/deleteMedication")',
+			data : {id : row.id},
+			success : function(data) {
+	            if(data.successCount > 0){
+	                MsgBox.success(data.retMsg,function(){
+	                	freshtableMedication();
+	                	freshtablePntMedication(ptId);
+	                });
+	            }else {
+	            	MsgBox.warning(data.retMsg);
+	            }
+	        }
+		});
+	}
+	
+	// 删除检验检查数据
+	function deleteInspectionCheck(row) {
+		Ajax.ajax({
+			url : '@url("/patientOverView/deleteInspectionCheck")'+'?inspectionCheck='+row.inspectionCheck,
+			data : {id : row.id},
+			  success : function(data) {
+		            if(data.successCount > 0){
+		                MsgBox.success(data.retMsg,function(){
+		                    $('#InspectionCheck-result2').bootstrapTable('refresh',{query: {patientId:row.patientId}});
+		                });
+		            }else {
+		            	MsgBox.warning(data.retMsg);
+		            }
+		        }
+		});
+	}
+	
+	
+		//上报患者随访
+	function followUpPatientEdit(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/followUpPatientEdit")'+ '?editflag=0&patientId=' + patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'患者随访上报'
+		});
+	}
+	//编辑患者随访
+	function editFollowUpPatient(row){
+		var patientId = row.patientId;
+		Dialog.open('@url("/patientOverView/followUpPatientEdit")'+ '?editflag=1&id=' + row.id+'&patientId=' + row.patientId,{
+			iframeHeight : 550,
+			iframeWidth : 200,
+	    	title:'患者随访编辑'
+		});
+	}
+	//点击某一行查看
+	function lookFollowUp(row){
+		var patientId = row.patientId;
+		$("#followUp_result2").bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	// 刷新表格
+	function freshtable(patientId){
+		$('#followUp_result2').bootstrapTable('refresh', {query: {patientId:patientId}});
+	}
+	// 刷新表格
+	function freshtable2(){
+		$('#followUp_result').bootstrapTable('refresh');
+	}
+	//删除患者随访数据事件
+	function delFollowUpPatient(row){
+		MsgBox.confirm("确认删除该患者随访信息吗？", function(isConfirm) {
+			if (isConfirm) {
+				var sConidtion = {
+						id : row.id
+						};
+				Ajax.ajax({
+					url : '@url("/patientOverView/delFollowUpPatient")',
+					data : sConidtion,
+					success : function(data) {
+						if (data.successCount > 0) {
+							MsgBox.success(data.retMsg);
+							$("#followUp_result2").bootstrapTable('refresh',{query: {patientId:row.patientId}});
+							freshtable2();
+						} else {
+							MsgBox.warning(data.retMsg);
+						}
+					}
+				})
+			}
+		});
+	}
+</script>

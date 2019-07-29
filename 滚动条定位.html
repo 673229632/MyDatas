@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>滚动条保持</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<script type="text/javascript" src="js/jquery-1.12.3.js" ></script>
+	</head>
+
+	<body>
+		<button id="btnReset">还原44号位置</button>
+		<div id="divScroll" style="overflow-y: scroll;width:300px;height: 200px;border: 1px solid #000;">
+			<table id="table1">
+					<tbody></tbody>
+			</table>
+		</div>
+	</body>
+	<script src="http://cdn.static.runoob.com/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>
+		$(function() {
+			// 生成表格
+			var html = [];
+			for (var i = 0; i < 100; i++) {
+				html.push("<tr id=\"tr" + i + "\"><td><button id=\"test" + i +  "\">" + i + "</button></td></tr>");
+			}
+			$("#table1 tbody").html(html.join("\n"));
+			// 还原位置
+			$("#btnReset").click(function() {
+				// 获得前回保存的offset(可以使用.offset().top获取)
+				var savedOffset = 47; 
+				// 获得当前的offset
+				var currentOffset = $("#tr44").offset().top;
+				// 获得当前滚动条位置
+				var scrollTop = $("#divScroll").scrollTop();
+				// 滚动 ： 当前位置 - 前回位置 + 滚动条位置
+				$("#divScroll").scrollTop(currentOffset - savedOffset + scrollTop);
+			});
+			// 
+			$("#table1").on("click", "button", function() {
+				var scrollTop = $("#divScroll").scrollTop();
+				var tr = $(this).closest("tr");
+				console.log("当前元素：按钮" + $(this).html() + "，当前的Offset.Top=" + tr.offset().top);
+			});
+		});
+		
+	</script>
+</html>

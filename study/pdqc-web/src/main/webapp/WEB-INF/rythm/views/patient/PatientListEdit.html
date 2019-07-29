@@ -1,0 +1,124 @@
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.pdqc.core.autogen.entity.PdDPatientInfo;
+
+@args String editflag
+@args List<Code> hospitalOptions
+@args PdDPatientInfo resultForm
+@args String editflag
+<style>
+
+</style>
+@extends(views.common.DialogView, title:"添加/编辑患者信息")
+<div id='patient_add_edit'>
+	@widget.ctnr.Form("patientList_form"){
+		@widget.ctnr.Row(){
+			@widget.ctrl.Hidden(sLabel:"更新标记",sId:"rowVersion",sName:"rowVersion",oValue:resultForm.getRowVersion())
+			@widget.ctrl.Hidden({sLabel:"患者id:",sGroupCss:"col-6",sName:"patientId",sId:"patientId",oValue:resultForm.getId(),sLabelcss:"user-lable"})
+			@widget.ctrl.SelectPicker(sLabel:"所属医院:", sName:"hospitalNo", sId:"hospitalNo",sInitValue:resultForm.getHpId(),
+  				bShowEmptyOption:true,oOptions:hospitalOptions,sGroupCss:"col-6",bDisabled:true,bShowEmptyOption:false)
+  			@widget.ctrl.Input({sLabel:"患者姓名:",sGroupCss:"col-6",sName:"patientName",oValue:resultForm.getName(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入患者姓名:",sMaxLength:"10"})
+  			@widget.ctrl.Input({sLabel:"身份证号:",sGroupCss:"col-12",sName:"idCard",oValue:resultForm.getCardNo(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入身份证号:",sType:"idcard"})
+  			
+		}
+		<hr style="height:1px;border:none;border-top:1px ridge lightgray;width:98%;"/>
+		@widget.ctnr.Row(){
+			@widget.ctrl.Input({sLabel:"腹透号:",sGroupCss:"col-6",sName:"pdNo",sId:"pdNo",oValue:resultForm.getPdNo(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入腹透号:",sMaxLength:"15",sType:"charnum"})
+  			@widget.ctrl.DatePicker(sLabel:"首次腹透日:",sGroupCss:"col-6",sName:"firstDialsysDate",sId:"firstDialsysDate",
+  				sFormat:"YYYY-MM-DD",oValue:resultForm.getFirstDialsysDate())
+  			@widget.ctrl.DatePicker(sLabel:"生日:",sGroupCss:"col-6",sName:"birthDay",sId:"birthDay",
+  				sFormat:"YYYY-MM-DD",oValue:resultForm.getBirthDay())
+  			@widget.ctrl.Input({sLabel:"身高:",sGroupCss:"col-6",sName:"height",sId:"height",oValue:resultForm.getHeight(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入身高:",sMaxLength:"10",sType:"float"})
+  			@widget.ctrl.Input({sLabel:"联系方式:",sGroupCss:"col-6",sName:"phoneNo",sId:"phoneNo",oValue:resultForm.getPhoneNo(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入联系方式:",sType:"mobile",sMaxLength:"26"})
+  			@widget.ctrl.Input({sLabel:"家庭住址:",sGroupCss:"col-12",sName:"address",sId:"address",oValue:resultForm.getAddress(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入家庭住址:",sMaxLength:"50"})
+		}
+		<hr style="height:1px;border:none;border-top:1px ridge lightgray;width:98%;"/>
+		@widget.ctnr.Row(){
+			@widget.ctrl.Input({sLabel:"过敏信息:",sGroupCss:"col-6",sName:"allergy",sId:"allergy",oValue:resultForm.getAllergy(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入过敏信息:",sMaxLength:"20"})
+  			@widget.ctrl.Input({sLabel:"传染病:",sGroupCss:"col-6",sName:"infectionDiseases",sId:"infectionDiseases",oValue:resultForm.getInfectionDiseases(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入传染病:",sMaxLength:"20"})
+  			@widget.ctrl.Input({sLabel:"肾原发病:",sGroupCss:"col-6",sName:"primaryDisease",sId:"primaryDisease",oValue:resultForm.getPrimaryDisease(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入肾原发病:",sMaxLength:"20"})
+  			@widget.ctrl.DatePicker(sLabel:"确诊时间:",sGroupCss:"col-6",sName:"primaryDiseaseDate",sId:"primaryDiseaseDate",
+  				sFormat:"YYYY-MM-DD",oValue:resultForm.getPrimaryDiseaseDate())
+  			@widget.ctrl.Input({sLabel:"病理型:",sGroupCss:"col-6",sName:"pathologic",sId:"pathologic",oValue:resultForm.getPathologic(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入病理型:",sMaxLength:"20"})
+  			@widget.ctrl.Input({sLabel:"心血管:",sGroupCss:"col-12",sName:"medicalHistory1",sId:"medicalHistory1",oValue:resultForm.getMedicalHistory1(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入心血管:",sMaxLength:"50"})
+  			@widget.ctrl.Input({sLabel:"神经系统:",sGroupCss:"col-12",sName:"medicalHistory2",sId:"medicalHistory2",oValue:resultForm.getMedicalHistory2(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入神经系统:",sMaxLength:"50"})
+  			@widget.ctrl.Input({sLabel:"内分泌及代谢:",sGroupCss:"col-12",sName:"medicalHistory3",sId:"medicalHistory3",oValue:resultForm.getMedicalHistory3(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入内分泌及代谢:",sMaxLength:"50"})
+  			@widget.ctrl.Input({sLabel:"其他:",sGroupCss:"col-12",sName:"medicalHistory4",sId:"medicalHistory4",oValue:resultForm.getMedicalHistory4(),
+  				sLabelcss:"user-lable",sPlaceholder:"请输入其他:",sMaxLength:"50"})
+		}
+	    <hr style="height:1px;border:none;border-top:1px ridge lightgray;width:98%;"/>	
+		@widget.ctnr.Row(){
+			@widget.ctrl.SelectPicker(sLabel:"患者类型:", sName:"outComeType", sId:"outComeType",sInitValue:resultForm.getOutcomeType(),
+  				bShowEmptyOption:true,oOptions:"{'PD_OUT_1':'在科患者','PD_OUT_2':'退出患者'}",sGroupCss:"col-6",bShowEmptyOption:false)
+		}
+	}
+	@widget.ctnr.BtnBox(bBorder:true,sCss:"btnBox"){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"editSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+    }
+</div>
+<script type="text/javascript">
+
+    $(function(){
+        var editflag = "@editflag";
+        // 新增
+        if(editflag == "0"){
+            $("select[name='outComeType']").attr("disabled",true);
+        }
+        // 查看
+        if(editflag == "1"){
+            $("input").attr("readonly","readonly");
+            $("#saveBtn").css("display","none");
+            $("input[name='firstDialsysDate']").attr("disabled",true);
+            $("input[name='primaryDiseaseDate']").attr("disabled",true);
+            $("input[name='birthDay']").attr("disabled",true);
+            $("select[name='outComeType']").attr("disabled",true);
+        }
+        // 编辑
+        if(editflag == "2"){
+            
+        }
+    });
+
+	//保存,编辑
+	function editSave(){
+		$('#patientList_form').bootstrapValidator('validate');
+		var isValid = $('#patientList_form').data('bootstrapValidator').isValid();
+	    if(!isValid){
+	    	return;
+	    }
+	    var sConidtion = $("#patientList_form").serializeObject();
+	    sConidtion.hospitalNo = $("#hospitalNo").find(".selectpicker").selectpicker('val');
+	    sConidtion.outComeType = $("#outComeType").find(".selectpicker").selectpicker('val');
+	    sConidtion.updateDate = $("#updateDate").val();
+	    Ajax.ajax({
+			url : '@url("/patientlist/addOrEditPatient")',
+			data : sConidtion,
+			success : function(data) {
+				if(data.retCode != -1){
+					if (data.successCount > 0) {
+					    parent.MsgBox.success("保存成功",function(){
+	                        parent.$("#search_result").bootstrapTable('refresh');
+	                        Dialog.closeSelf();
+	                    });
+					} else {
+						MsgBox.warning("保存失败");
+					}
+				}
+			}
+		});
+	}
+
+</script>

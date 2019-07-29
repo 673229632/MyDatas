@@ -1,0 +1,138 @@
+@extends(views.common.MainView, v_sTitle:"角色管理")
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.lotus.rythm.widget.bootstrapselect.*;
+
+@args List<Code> orgNoList
+
+@widget.ctnr.Div(sCss:"col-xs-12"){
+	@widget.ctnr.Form("search_form"){
+		@widget.ctrl.Input({sLabel:"角色名称:", sName:"roleName", sId:"roleName", sGroupCss:"col-4 hanzi4", sMaxLength:"20"})
+		@widget.ctrl.ComboZTree(sLabel:"所属组织", sName:"orgNo", sId:"orgNo", sGroupCss:"col-4 hanzi4", sDataUrl:"roleManagement/getTree", bShowFilter : true, bPNodeSelectable : true)
+	}
+	@widget.ctnr.BtnBox(sAlign:"right"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"查询", sBtncss:"btn-normal", sId:"searchRoleBtn"})
+			@widget.ctrl.Button({sLabel:"新增", sBtncss:"btn-normal", sId:"addRoleBtn"})
+		}
+	}
+	
+	@widget.ctrl.Table(sId:"search-result", sQueryParamFunction:"createQueryParams", sUrl:"/roleManagement/getRoleData", iPageSize:10, sSidePagination:"server"){
+		@widget.ctnr.Columns(){
+			{field: 'sno', align:'center', title: 'No', formatter: function (value, row, index){
+					return index+1;
+				}
+			},
+			{title: '操作', formatter: function (value, row, index){
+				return "<div><input type='button' style='margin-left: 5px' onclick='editRole(\""+row.roleNo+"\")' value='编辑' title='编辑' /><input type='button' style='margin-left: 5px' onclick='delCheckRole(\""+row.roleNo+"\")' value='删除' title='删除' /><input type='button' style='margin-left: 5px' onclick='permissionConfiguration(\""+row.roleNo+"\")' value='权限配置' title='权限配置' /><input type='button' style='margin-left: 5px' onclick='addRoleUser(\""+row.roleNo+"\")' value='添加用户' title='添加用户' /></div>";
+				}
+      		},
+			{field: 'roleNo', title: '角色编号', visible:false},
+			{field: 'roleName', title: '角色名称'},
+			{field: 'orgName', title: '所属组织'},
+			{field: 'orgNo', title: '所属组织编号', visible:false},
+			{field: 'roleDesp', title: '备注'},
+		}
+	}
+	
+	
+}
+
+<!-- 脚本 -->
+<script>
+
+$(function(){
+	
+})
+
+// 查询
+$("#searchRoleBtn").on('click',function(){
+	freshtable();
+})
+
+// 刷新表格
+function freshtable(){
+	$('#search-result').bootstrapTable('refresh');
+}
+
+// 列表检索参数
+function createQueryParams(params) {
+    return buildQueryParam('#search_form', params);
+}
+// 编辑角色
+function editRole(roleNo) {
+	Dialog.open('@url("/roleManagement/editRole?roleNo=")'+roleNo, {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:'编辑角色'
+	});
+}
+
+//查询
+$("#addRoleBtn").on('click',function(){
+	addRole();
+})
+
+// 添加角色
+function addRole() {
+	Dialog.open('@url("/roleManagement/editRole")', {
+		iframeHeight : 400,
+		iframeWidth : 650,
+    	title:'编辑角色'
+	});
+}
+
+// 先判断当前角色有无用户信息，如有提示用户不能删除
+function delCheckRole(roleNo) {
+	Ajax.ajax({
+		url : '@url("/roleManagement/delCheckRole")',
+		data : {roleNo : roleNo},
+		success : function(data) {
+			if (data.successCount > 0) {
+				MsgBox.warning("该角色有用户信息，无法删除");
+			} else {
+				delRole(roleNo);
+			}
+		}
+	});
+}
+
+// 删除角色
+function delRole(roleNo) {
+	
+	Ajax.ajax({
+		url : '@url("/roleManagement/delRole")',
+		data : {roleNo : roleNo},
+		success : function(data) {
+			if (data.successCount > 0) {
+				parent.MsgBox.success(data.retMsg,function() {
+					freshtable();
+				});
+				
+			} else {
+				parent.MsgBox.warning(data.retMsg,function() {
+					freshtable();
+				});
+			}
+		}
+	});
+}
+
+// 权限配置页面
+ function permissionConfiguration(roleNo){
+	Dialog.open('@url("/roleManagement/permissionConfiguration?roleNo=")'+roleNo, {
+		iframeHeight : 500,
+		iframeWidth : 650,
+    	title:'权限配置'
+	});
+} 
+
+// 添加用户页面
+function addRoleUser(roleNo) {
+	Dialog.open('@url("/roleManagement/addRoleUser?roleNo=")'+roleNo, {
+		iframeHeight : 500,
+		iframeWidth : 650,
+    	title:'添加用户'
+	});
+}
+
+</script>

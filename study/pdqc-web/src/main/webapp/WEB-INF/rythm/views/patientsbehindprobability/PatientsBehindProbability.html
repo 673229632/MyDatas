@@ -1,0 +1,122 @@
+@extends(views.common.MainView, v_sTitle:"患者掉队率")
+
+@widget.ctnr.Row(){
+		@widget.ctnr.Column(sAlign:"center",sCss:"col-8"){ 
+			@widget.ctnr.Div(sId:"PatientsBehindProbabilityChart",sStyle:"width:1000px;height:500px;"){}
+		}
+		@widget.ctnr.Column(sAlign:"center",sCss:"col-4"){
+			@widget.ctnr.Div(sStyle:"margin-top:140px;"){
+				@widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/PatientsBehindProbability/initPatientsBehindProbabilityChart",bPagination:true,iPageSize:10,sSidePagination:"client",sCss:"no-pagination-left"){
+	        		@widget.ctnr.Columns(){
+			            {field: 'hospitalName',align:'center',title: '医院',width:'400',formatter:function (value, row, index){
+			                           return setLengthLimit(value, row, index,15);
+			            }},
+			            {field: 'rate',align:'center',title: '掉队率',width:'150',formatter:function (value, row, index){
+							return "<div style='width:130px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='showRateDetail(\""+row.hp_id+"\")'>"+value+"</div>";
+						}}
+	        		}
+	    		}
+	   		}
+		}
+	}
+		
+		
+<script>
+$(function(){
+	initPatientsBehindProbability();
+});
+
+//腹透中心规模 柱状图
+function initPatientsBehindProbability(){
+	
+	Ajax.ajax({
+		url : '@url("/PatientsBehindProbability/initPatientsBehindProbabilityChart")',
+		success : function(data) {
+			initPatientsBehindProbabilityChart(data.data);
+		}
+	});
+}
+
+//加载患者掉队率柱状图
+function initPatientsBehindProbabilityChart(data){
+	var myChart = echarts.init(document.getElementById('PatientsBehindProbabilityChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataHp_id = [];
+	
+    for(var k=0;k<data.length;k++){
+		dataAxis.push(data[k].hospitalName);
+		dataCount.push(data[k].rate);
+		dataHp_id.push(data[k].hp_id);
+	}
+    option = {
+   	    title : {
+   	    	text: '患者掉队率',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis'
+   	    },
+        toolbox: {
+        	x: '900',
+	        feature: {
+	            saveAsImage: {show: true}// 保存为图片
+	        }
+	    },
+   	    xAxis : [
+   	        {
+   	        	axisLabel:{interval: 0},
+   	            type : 'category',
+   	            name : '医院',
+   	            data : dataAxis,
+      	         axisLabel:{ 
+      	   	         formatter : function(v) {  
+      	   	         		for (var  i= 0;  i< dataAxis.length; i++) {
+								if(v == dataAxis[i]){
+									return dataHp_id[i];
+								}
+							}
+      	   	    		  }
+      	   	      	  } 
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	        	name : '比例',
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'患者掉队率',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//展示表格的详细数据
+function showRateDetail(hospitalName){
+    Dialog.open('@url("/PatientsBehindProbability/showRateDetail?hospitalName='+hospitalName+'")', {
+        iframeHeight : 650,
+        title:"掉队患者列表"
+    });
+}
+
+//设置字符长度
+function setLengthLimit(value, row, index,length){
+     if(value == null){
+         return "<div class='td-ellipsis' title=''></div>";
+     }else if(value.length>length){
+         return "<div class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+     }else{
+         return "<div class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+     }
+}
+</script>

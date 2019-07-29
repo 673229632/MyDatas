@@ -1,0 +1,109 @@
+@extends(views.common.DialogView,  v_sTitle:"门诊评估上报/编辑")
+@import com.ustcsoft.pdqc.web.patient.form.PatientEvalRstForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+@args PatientEvalRstForm condForm
+@widget.ctnr.Row() {
+	@widget.ctnr.Column(sCss:"col-8") {
+		@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi7",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+		@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi7",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+		@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi7",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+	}
+}
+@widget.ctnr.Form("patientEvaOutCome_form"){
+	@widget.ctrl.Hidden(sLabel:"id:",sId:"id",sName:"id",oValue:condForm.getId())
+	@widget.ctrl.Hidden(sLabel:"病人id:",sId:"patientId",sName:"patientId",oValue:condForm.getPatientId())
+	@widget.ctrl.Hidden(sLabel:"医院id:",sId:"hpId",sName:"hpId",oValue:condForm.getHpId())
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"日期:",sGroupCss:"col-md-4 hanzi7",sName:"patientEvalDate",
+				sId:"patientEvalDate",sFormat:"YYYY-MM-DD",bRequired:true,oValue:condForm.getPatientEvalDate())
+	}
+	@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"体重:", sGroupCss:"col-md-4 hanzi7",sUnitString:"Kg",sId:"weight", 
+								sName:"weight",oValue:condForm.getWeight(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.Input(sLabel:"BMI:", sGroupCss:"col-md-4 hanzi7",sUnitString:"Kg/(m*m)",sId:"bmi", 
+								sName:"bmi",oValue:condForm.getBmi(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.NumberFT(sLabel:"血压:",sGroupCss:"xueya col-sm-4 hanzi7",sFromId:"prebphigh",
+			sToId:"prebplow",oFromValue:condForm.getPrebphigh(),oToValue:condForm.getPrebplow(),sDelimiter:"/",
+			sAddOnLabel:"mmHg",iAddOnWidth:45,bBvRelativeCheck:false)
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"超滤量:", sGroupCss:"col-md-4 hanzi7",sUnitString:"ml/d",sId:"ultrafiltration", 
+								sName:"ultrafiltration",oValue:condForm.getUltrafiltration(),sMaxLength:"5",sType:"float")
+		@widget.ctrl.Input(sLabel:"尿量:", sGroupCss:"col-md-4 hanzi7",sUnitString:"ml/d",sId:"urinaryProduction", 
+								sName:"urinaryProduction",oValue:condForm.getUrinaryProduction(),sMaxLength:"5",sType:"float")
+	}
+	@widget.ctnr.Row() {
+		@widget.ctrl.SelectPicker(sLabel:"心功能分级:", sName:"cardiacFunctionLevel", sInitValue:condForm.getCardiacFunctionLevel(),
+			sId:"cardiacFunctionLevel",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+		@widget.ctrl.SelectPicker(sLabel:"水肿等级:", sName:"edemaGrade", sInitValue:condForm.getEdemaGrade(),
+			sId:"edemaGrade",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.SelectPicker(sLabel:"消化道症状:", sName:"alimentarySymptoms", sInitValue:condForm.getAlimentarySymptoms(),
+			sId:"alimentarySymptoms",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+		@widget.ctrl.Input(sLabel:"其他症状:", sGroupCss:"col-md-8 hanzi7",sId:"otherSymptoms", 
+								sName:"otherSymptoms",oValue:condForm.getOtherSymptoms(),sMaxLength:"200")
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.SelectPicker(sLabel:"出口处评估:", sName:"catheterOutAssessment", sInitValue:condForm.getCatheterOutAssessment(),
+			sId:"catheterOutAssessment",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+		@widget.ctrl.Input(sLabel:"隧道口评分:", sGroupCss:"col-md-4 hanzi7",sId:"catheterOutScore", 
+								sName:"catheterOutScore",oValue:condForm.getCatheterOutScore(),sMaxLength:"5",sType:"float")
+	
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.SelectPicker(sLabel:"体重改变:", sName:"weightChange", sInitValue:condForm.getWeightChange(),
+			sId:"weightChange",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+		@widget.ctrl.SelectPicker(sLabel:"饮食改变:", sName:"dietChange", sInitValue:condForm.getDietChange(),
+			sId:"dietChange",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+		@widget.ctrl.SelectPicker(sLabel:"胃肠道变化:", sName:"gastrointestinalSymptoms", sInitValue:condForm.getGastrointestinalSymptoms(),
+			sId:"gastrointestinalSymptoms",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+	}
+	
+	@widget.ctnr.Row() {
+		@widget.ctrl.SelectPicker(sLabel:"活动能力:", sName:"activityAbility", sInitValue:condForm.getActivityAbility(),
+			sId:"activityAbility",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+		@widget.ctrl.SelectPicker(sLabel:"并发症:", sName:"complication", sInitValue:condForm.getComplication(),
+			sId:"complication",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+		@widget.ctrl.SelectPicker(sLabel:"脂肪消耗现象:", sName:"subcutaneousFat", sInitValue:condForm.getSubcutaneousFat(),
+			sId:"subcutaneousFat",bShowEmptyOption:true,oOptions:"{'0':'I级','1':'II级','2':'III级'}",sGroupCss:"col-md-4 hanzi7")
+	}
+	@widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"editSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+ 	}
+}
+<script type="text/javascript">
+	//保存
+	function editSave(){
+		debugger
+		var patientId=$("#patientId").val();
+		$('#patientEvaOutCome_form').bootstrapValidator('validate');
+		var isValid = $('#patientEvaOutCome_form').data('bootstrapValidator').isValid();
+		if(!isValid){
+	    	return;
+	    }
+		var sConidtion = $('#patientEvaOutCome_form').serialize();
+		Ajax.ajax({
+			url : '@url("/patientOverView/patientEvaOutSave")',
+			data : sConidtion,
+			success : function(data) {
+				if(data.successCount > 0){
+					parent.MsgBox.success(data.retMsg,function(){
+						parent.$("#outPatient").bootstrapTable('refresh');
+						parent.$("#outPatient2").bootstrapTable('refresh', {query: {patientId : patientId}});
+						Dialog.closeSelf();
+					});
+				}else{
+					MsgBox.warning(data.retMsg);
+				}
+			}
+		});
+	}
+</script>

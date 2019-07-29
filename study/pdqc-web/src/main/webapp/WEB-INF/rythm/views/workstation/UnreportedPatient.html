@@ -1,0 +1,48 @@
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)、
+@args String reportProject
+
+	@widget.ctnr.Form("search_form"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Hidden({sLabel:"reportProject", sName:"", sId:"reportProject",oValue:reportProject})
+			@widget.ctrl.SelectPicker(sLabel:"检验检查类型:", sName:"inspectionType", sId:"inspectionType",bShowEmptyOption:false, sGroupCss:"col-6 hanzi6",
+			oOptions:"{'biochemical':'生化指标','bloodBoagulation':'出凝血功能','chestXRay ':'胸部X射线','electrocardiogram':'心电图','infectionDiseases':'传染性疾病筛选','renalBUltrasound':'肾脏B超','routineBlood':'血常规','routineStool':'尿常规','routineUrine':'大便常规'}")
+		}
+	}
+
+	@widget.ctrl.Table(sId:"search_result", sQueryParamFunction:"createQueryParams", sUrl:"/workstation/getRePortPatient", iPageSize:10, sSidePagination:"server"){
+		@widget.ctnr.Columns(){
+			{field: 'patientName', title: '患者名称',},
+			{field: 'cardNo', title: '身份证号',},
+			{field: 'firstDialsysDate', title: '首次腹透日期'},
+		}
+	}
+	
+	
+	
+	
+<!-- 脚本 -->
+<script>
+//列表检索参数
+function createQueryParams(params) {
+    return buildQueryParam('#search_form', params);
+}
+//下拉框改变事件
+$("#inspectionType").change(function(){
+	freshtable();
+})
+//初始化布局
+$(function(){
+	var reportProject = $("#reportProject").val();
+	if("inspection"==reportProject){
+		$("#search_form").show();
+	}else{
+		$("#search_form").hide();
+	}
+});
+//刷新表格
+function freshtable(){
+	$('#search_result').bootstrapTable('refresh');
+}
+</script>

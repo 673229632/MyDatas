@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EmployeeListMapper">
+	<resultMap id="BaseResulInformationtMap"
+        type="com.ustcsoft.pdqc.web.employeemanagement.form.EmployeeInformationForm">
+        <result column="orgNo" jdbcType="VARCHAR" property="orgNo" />
+        <result column="employeeNo" jdbcType="VARCHAR" property="employeeNo" />
+        <result column="employeeName" jdbcType="VARCHAR" property="employeeName" />
+        <result column="employeeSex" jdbcType="VARCHAR" property="employeeSex" />
+        <result column="idCardNo" jdbcType="VARCHAR" property="idCardNo" />
+        <result column="employeeType" jdbcType="VARCHAR" property="employeeType" />
+        <result column="workStart" jdbcType="TIMESTAMP" property="workStart" />
+        <result column="titleNo" jdbcType="VARCHAR" property="titleNo" />
+        <result column="employeeTel" jdbcType="VARCHAR" property="employeeTel" />
+        <result column="isParttime" jdbcType="VARCHAR" property="isParttime" />
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+        <result column="mediYear" jdbcType="VARCHAR" property="mediYear" />
+        <result column="employeeAddress" jdbcType="VARCHAR" property="employeeAddress" />
+        <result column="education" jdbcType="VARCHAR" property="education" />
+        <result column="employeeEmail" jdbcType="VARCHAR" property="employeeEmail" />
+        <result column="employeePost" jdbcType="VARCHAR" property="employeePost" />
+        <result column="isCheck" jdbcType="VARCHAR" property="isCheck" />
+    </resultMap>
+    
+    <resultMap type="com.ustcsoft.pdqc.web.employeemanagement.form.EmployeeFileRstForm" id="resultMap02">
+    	<result column="employeeNo" jdbcType="VARCHAR" property="employeeNo" />
+    	<result column="fileType" jdbcType="VARCHAR" property="fileType" />
+    	<result column="fileName" jdbcType="VARCHAR" property="fileName" />
+    	<result column="uploadTime" jdbcType="TIMESTAMP" property="uploadTime" />
+    </resultMap>
+    
+    <select id="searchEmployee" parameterType="com.ustcsoft.pdqc.web.employeemanagement.form.EmployeeInformationForm"
+    			resultMap="BaseResulInformationtMap">
+    			
+    	SELECT
+    		d1.org_no as orgNo,d1.employee_no as employeeNo,d1.employee_name as employeeName,d1.employee_sex as employeeSex,
+    		d1.id_card_no as idCardNo,d1.employee_type as employeeType,d1.work_start as workStart,
+    		d2.title_no as titleNo,d1.employee_tel as employeeTel,d1.birthday as birthday,d1.medi_year as mediYear,
+    		d1.employee_address as employeeAddress,d1.education as education,d1.employee_email as employeeEmail,
+    		d1.employee_post as employeePost,d1.is_check as isCheck,d1.is_parttime as isParttime
+    		from pd_m_employee d1 left join pd_m_title_employee d2 on d1.employee_no=d2.employee_no
+    		where d1.del_flag='0' and d1.employee_no=#{employeeNo,jdbcType=VARCHAR}
+    		order by d1.employee_type desc
+    </select>
+    
+    <select id="getFiles" resultMap="resultMap02" 
+    				parameterType="com.ustcsoft.pdqc.web.employeemanagement.form.EmployeeListForm">
+    	SELECT d1.employee_no as employeeNo,d1.file_type_no as fileType,d1.file_name as fileName,
+    		d1.date_modified as uploadTime from pd_d_approve_file d1 where d1.del_flag = '0'
+    	<if test="employeeNo !=null">
+    		and d1.employee_no =#{employeeNo,jdbcType=VARCHAR}
+    	</if>
+    </select>
+    
+    <resultMap id="BaseResultMap"
+        type="com.ustcsoft.pdqc.web.employeemanagement.form.EmployeeListForm">
+        <result column="orgNo" jdbcType="VARCHAR" property="orgNo" />
+        <result column="employeeNo" jdbcType="VARCHAR" property="employeeNo" />
+        <result column="employeeName" jdbcType="VARCHAR" property="employeeName" />
+        <result column="employeeSex" jdbcType="VARCHAR" property="employeeSex" />
+        <result column="idCardNo" jdbcType="VARCHAR" property="idCardNo" />
+        <result column="employeeType" jdbcType="VARCHAR" property="employeeType" />
+        <result column="workStart" jdbcType="TIMESTAMP" property="workStart" />
+        <result column="titleName" jdbcType="VARCHAR" property="titleName" />
+        <result column="employeeTel" jdbcType="VARCHAR" property="employeeTel" />
+        <result column="isCheck" jdbcType="VARCHAR" property="isCheck" />
+        <result column="isParttime" jdbcType="VARCHAR" property="isParttime" />
+    </resultMap>
+    
+    <select id="searchEmployeeList" parameterType="com.ustcsoft.pdqc.web.employeemanagement.form.EmployeeListForm"
+    			resultMap="BaseResultMap">
+    			
+    	SELECT
+    		d1.org_no as orgNo,d1.employee_no as employeeNo,d1.employee_name as employeeName,d1.employee_sex as employeeSex,
+    		d1.id_card_no as idCardNo,d1.employee_type as employeeType,d1.work_start as workStart,
+    		d3.title_name as titleName,d1.employee_tel as employeeTel,d1.is_check as isCheck,
+    		d1.is_parttime as isParttime
+    		from pd_m_employee d1 left join pd_m_title_employee d2 on d1.employee_no=d2.employee_no
+    		left join m_title d3 on d2.title_no=d3.title_no	
+    		where d1.del_flag='0' and d1.org_no=#{orgNo,jdbcType=VARCHAR}
+    		<if test="employeeName !=null and employeeName !=''">
+    			and d1.employee_name like #{employeeName,jdbcType=VARCHAR}
+    		</if>
+    		<if test="employeeType !=null and employeeType !=''">
+    			and d1.employee_type = #{employeeType,jdbcType=VARCHAR}
+    		</if>
+    		order by d1.employee_type desc
+    </select>
+</mapper>

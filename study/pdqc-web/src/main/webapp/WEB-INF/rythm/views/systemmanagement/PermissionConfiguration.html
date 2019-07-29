@@ -1,0 +1,59 @@
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+
+@args String roleNo
+
+@widget.ctnr.Div(sCss:"col-xs-12"){
+	@widget.ctrl.Hidden({sLabel:"角色编号:", sName:"roleNo",oValue:roleNo, sId:"roleNo", sGroupCss:"col-4 hanzi4"})
+}
+@widget.ctnr.Div(sCss:"col-xs-12"){
+	@widget.ctnr.Form("treeform"){
+		@widget.ctrl.ZTree(sId:"permissionConfigurationTree", bShowIcon:true, bExpendTree:true, bShowFilter:false, bShowCheck:true, sDataUrl:"/roleManagement/getPermissionConfigurationTree?roleNo="+'111')
+	}
+	@widget.ctnr.BtnBox(sAlign:"center"){
+		@widget.ctrl.Button({sLabel:"保存", sBtncss:"btn-normal",sOnClick:"savePermissionConfiguration", sId:"savePermissionConfigurationBtn"})
+	}
+}
+
+
+<!-- 脚本 -->
+<script>
+$(function(){
+})
+
+// 保存权限
+function savePermissionConfiguration() {
+	var roleNo = $("#roleNo").val();
+	var treeObj = $.fn.zTree.getZTreeObj("permissionConfigurationTree");
+	var nodes = treeObj.getCheckedNodes(true);
+	var keyIds = "";
+	$.each(nodes, function(i, n) {
+		keyIds += nodes[i].id + ",";
+	});
+	// 去除最后一个逗号
+	keyIds = keyIds.substr(0, keyIds.length - 1);
+	// 保存权限
+	Ajax.ajax({
+		url : '@url("/roleManagement/savePermissionConfiguration")',
+		data : {
+			funcIds : keyIds,
+			roleNo : roleNo
+		},
+		type:'post',
+		success : function(data) {
+			if (data.successCount > 0) {
+				MsgBox.success(data.retMsg,function() {
+					parent.freshtable();
+					Dialog.closeSelf();
+				});
+			} else {
+				MsgBox.warning(data.retMsg,function() {
+					parent.freshtable();
+					Dialog.closeSelf();
+				});
+			}
+		}
+	})
+}
+
+
+</script>

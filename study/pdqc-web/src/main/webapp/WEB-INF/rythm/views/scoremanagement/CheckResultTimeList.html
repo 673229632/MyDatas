@@ -1,0 +1,119 @@
+@extends(views.common.MainView, v_sTitle:"评分时间管理")
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+
+@widget.ctnr.Div(sCss:"col-xs-12"){
+	
+	@widget.ctnr.BtnBox(sAlign:"left"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"添加", sBtncss:"btn-normal", sOnClick:"addCheckResultTime", sId:"addScoreBtn"})
+		}
+	}
+	
+	@widget.ctrl.Table(sId:"search_result", sQueryParamFunction:"createQueryParams", sUrl:"/checkResultTimeManagement/getCheckResultTimeData", iPageSize:10, sSidePagination:"server"){
+		@widget.ctnr.Columns(){
+			{field: 'sno', align:'center', title: 'No', formatter: function (value, row, index){
+					return index+1;
+				}
+			},
+			@widget.ctnr.OptColumn(){
+					@widget.ctrl.IconLink(sLabel:"编辑记录", sIconCss:"fa fa-pencil",sOnClick:"editCheckResultTime",sVisibleFunction:"canEdit"),
+					@widget.ctrl.IconLink(sLabel:"查看记录", sIconCss:"fa fa-search",sOnClick:"viewCheckResultTime"),
+		            @widget.ctrl.IconLink(sLabel:"删除记录", sIconCss:"fa fa-times",sOnClick:"delCheckResultTime",sInnerType:"DEL",sPopPlace:"right",sVisibleFunction:"canDelete")
+		        },
+      		{field: 'checkNo', title: 'checkNo',visible:false},
+      		{field: 'qcCenterNo', title: 'qcCenterNo',visible:false},
+			{field: 'checkName', title: '评分名'},
+			{field: 'standardName', title: '质控标准版本'},
+			{field: 'checkStartDate', title: '评分开始时间'},
+			{field: 'checkEndDate', title: '评分截止时间'},
+			{field: 'publishStartDate', title: '发布开始时间'},
+			{field: 'publishEndDate', title: '发布截止时间'},
+			{field: 'publishStatus', title: '发布标志',formatter: function (value, row, index){
+					if("0"==value){
+					return "已发布";
+					}
+					if("1"==value){
+					return "未发布";
+					}
+				}
+				},
+		}
+	}
+}
+<script>
+function canEdit(value, row, index) {
+	if(row.publishStatus == "0") {
+		return false;
+	}
+    return true;
+}
+function canDelete(value, row, index) {
+	if(row.publishStatus == "0") {
+		return false;
+	}
+    return true;
+}
+//添加评分时间
+function addCheckResultTime(){
+	Ajax.ajax({
+        url : '@url("/checkResultTimeManagement/selectUnpublishedData")',
+        success : function(data) {
+            if (data.successCount > 0) {
+            	MsgBox.warning(data.retMsg);
+            } else {
+            	operateCheckResultTime(0,'');
+            }
+        }
+    })
+	
+}
+
+// 查看评分时间
+function viewCheckResultTime(row){
+	var checkNo = row.checkNo;
+	operateCheckResultTime(1,checkNo);    
+}
+//编辑评分时间
+function editCheckResultTime(row){
+	var checkNo = row.checkNo;
+	operateCheckResultTime(2,checkNo);    
+}
+//评分时间操作
+function operateCheckResultTime(editflag,checkNo){
+    var title = "";
+    if(editflag == 0){
+        title = "添加评分时间";
+    }else if(editflag == 1){
+        title = "查看评分时间";
+    }else if(editflag == 2){
+    	title = "编辑评分时间";
+    }
+	Dialog.open('@url("/checkResultTimeManagement/operateCheckResultTime")'+ '?editflag=' + editflag+ '&checkNo=' + checkNo,{
+		iframeHeight : 500,
+		iframeWidth : 300,
+    	title: title
+	});
+}
+//删除职员
+function delCheckResultTime(row){
+	var checkNo = row.checkNo;
+    MsgBox.confirm("确认删除吗？", function(isConfirm) {
+        if (isConfirm) {
+            Ajax.ajax({
+                url : '@url("/checkResultTimeManagement/delCheckResultTime")',
+                data : {
+                	checkNo : checkNo
+                },
+                success : function(data) {
+                    if (data.successCount > 0) {
+                        MsgBox.success(data.retMsg);
+                        $("#search_result").bootstrapTable('refresh');
+                    } else {
+                        MsgBox.warning(data.retMsg);
+                    }
+                }
+            })
+        }
+    });
+}
+</script>

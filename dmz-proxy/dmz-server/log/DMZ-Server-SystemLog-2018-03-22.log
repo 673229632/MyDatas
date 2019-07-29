@@ -1,0 +1,160 @@
+2018-03-22 14:53:31.176 2330 [pool-1-thread-2] INFO  Open your web browser and navigate to http://127.0.0.1:80/
+2018-03-22 14:53:31.176 2330 [pool-1-thread-3] INFO  Open your web browser and navigate to http://127.0.0.1:8080/
+2018-03-22 14:53:31.176 2330 [pool-1-thread-1] INFO  Open your web browser and navigate to http://127.0.0.1:8443/
+2018-03-22 15:03:29.005 600159 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:31.828 602982 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:34.827 605981 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:37.831 608985 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:40.826 611980 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:43.826 614980 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:46.827 617981 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:49.825 620979 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:52.826 623980 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:55.825 626979 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:03:58.825 629979 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:04:32.937 1342 [pool-1-thread-1] INFO  Open your web browser and navigate to http://127.0.0.1:8443/
+2018-03-22 15:04:32.937 1342 [pool-1-thread-2] INFO  Open your web browser and navigate to http://127.0.0.1:80/
+2018-03-22 15:04:32.937 1342 [pool-1-thread-3] INFO  Open your web browser and navigate to http://127.0.0.1:8080/
+2018-03-22 15:04:40.889 9294 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:04:43.827 12232 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:04:46.823 15228 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:04:49.824 18229 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:04:52.823 21228 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:04:55.823 24228 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:04:58.822 27227 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:01.822 30227 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:04.823 33228 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:07.821 36226 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:10.840 39245 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:13.831 42236 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:16.820 45225 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:19.820 48225 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:22.823 51228 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:25.835 54240 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:28.820 57225 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:31.820 60225 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:34.820 63225 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:37.819 66224 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:40.819 69224 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:43.819 72224 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:46.820 75225 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:49.819 78224 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:52.818 81223 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:55.818 84223 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:05:58.819 87224 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:01.819 90224 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:04.817 93222 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:07.820 96225 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:10.818 99223 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:13.817 102222 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:16.817 105222 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:19.817 108222 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:22.816 111221 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:25.815 114220 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:28.816 117221 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:31.817 120222 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:34.816 123221 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:37.815 126220 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:40.816 129221 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:43.814 132219 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:46.814 135219 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:49.815 138220 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:52.815 141220 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:55.815 144220 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:06:58.814 147219 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:01.814 150219 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:04.813 153218 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:07.813 156218 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:10.815 159220 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:13.813 162218 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:16.815 165220 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:19.813 168218 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:22.812 171217 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:25.812 174217 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:28.813 177218 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:31.813 180218 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:34.813 183218 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:37.811 186216 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:40.812 189217 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:43.811 192216 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:46.812 195217 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:49.813 198218 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:52.812 201217 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:55.810 204215 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:07:58.811 207216 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:01.811 210216 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:04.811 213216 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:07.814 216219 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:10.816 219221 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:13.810 222215 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:16.809 225214 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:19.810 228215 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:22.809 231214 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:25.809 234214 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:28.808 237213 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:31.808 240213 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:34.808 243213 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:37.808 246213 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:39.141 247546 [nioEventLoopGroup-3-5] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:08:40.809 249214 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:43.808 252213 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:08:46.808 255213 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:10:55.270 1352 [pool-1-thread-1] INFO  Open your web browser and navigate to http://127.0.0.1:8443/
+2018-03-22 15:10:55.270 1352 [pool-1-thread-3] INFO  Open your web browser and navigate to http://127.0.0.1:8080/
+2018-03-22 15:10:55.270 1352 [pool-1-thread-2] INFO  Open your web browser and navigate to http://127.0.0.1:80/
+2018-03-22 15:11:31.879 37961 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:34.802 40884 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:37.799 43881 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:40.799 46881 [nioEventLoopGroup-3-2] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:43.801 49883 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:46.797 52879 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:49.799 55881 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:52.799 58881 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:55.797 61879 [nioEventLoopGroup-3-7] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.checkHeartbeat.dwr The request site is not in trust sites
+2018-03-22 15:11:57.681 63763 [nioEventLoopGroup-3-8] WARN  http://localhost:8080/hospital/pdtrainingstatistics The request site is not in trust sites
+2018-03-22 15:11:57.694 63776 [nioEventLoopGroup-3-1] WARN  http://localhost:8080/hospital/dwr/call/plaincall/__System.pageUnloaded.dwr The request site is not in trust sites
+2018-03-22 15:15:29.551 275633 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:19:29.547 515629 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:23:29.539 755621 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:27:29.531 995613 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:31:29.523 1235605 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:35:29.515 1475597 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:39:29.507 1715589 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:43:29.499 1955581 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:47:29.550 2195632 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:51:29.620 2435702 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:55:29.658 2675740 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 15:59:29.674 2915756 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:03:29.690 3155772 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:07:29.706 3395788 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:11:29.713 3635795 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:15:29.705 3875787 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:19:29.697 4115779 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:23:29.689 4355771 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:27:29.681 4595763 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:31:29.673 4835755 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:35:29.688 5075770 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:39:29.681 5315763 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:43:29.673 5555755 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:47:29.665 5795747 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:51:29.657 6035739 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:55:29.649 6275731 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 16:59:29.641 6515723 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:03:29.633 6755715 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:07:29.625 6995707 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:11:29.617 7235699 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:15:29.609 7475691 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:19:29.601 7715683 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:23:29.593 7955675 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:27:29.585 8195667 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:31:29.577 8435659 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:35:29.569 8675651 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:39:29.561 8915643 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:43:29.553 9155635 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:47:29.545 9395627 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:51:29.537 9635619 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:55:29.529 9875611 [nioEventLoopGroup-3-6] INFO  WebSocket server received ping message to keep alive
+2018-03-22 17:56:34.913 9940995 [nioEventLoopGroup-3-6] WARN  http://localhost:8080/hospital/pdtrainingstatistics The request site is not in trust sites
+2018-03-22 17:56:48.894 9954976 [nioEventLoopGroup-3-4] WARN  http://localhost:8080/hospital/pdtrainingstatistics The request site is not in trust sites
+2018-03-22 17:56:52.857 9958939 [nioEventLoopGroup-3-5] WARN  http://localhost:8080/hospital/pdtrainingstatistics The request site is not in trust sites
+2018-03-22 17:57:06.896 9972978 [nioEventLoopGroup-3-3] WARN  http://localhost:8080/hospital/pdtrainingstatistics The request site is not in trust sites

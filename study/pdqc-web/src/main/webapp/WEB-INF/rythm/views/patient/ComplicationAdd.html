@@ -1,0 +1,69 @@
+@extends(views.common.DialogView,  v_sTitle:"合并症上报/编辑")
+@import com.ustcsoft.pdqc.web.common.entity.Code
+@import com.ustcsoft.pdqc.web.patient.form.ComplicationForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+@args String hpId
+@args ComplicationForm condForm
+
+@widget.ctnr.Row() {
+	@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi4",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi4",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi4",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+}
+@widget.ctnr.Form("ComplicationForm"){
+	@widget.ctrl.Hidden(sId:"id",sName:"id",oValue:condForm.getId())
+	@widget.ctrl.Hidden(sId:"patientId",sName:"patientId",oValue:condForm.getPatientId())
+	@widget.ctrl.Hidden(sId:"hpId",sName:"hpId",oValue:condForm.getHpId())
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"日期:",sGroupCss:"col-md-4 hanzi2",sName:"tdate",sId:"tdate",sFormat:"YYYY-MM-DD",bRequired:true,oValue:condForm.getTdate())	
+		@widget.ctrl.SelectPicker(sLabel:"临床事件类别:", sName:"type", sId:"type",bShowEmptyOption:true,oOptions:"{'1':'导管出口处及隧道感染','2':'腹膜透析相关感染性腹膜炎'}",sGroupCss:"col-md-4 hanzi6",sInitValue:condForm.getType())
+    }
+@widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"原因:", sGroupCss:"col-md-12 hanzi2",sId:"reason", sName:"reason",bDisabled:false,oValue:condForm.getReason())
+    }
+@widget.ctnr.Row() {
+		@widget.ctrl.SelectPicker(sLabel:"是否住院:", sGroupCss:"col-md-4 hanzi4",sId:"isHospitalization", sName:"isHospitalization",bShowEmptyOption:true,oOptions:"{'0':'否','1':'是'}",bDisabled:false,sInitValue:condForm.getIsHospitalization())
+		@widget.ctrl.Input(sLabel:"抗生素方案:", sGroupCss:"col-md-8 hanzi5",sId:"antibioticTreatment", sName:"antibioticTreatment",bDisabled:false,oValue:condForm.getAntibioticTreatment())
+    }
+    @widget.ctnr.Row() {
+		@widget.ctrl.Input(sLabel:"治疗措施:", sGroupCss:"col-md-12 hanzi4",sId:"treatment", sName:"treatment",bDisabled:false,oValue:condForm.getTreatment())
+    }
+    @widget.ctnr.Row() {
+		@widget.ctrl.SelectPicker(sLabel:"转归:", sGroupCss:"col-md-4 hanzi2",sId:"outcomeType", sName:"outcomeType",bDisabled:false,bShowEmptyOption:true,oOptions:"{'1':'转血透'}",sInitValue:condForm.getOutcomeType())
+    }
+	@widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"complicationSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+ 	}
+	
+	}
+	 <script type="text/javascript">
+		//保存
+		function complicationSave(){
+			var patientId=$("#patientId").val();
+			$('#ComplicationForm').bootstrapValidator('validate');
+			var isValid = $('#ComplicationForm').data('bootstrapValidator').isValid();
+			if(!isValid){
+		    	return;
+		    }
+			var sConidtion = $('#ComplicationForm').serialize();
+			Ajax.ajax({
+				url : '@url("/patientOverView/complicationSave")',
+				data : sConidtion,
+				success : function(data) {
+					if (data.retCode == 0) {
+						parent.MsgBox.success(data.retMsg,function(){
+		                    parent.$("#complication-result2").bootstrapTable('refresh', {query: {patientId : patientId}});
+		                    parent.$("#complication-result").bootstrapTable('refresh');
+		                    Dialog.closeSelf();
+		                })
+		                ;
+					} else {
+						MsgBox.warning(data.retMsg);
+					}
+				}
+			});
+		}
+	 </script>

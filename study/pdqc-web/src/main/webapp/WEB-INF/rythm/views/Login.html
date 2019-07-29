@@ -1,0 +1,278 @@
+@* 
+	登录界面
+	author：caowenjun
+*@
+
+@* 引入头部模板文件 *@
+@extends(views.common.TopView, title:"腹透质控管理系统")
+
+@* 声明模板参数及其类型 *@
+
+@args String usernameinput
+@args String errorMessage
+@args String redirect
+
+
+@* 定义Java变量 *@
+@{
+	String loginUrl = "/login";
+}
+<link rel="stylesheet" href="@(contextRoot)static/theme/default/css/login.css"/>
+<script type="text/javascript" src="@(contextRoot)static/lib/js-plugin/webtoolkit.md5.js"></script>
+<style>
+.has-feedback .form-control-feedback.fa {
+    right: 30px;
+    pointer-events:auto;
+    font-size: 18px;
+    line-height:45px;
+    height:28px
+}
+</style>
+<body>
+<div style="width: 100%;height: 80%;margin-top: 5%;">
+<canvas></canvas>
+@* 引入form表单 *@
+@widget.ctnr.Form({sId:"login-form",sAction:loginUrl}){
+	<div id="bodyMsg">
+	</div>
+	@* 将块内容赋值给本地变量 usernameinput *@
+	@assign("usernameInput") {
+			<span class="input-group-addon">
+					<i class="fa fa-fw fa-user"></i>
+			</span>
+			<input id="username" class="form-control input-lg" style="border-top-right-radius: 4px;border-bottom-right-radius: 4px;"
+				   type="text" placeholder="请输入用户名" name="username"
+				   data-bv-notempty-message="用户名不能为空"
+				   required
+				   value="@usernameinput"
+				   maxlength="10" onkeydown="keyLogin();">
+	}
+	
+	@* 将块内容赋值给本地变量 password *@
+	@assign("passwordInput"){
+			<span class="input-group-addon">
+                    <i class="fa fa-fw fa-key"></i>
+            </span>
+			<input id="passwordInput" class="form-control input-lg"  style="border-top-right-radius: 4px;border-bottom-right-radius: 4px;"
+				   type="password" placeholder="请输入密码" name="passwordInput"
+				   data-bv-notempty-message="密码不能为空"
+				   required
+			       value=""
+				   maxlength="10" onkeydown="keyLogin();">
+		 	@* 引入hidden input模板  *@
+			@widget.ctrl.Hidden({sId:"password"})
+	 }
+	
+	@* 将块内容赋值给本地变量 button *@
+	@assign("button"){
+
+		<button id="btnSubmit" class="btn btn-lg btn-primary btn-block enter-button" style="width:312px" 
+		 	     type="submit" onclick="return passwordEncryption();">登录</button>
+	}
+	
+	@def frow(Object content){
+		<br>
+		<div class="row" align="center">
+			<div class="controls clearfix input-group form-group input-group-lg">
+				@content.raw()
+			</div>
+		</div>
+	}
+	<div class="login-bg-img">
+	<div id="panel-login" class="panel panel-default"
+		 style="margin:auto; width: 500px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);">
+		 <div class="panel-heading panel-title" style="display: none;">
+		 	<span></span>
+		 </div>
+		<div class="panel-body">
+			<div class="row" style="text-align:center;margin-bottom:20px;"><img src="static/theme/default/images/logo.png"></div>
+			@frow(usernameInput)
+			@frow(passwordInput)
+			@frow(button)
+		</div>
+
+	</div>
+		<div class="footer">
+		    <span>@message("label.common.copyright")</span>
+		</div>
+	</div>
+}
+</div>
+</body>
+
+<!-- 脚本 -->
+<script>
+	$(document).ready(function() {
+		$('#username').focus();
+		//错误信息展示
+		var errMsg = '@errorMessage.escape()';
+		if (errMsg != '') {
+			MsgBox.warning(errMsg);
+		}	
+		//对表单进行校验 校验采用 jquery表单验证插件Bootstrap Validator
+   	 	$('#login-form').bootstrapValidator();
+	});
+	
+	//将密码进行MD5加密
+	function passwordEncryption(){
+		if($.trim($('#passwordInput').val()) != ''){
+			var passwordMD5 = ToEncryption($('#passwordInput').val());
+			$('#password').val(passwordMD5);
+		}
+		return true;
+	}	
+
+	function keyLogin() {
+		//回车键的键值为13
+		if (event.keyCode == 13) {
+			document.getElementById("btnSubmit").click(); //调用登录按钮的登录事件
+		}
+	}
+</script>
+<script>
+$(function(){
+  var canvas = document.querySelector('canvas'),
+      ctx = canvas.getContext('2d')
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.lineWidth = .3;
+  ctx.strokeStyle = (new Color(150)).style;
+
+  var mousePosition = {
+    x: 30 * canvas.width / 100,
+    y: 30 * canvas.height / 100
+  };
+
+  var dots = {
+    nb: 750,
+    distance: 50,
+    d_radius: 100,
+    array: []
+  };
+
+  function colorValue(min) {
+    return Math.floor(Math.random() * 255 + min);
+  }
+  
+  function createColorStyle(r,g,b) {
+    return 'rgba(' + r + ',' + g + ',' + b + ', 0.8)';
+  }
+  
+  function mixComponents(comp1, weight1, comp2, weight2) {
+    return (comp1 * weight1 + comp2 * weight2) / (weight1 + weight2);
+  }
+  
+  function averageColorStyles(dot1, dot2) {
+    var color1 = dot1.color,
+        color2 = dot2.color;
+    
+    var r = mixComponents(color1.r, dot1.radius, color2.r, dot2.radius),
+        g = mixComponents(color1.g, dot1.radius, color2.g, dot2.radius),
+        b = mixComponents(color1.b, dot1.radius, color2.b, dot2.radius);
+    return createColorStyle(Math.floor(r), Math.floor(g), Math.floor(b));
+  }
+  
+  function Color(min) {
+    min = min || 0;
+    this.r = colorValue(min);
+    this.g = colorValue(min);
+    this.b = colorValue(min);
+    this.style = createColorStyle(this.r, this.g, this.b);
+  }
+
+  function Dot(){
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+
+    this.vx = -.5 + Math.random();
+    this.vy = -.5 + Math.random();
+
+    this.radius = Math.random() * 2;
+
+    this.color = new Color();
+    console.log(this);
+  }
+
+  Dot.prototype = {
+    draw: function(){
+      ctx.beginPath();
+      ctx.fillStyle = this.color.style;
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      ctx.fill();
+    }
+  };
+
+  function createDots(){
+    for(i = 0; i < dots.nb; i++){
+      dots.array.push(new Dot());
+    }
+  }
+
+  function moveDots() {
+    for(i = 0; i < dots.nb; i++){
+
+      var dot = dots.array[i];
+
+      if(dot.y < 0 || dot.y > canvas.height){
+        dot.vx = dot.vx;
+        dot.vy = - dot.vy;
+      }
+      else if(dot.x < 0 || dot.x > canvas.width){
+        dot.vx = - dot.vx;
+        dot.vy = dot.vy;
+      }
+      dot.x += dot.vx;
+      dot.y += dot.vy;
+    }
+  }
+
+  function connectDots() {
+    for(i = 0; i < dots.nb; i++){
+      for(j = 0; j < dots.nb; j++){
+        i_dot = dots.array[i];
+        j_dot = dots.array[j];
+
+        if((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && (i_dot.x - j_dot.x) > - dots.distance && (i_dot.y - j_dot.y) > - dots.distance){
+          if((i_dot.x - mousePosition.x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - mousePosition.x) > - dots.d_radius && (i_dot.y - mousePosition.y) > - dots.d_radius){
+            ctx.beginPath();
+            ctx.strokeStyle = averageColorStyles(i_dot, j_dot);
+            ctx.moveTo(i_dot.x, i_dot.y);
+            ctx.lineTo(j_dot.x, j_dot.y);
+            ctx.stroke();
+            ctx.closePath();
+          }
+        }
+      }
+    }
+  }
+
+  function drawDots() {
+    for(i = 0; i < dots.nb; i++){
+      var dot = dots.array[i];
+      dot.draw();
+    }
+  }
+
+  function animateDots() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    moveDots();
+    connectDots();
+    drawDots();
+
+    requestAnimationFrame(animateDots);	
+  }
+
+  $('canvas').on('mousemove', function(e){
+    mousePosition.x = e.pageX;
+    mousePosition.y = e.pageY;
+  });
+
+  $('canvas').on('mouseleave', function(e){
+    mousePosition.x = canvas.width / 2;
+    mousePosition.y = canvas.height / 2;
+  });
+
+  createDots();
+  requestAnimationFrame(animateDots);	
+});
+</script>

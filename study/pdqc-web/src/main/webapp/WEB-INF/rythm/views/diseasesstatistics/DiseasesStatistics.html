@@ -1,0 +1,188 @@
+@extends(views.common.MainView, v_sTitle:"传染病统计")
+@widget.ctnr.Row(){
+	@widget.ctnr.Column(sAlign:"center",sCss:"col-8"){ 
+		@widget.ctnr.Div(sId:"DiseasesStatisticsChart",sStyle:"width:1000px;height:500px;"){}
+	}
+	@widget.ctnr.Column(sAlign:"center",sCss:"col-4"){
+		@widget.ctnr.Div(sStyle:"margin-top:140px;"){
+			@widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/DiseasesStatistics/diseasesStatisticsList",bPagination:true,iPageSize:10,sSidePagination:"client",sCss:"no-pagination-left"){
+        		@widget.ctnr.Columns(){
+		            {field: 'hospitalName',align:'center',title: '医院',width:'600',formatter:function (value, row, index){
+		                           return setLengthLimit(value, row, index,10);
+		            }},
+		            {field: 'count1',align:'center',title: '梅毒',width:'150',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='showPatientDetail(\""+'梅毒'+','+row.hp_id+"\")'>"+value+"</div>";
+					}},
+					{field: 'count2',align:'center',title: '结核',width:'150',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='showPatientDetail(\""+'结核'+','+row.hp_id+"\")'>"+value+"</div>";
+					}},
+					{field: 'count3',align:'center',title: '艾滋',width:'150',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='showPatientDetail(\""+'艾滋'+','+row.hp_id+"\")'>"+value+"</div>";
+					}},
+					{field: 'count4',align:'center',title: '丙肝',width:'150',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='showPatientDetail(\""+'丙肝'+','+row.hp_id+"\")'>"+value+"</div>";
+					}},
+					{field: 'count5',align:'center',title: '乙肝',width:'150',formatter:function (value, row, index){
+						return "<div style='width:50px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='showPatientDetail(\""+'乙肝'+','+row.hp_id+"\")'>"+value+"</div>";
+					}}
+        		}
+    		}
+   		}
+	}
+}
+		
+		
+<script>
+$(function(){
+	initDiseasesStatistics();
+});
+
+//传染病统计 柱状图
+function initDiseasesStatistics(){
+	Ajax.ajax({
+		url : '@url("/DiseasesStatistics/initDiseasesStatisticsChart")',
+		success : function(data) {
+			initDiseasesStatisticsChart(data.data);
+		}
+	});
+}
+
+//加载传染病统计柱状图
+function initDiseasesStatisticsChart(data){
+	var myChart = echarts.init(document.getElementById('DiseasesStatisticsChart'));
+	var dataAxis = [];
+	var dataCount1 = [];
+	var dataCount2 = [];
+	var dataCount3 = [];
+	var dataCount4 = [];
+	var dataCount5 = [];
+	var dataHp_id = [];
+	// 获取医院名和ID
+	for(var i=0; i<data.length; i=i+5){
+		dataAxis.push(data[i].hospitalName);
+		dataHp_id.push(data[i].hp_id);
+	}
+	// 获取各医院各传染病人数
+    for(var k=0;k<data.length;k++){
+		if(data[k].infection_diseases == '梅毒'){
+			dataCount1.push(data[k].count);
+		}else if(data[k].infection_diseases == '结核'){
+			dataCount2.push(data[k].count);
+		}else if(data[k].infection_diseases == '艾滋'){
+			dataCount3.push(data[k].count);
+		}else if(data[k].infection_diseases == '丙肝'){
+			dataCount4.push(data[k].count);
+		}else if(data[k].infection_diseases == '乙肝'){
+			dataCount5.push(data[k].count);
+		}
+	} 
+    option = {
+    	    tooltip : {
+    	        trigger: 'axis',
+    	        axisPointer : {        
+    	            type : 'shadow'        
+    	        }
+    	    },
+            toolbox: {
+            	x: '950',
+    	        feature: {
+    	            saveAsImage: {}// 保存为图片
+    	        }
+    	    },
+    	    legend: {
+    	        data:['梅毒','结核','艾滋','丙肝','乙肝']
+    	    },
+    	    grid: {
+    	        left: '3%',
+    	        right: '4%',
+    	        bottom: '3%',
+    	        containLabel: true
+    	    },
+    	    xAxis : [
+    	        {
+    	        	axisLabel:{interval: 0},
+    	            type : 'category',
+    	            name : '医院',
+    	            data : dataAxis,
+    	   	        axisLabel:{ 
+    	   	   	         formatter : function(v) {  
+    	   	   	        	 for (var i = 0; i < dataAxis.length; i++) {
+								if(v == dataAxis[i]){
+									return dataHp_id[i];
+								}
+							}
+    	   	   	    	}
+    	   	   	    } 
+    	        }
+    	    ],
+    	    yAxis : [
+    	        {
+    	            type : 'value',
+    	            name : '人数'
+    	        }
+    	    ],
+    	    series : [
+    	        {
+    	            name:'梅毒',
+    	            type:'bar',
+    	            barWidth : 25,
+    	            stack: '1',
+    	            data: dataCount1
+    	        },
+    	        {
+    	            name:'结核',
+    	            type:'bar',
+    	            barWidth : 25,
+    	            stack: '1',
+    	            data:dataCount2
+    	        },
+    	        {
+    	            name:'艾滋',
+    	            type:'bar',
+    	            barWidth : 25,
+    	            stack: '1',
+    	            data:dataCount3
+    	        },
+    	        {
+    	            name:'丙肝',
+    	            type:'bar',
+    	            barWidth : 25,
+    	            stack: '1',
+    	            data:dataCount4
+    	        },
+    	        {
+    	            name:'乙肝',
+    	            type:'bar',
+    	            barWidth : 25,
+    	            stack: '1',
+    	            data:dataCount5
+    	        },
+    	    ]
+    	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//展示表格的详细数据
+function showPatientDetail(diseases){
+	var result = diseases.split(',');
+	var str = "&diseases="+result[0];
+	var str1 = "&hospitalName="+result[1];
+	str1+=str;
+    Dialog.open('@url("/DiseasesStatistics/showPatientDetail?'+str1+'")', {
+        iframeHeight : 650,
+        title:"传染病患者详情"
+    });
+}
+
+//设置字符长度
+function setLengthLimit(value, row, index,length){
+     if(value == null){
+         return "<div class='td-ellipsis' title=''></div>";
+     }else if(value.length>length){
+         return "<div class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+     }else{
+         return "<div class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+     }
+}
+</script>

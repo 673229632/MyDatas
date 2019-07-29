@@ -1,0 +1,32 @@
+@extends(views.common.DialogView,  v_sTitle:"腹透患者列表")
+@args String hospitalName;
+@args String dialysis;
+
+@widget.ctnr.Row(){
+		@widget.ctnr.Form("search_form"){
+			@widget.ctrl.Hidden(sId:"hospitalName",sName:"hospitalName",oValue:hospitalName),
+			@widget.ctrl.Hidden(sId:"dialysis",sName:"dialysis",oValue:dialysis)
+		}
+	
+		 @widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/dialysisModeStatistics/dialysisModeStatisticsDetail",iPageSize:10,sSidePagination:"client"){
+			@widget.ctnr.Columns(){
+				{title: '序号',align:'center',formatter:function(value, row, index){
+					return index + 1;
+				}},
+				{field: 'name',align:'center',title: '姓名'},
+				{field: 'phone_no',align:'center',title: '联系方式'},
+				{field: 'first_dialsys_date',align:'center',title: '首次腹透日'},
+				{field: 'infection_diseases',align:'center',title: '传染病'},
+				{field: 'type',align:'center',title: '腹透类型'},
+				{field: 'amount1',align:'center',title: '1.5腹透液袋数'},
+				{field: 'amount2',align:'center',title: '2.5腹透液袋数'},
+				{field: 'amount3',align:'center',title: '4.25腹透液袋数'}
+			}
+		}
+	}
+
+<script>
+	function createQueryParams(params) {
+		return buildQueryParam('#search_form', params);
+	}
+</script>

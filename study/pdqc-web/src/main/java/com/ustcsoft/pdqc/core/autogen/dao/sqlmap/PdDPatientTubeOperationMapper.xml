@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdDPatientTubeOperationMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperation">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="hp_id" jdbcType="VARCHAR" property="hpId" />
+    <result column="pt_id" jdbcType="VARCHAR" property="ptId" />
+    <result column="tdate" jdbcType="TIMESTAMP" property="tdate" />
+    <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="doctor" jdbcType="VARCHAR" property="doctor" />
+    <result column="operation_type" jdbcType="VARCHAR" property="operationType" />
+    <result column="operation_way" jdbcType="VARCHAR" property="operationWay" />
+    <result column="way_choice_reason" jdbcType="VARCHAR" property="wayChoiceReason" />
+    <result column="type_of_anesthesia" jdbcType="VARCHAR" property="typeOfAnesthesia" />
+    <result column="dialysis_system" jdbcType="VARCHAR" property="dialysisSystem" />
+    <result column="initial_dialysis" jdbcType="VARCHAR" property="initialDialysis" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="INTEGER" property="rowVersion" />
+    <result column="screen_id" jdbcType="VARCHAR" property="screenId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, hp_id, pt_id, tdate, card_no, doctor, operation_type, operation_way, way_choice_reason, 
+    type_of_anesthesia, dialysis_system, initial_dialysis, del_flag, created_by, date_created, 
+    modified_by, date_modified, row_version, screen_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_d_patient_tube_operation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperationKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_d_patient_tube_operation
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperationKey">
+    delete from pd_d_patient_tube_operation
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperationExample">
+    delete from pd_d_patient_tube_operation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperation">
+    insert into pd_d_patient_tube_operation (id, hp_id, pt_id, 
+      tdate, card_no, doctor, 
+      operation_type, operation_way, way_choice_reason, 
+      type_of_anesthesia, dialysis_system, initial_dialysis, 
+      del_flag, created_by, date_created, 
+      modified_by, date_modified, row_version, 
+      screen_id)
+    values (#{id,jdbcType=VARCHAR}, #{hpId,jdbcType=VARCHAR}, #{ptId,jdbcType=VARCHAR}, 
+      #{tdate,jdbcType=TIMESTAMP}, #{cardNo,jdbcType=VARCHAR}, #{doctor,jdbcType=VARCHAR}, 
+      #{operationType,jdbcType=VARCHAR}, #{operationWay,jdbcType=VARCHAR}, #{wayChoiceReason,jdbcType=VARCHAR}, 
+      #{typeOfAnesthesia,jdbcType=VARCHAR}, #{dialysisSystem,jdbcType=VARCHAR}, #{initialDialysis,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{dateCreated,jdbcType=TIMESTAMP}, 
+      #{modifiedBy,jdbcType=VARCHAR}, #{dateModified,jdbcType=TIMESTAMP}, #{rowVersion,jdbcType=INTEGER}, 
+      #{screenId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperation">
+    insert into pd_d_patient_tube_operation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hpId != null">
+        hp_id,
+      </if>
+      <if test="ptId != null">
+        pt_id,
+      </if>
+      <if test="tdate != null">
+        tdate,
+      </if>
+      <if test="cardNo != null">
+        card_no,
+      </if>
+      <if test="doctor != null">
+        doctor,
+      </if>
+      <if test="operationType != null">
+        operation_type,
+      </if>
+      <if test="operationWay != null">
+        operation_way,
+      </if>
+      <if test="wayChoiceReason != null">
+        way_choice_reason,
+      </if>
+      <if test="typeOfAnesthesia != null">
+        type_of_anesthesia,
+      </if>
+      <if test="dialysisSystem != null">
+        dialysis_system,
+      </if>
+      <if test="initialDialysis != null">
+        initial_dialysis,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+      <if test="screenId != null">
+        screen_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="hpId != null">
+        #{hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="ptId != null">
+        #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="tdate != null">
+        #{tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="doctor != null">
+        #{doctor,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null">
+        #{operationType,jdbcType=VARCHAR},
+      </if>
+      <if test="operationWay != null">
+        #{operationWay,jdbcType=VARCHAR},
+      </if>
+      <if test="wayChoiceReason != null">
+        #{wayChoiceReason,jdbcType=VARCHAR},
+      </if>
+      <if test="typeOfAnesthesia != null">
+        #{typeOfAnesthesia,jdbcType=VARCHAR},
+      </if>
+      <if test="dialysisSystem != null">
+        #{dialysisSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="initialDialysis != null">
+        #{initialDialysis,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="screenId != null">
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperationExample" resultType="java.lang.Integer">
+    select count(*) from pd_d_patient_tube_operation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_d_patient_tube_operation
+    <set>
+      <if test="record._selectiveMark.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.hpId != null">
+        hp_id = #{record.hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.ptId != null">
+        pt_id = #{record.ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.tdate != null">
+        tdate = #{record.tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.cardNo != null">
+        card_no = #{record.cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.doctor != null">
+        doctor = #{record.doctor,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.operationType != null">
+        operation_type = #{record.operationType,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.operationWay != null">
+        operation_way = #{record.operationWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.wayChoiceReason != null">
+        way_choice_reason = #{record.wayChoiceReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.typeOfAnesthesia != null">
+        type_of_anesthesia = #{record.typeOfAnesthesia,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dialysisSystem != null">
+        dialysis_system = #{record.dialysisSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.initialDialysis != null">
+        initial_dialysis = #{record.initialDialysis,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="record._selectiveMark.screenId != null">
+        screen_id = #{record.screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_d_patient_tube_operation
+    set id = #{record.id,jdbcType=VARCHAR},
+      hp_id = #{record.hpId,jdbcType=VARCHAR},
+      pt_id = #{record.ptId,jdbcType=VARCHAR},
+      tdate = #{record.tdate,jdbcType=TIMESTAMP},
+      card_no = #{record.cardNo,jdbcType=VARCHAR},
+      doctor = #{record.doctor,jdbcType=VARCHAR},
+      operation_type = #{record.operationType,jdbcType=VARCHAR},
+      operation_way = #{record.operationWay,jdbcType=VARCHAR},
+      way_choice_reason = #{record.wayChoiceReason,jdbcType=VARCHAR},
+      type_of_anesthesia = #{record.typeOfAnesthesia,jdbcType=VARCHAR},
+      dialysis_system = #{record.dialysisSystem,jdbcType=VARCHAR},
+      initial_dialysis = #{record.initialDialysis,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=INTEGER},
+      screen_id = #{record.screenId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperation">
+    update pd_d_patient_tube_operation
+    <set>
+      <if test="_selectiveMark.hpId != null">
+        hp_id = #{hpId,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.ptId != null">
+        pt_id = #{ptId,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.tdate != null">
+        tdate = #{tdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.cardNo != null">
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.doctor != null">
+        doctor = #{doctor,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.operationType != null">
+        operation_type = #{operationType,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.operationWay != null">
+        operation_way = #{operationWay,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.wayChoiceReason != null">
+        way_choice_reason = #{wayChoiceReason,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.typeOfAnesthesia != null">
+        type_of_anesthesia = #{typeOfAnesthesia,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dialysisSystem != null">
+        dialysis_system = #{dialysisSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.initialDialysis != null">
+        initial_dialysis = #{initialDialysis,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=INTEGER},
+      </if>
+      <if test="_selectiveMark.screenId != null">
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdDPatientTubeOperation">
+    update pd_d_patient_tube_operation
+    set hp_id = #{hpId,jdbcType=VARCHAR},
+      pt_id = #{ptId,jdbcType=VARCHAR},
+      tdate = #{tdate,jdbcType=TIMESTAMP},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      doctor = #{doctor,jdbcType=VARCHAR},
+      operation_type = #{operationType,jdbcType=VARCHAR},
+      operation_way = #{operationWay,jdbcType=VARCHAR},
+      way_choice_reason = #{wayChoiceReason,jdbcType=VARCHAR},
+      type_of_anesthesia = #{typeOfAnesthesia,jdbcType=VARCHAR},
+      dialysis_system = #{dialysisSystem,jdbcType=VARCHAR},
+      initial_dialysis = #{initialDialysis,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=INTEGER},
+      screen_id = #{screenId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

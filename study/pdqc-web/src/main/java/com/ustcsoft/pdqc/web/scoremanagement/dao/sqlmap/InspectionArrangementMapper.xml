@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CheckTimeArrangeTreeListMapper">
+	<resultMap id="CheckTimeArrangeTreeListMapper"
+        type="com.ustcsoft.pdqc.web.scoremanagement.form.InspectionArrangementForm">
+        <result column="treeNo" jdbcType="VARCHAR" property="treeNo" />
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="pid" jdbcType="VARCHAR" property="pid" />
+        <result column="qcCenterNo" jdbcType="VARCHAR" property="qcCenterNo" />
+    </resultMap>
+    
+    <select id="searchCheckResultTimeList" parameterType="com.ustcsoft.pdqc.web.scoremanagement.form.InspectionArrangementForm"
+    			resultMap="CheckTimeArrangeTreeListMapper">
+    			
+    	SELECT
+    		1 as treeNo, a.check_no as id,a.check_name as name
+    		from pd_m_check_result_time a
+    		where a.del_flag='0'  and a.qc_center_no=#{qcCenterNo,jdbcType=VARCHAR}
+    		order by a.check_no desc
+    </select>
+    <select id="searchSchedulejhsjList" parameterType="com.ustcsoft.pdqc.web.scoremanagement.form.InspectionArrangementForm"
+    			resultMap="CheckTimeArrangeTreeListMapper">
+    			
+    	SELECT
+    		2 as treeNo,a.execute_time_no as id,DATE_FORMAT(a.execute_time,'%Y-%m-%d') as name,a.check_no as pid
+    		from pd_m_examine_schedulejhsj a LEFT JOIN pd_m_check_result_time b ON a.check_no = b.check_no
+    		where a.del_flag='0' and b.del_flag='0' and b.qc_center_no=#{qcCenterNo,jdbcType=VARCHAR}
+    		order by a.execute_time asc
+    </select>
+    <select id="searchScheduledialList" parameterType="com.ustcsoft.pdqc.web.scoremanagement.form.InspectionArrangementForm"
+    			resultMap="CheckTimeArrangeTreeListMapper">
+    			
+    	SELECT
+    		5 as treeNo,a.scheduledial_id as id,d.pd_center_name as name, a.execute_time_no as pid
+    		from pd_m_examine_scheduledial a 
+    		left join pd_d_center d on a.pd_center_no =d.pd_center_no
+    		LEFT JOIN pd_m_examine_schedulejhsj b on a.execute_time_no=b.execute_time_no
+    		LEFT JOIN pd_m_check_result_time c ON b.check_no = c.check_no
+    		where a.del_flag='0' and b.del_flag='0' and c.del_flag='0' and c.qc_center_no=#{qcCenterNo,jdbcType=VARCHAR}
+    		order by a.scheduledial_id desc
+    </select>
+    <select id="searchSchedulezjList" parameterType="com.ustcsoft.pdqc.web.scoremanagement.form.InspectionArrangementForm"
+    			resultMap="CheckTimeArrangeTreeListMapper">
+    			
+    	SELECT
+    		6 as treeNo,a.schedulezj_id as id,d.employee_name as name,a.execute_time_no as pid
+    		from pd_m_examine_schedulezj a 
+    		left join pd_m_employee d on a.specialist_no=d.employee_no and d.is_check='0' and d.employee_type='EMP_TYPE_2'
+    		LEFT JOIN pd_m_examine_schedulejhsj b on a.execute_time_no=b.execute_time_no
+    		LEFT JOIN pd_m_check_result_time c ON b.check_no = c.check_no
+    		where a.del_flag='0' and b.del_flag='0' and c.del_flag='0' and c.qc_center_no=#{qcCenterNo,jdbcType=VARCHAR}
+    		order by a.schedulezj_id desc
+    </select>
+</mapper>

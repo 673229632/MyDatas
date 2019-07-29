@@ -1,0 +1,10 @@
+﻿
+//Dialog的创建
+Dialog.open('@url("/pdappointmentinfo/addpdappointmentinfo")',{
+	iframeHeight : 400,
+	iframeWidth : 200,
+	title:'新增检查预约登记'
+});
+
+//Dialog的关闭
+Dialog.closeSelf();

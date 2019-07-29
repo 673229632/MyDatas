@@ -1,0 +1,49 @@
+@import com.ustcsoft.lotus.web.common.entity.Code;
+@import java.util.List
+@extends(views.common.DialogView, v_sTitle:"护士选择")
+@args List<Code> department
+@args String id
+@args boolean singleSelect
+
+@widget.ctnr.Form("search-condition"){
+	@widget.ctnr.Box(){
+		@widget.ctrl.SelectPicker(sId:"departCode",sLabel:"所属科室",sGroupCss:"col-md-4",oOptions:department)
+		@widget.ctrl.Input(sId:"name",sLabel:"护士姓名",sGroupCss:"col-md-4")
+		@widget.ctrl.ButtonSearch(sLabel:"查询",sGroupCss:"col-md-4")
+	}
+}
+@widget.ctrl.Table(sId:"search-result",sUrl:"/selectNurse/getNurse",iPageSize:9,sSidePagination:"client",bSingleSelect:singleSelect,bClickToSelect:true){
+	@widget.ctnr.Columns(){
+		{field:"staffId",visible:false},
+		{field: 'state',align:'center',checkbox: true},
+		{field:"name",title:"姓名",align:'center'},
+		{field:"sex",title:"性别",align:'center'},
+		{field:"category",title:"职业种类",align:'center'},
+		{field:"departCode",title:"所属科室",align:'center'}
+	}
+}
+@widget.ctnr.BtnBox(){
+	@widget.ctrl.Button(sLabel:"取消",sIconCss:"fa fa-close", sOnClick:"Dialog.closeSelf()")
+	@widget.ctrl.Button(sLabel:"确定",sIconCss:"fa fa-save", sOnClick:"insertNurseData")
+}
+<script>
+$("body").keydown(function() {
+    if (event.keyCode == "13") {//keyCode=13是回车键
+    	insertNurseData();
+    }
+});
+
+function insertNurseData(){
+	var data = $('#search-result').bootstrapTable('getSelections');
+	if(data.length > 0){
+		if(@singleSelect){
+			window.parent.selectNurse(data[0]);
+		} else{
+			window.parent.selectNurse(data);
+		}
+		Dialog.closeSelf();
+	}else{
+		MsgBox.warning("请至少选择一条记录。");
+	}
+}
+</script>

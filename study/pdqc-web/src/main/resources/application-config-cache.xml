@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache 
+        http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <!-- 描述 -->
+    <description>缓存配置</description>
+
+    <!-- 基于EhCache的Spring的缓存实现 -->
+    <bean id="springEhCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <!-- 实际的EhCacheManager实例 -->
+        <property name="cacheManager" ref="ehCacheManager" />
+    </bean>
+
+    <!-- EhCache配置文件位置 -->
+    <bean id="ehcacheConfigResource" class="org.springframework.core.io.ClassPathResource">
+        <constructor-arg>
+            <value>ehcache-config.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- EhCacheManager实例 -->
+    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <!-- 配置文件的位置 -->
+        <property name="configLocation" ref="ehcacheConfigResource" />
+    </bean>
+
+    <!-- 配置Spring的默认缓存 -->
+    <cache:annotation-driven cache-manager="springEhCacheManager" />
+</beans>

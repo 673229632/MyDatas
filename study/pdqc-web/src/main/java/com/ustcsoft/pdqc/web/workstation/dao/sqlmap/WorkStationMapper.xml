@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WorkStationMapper">
+    <!-- 获取机构信息列表 -->
+    <select id="getIndexOrgList" parameterType="com.ustcsoft.pdqc.web.workstation.form.OrgCondForm"
+        resultType="com.ustcsoft.pdqc.web.workstation.form.OrgResultForm">
+    	SELECT
+			a.org_no AS orgNo,
+			b.org_index AS orgIndex,
+			b.pd_center_name AS txCenterName,
+			d.doctorNum,
+			e.nurseNum,
+			f.engineerNum,
+			g.patientRetention,
+			h.allPatient
+		FROM
+			pd_m_organization a
+		LEFT JOIN pd_d_center b ON a.org_no = b.org_no
+		AND b.del_flag = '0'
+		LEFT JOIN (
+			SELECT
+				org_no,
+				COUNT(employee_no) AS doctorNum
+			FROM
+				pd_m_employee
+			WHERE
+				employee_type = #{doctorCode,jdbcType=CHAR}
+			GROUP BY
+				org_no
+		) d ON a.org_no = d.org_no
+		LEFT JOIN (
+			SELECT
+				org_no,
+				COUNT(employee_no) AS nurseNum
+			FROM
+				pd_m_employee
+			WHERE
+				employee_type = #{nurseCode,jdbcType=CHAR}
+			GROUP BY
+				org_no
+		) e ON a.org_no = e.org_no
+		LEFT JOIN (
+			SELECT
+				org_no,
+				COUNT(employee_no) AS engineerNum
+			FROM
+				pd_m_employee
+			WHERE
+				employee_type = #{engineerCode,jdbcType=CHAR}
+			GROUP BY
+				org_no
+		) f ON a.org_no = f.org_no
+		
+		LEFT JOIN (
+			SELECT
+				hp_id,
+				COUNT(id) AS patientRetention
+			FROM
+				pd_d_patient_info
+			WHERE
+				del_flag = '0'
+				AND #{threeMonthAgoDate} &gt;= first_dialsys_date
+				AND outcome_type = #{outcomeCode,jdbcType=CHAR}
+			GROUP BY
+				hp_id
+		) g ON b.pd_center_no = g.hp_id
+		LEFT JOIN (
+			SELECT
+				hp_id,
+				COUNT(id) AS allPatient
+			FROM
+				pd_d_patient_info
+			WHERE
+				del_flag = '0'
+				AND outcome_type = #{outcomeCode,jdbcType=CHAR}
+			GROUP BY
+				hp_id
+		) h ON b.pd_center_no = h.hp_id
+		WHERE a.del_flag = '0'
+		AND a.org_type = '2'
+		<if test="orgList != null and orgList.size() > 0">
+			AND a.org_no IN
+			<foreach item="item" index="index" collection="orgList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+        </if>	
+        ORDER BY b.org_index
+        	
+    </select>
+    <select id="getCompletenessOfReporting" parameterType="com.ustcsoft.pdqc.web.workstation.form.CompletenessSelectParameterForm"
+    resultType="com.ustcsoft.pdqc.web.workstation.form.CompletenessRstCondForm">
+    	SELECT
+	a.pd_center_name as pdCenterName,
+	e.patientNum,
+	h.outComeNum,
+	format(h.outComeNum/e.patientNum*100,2) as outComePercentage,
+	i.inspectionNum,
+	format(i.inspectionNum/e.patientNum*100,2) as inspectionPercentage,
+	j.tubeNum,
+	format(j.tubeNum/e.patientNum*100,2) as tubePercentage,
+	k.dialsysNum,
+	format(k.dialsysNum/e.patientNum*100,2) as dialsysPercentage,
+	l.drugNum,
+	format(l.drugNum/e.patientNum*100,2) as drugPercentage,
+	m.followupNum,
+	format(m.followupNum/e.patientNum*100,2) as followupPercentage,
+	n.outpatientNum,
+	format(n.outpatientNum/e.patientNum*100,2) as outpatientPercentage,
+	o.adequacyNum,
+	format(o.adequacyNum/e.patientNum*100,2) as adequacyPercentage,
+	p.petNum,
+	format(p.petNum/e.patientNum*100,2) as petPercentage,
+	q.complicationNum,
+	format(q.complicationNum/e.patientNum*100,2) as complicationPercentage
+FROM
+	pd_d_center a
+LEFT JOIN pd_m_organization b ON a.org_no = b.org_no
+AND b.org_type = '2'
+LEFT JOIN pd_d_qc_center c ON b.parent_no = c.org_no
+LEFT JOIN pd_m_check_result_time d ON c.qc_center_no = d.qc_center_no
+LEFT JOIN (
+	SELECT
+		 hp_id,
+		count(1) AS patientNum
+	FROM	
+		pd_d_patient_info
+	WHERE
+		first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+		and del_flag='0' 
+		GROUP BY hp_id
+) e ON e.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT
+		COUNT(DISTINCT pt_id) AS outComeNum,
+		hp_id
+	FROM
+		pd_d_patient_outcome
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+	and del_flag='0' and pt_id in (
+		SELECT
+			id
+		FROM	
+			pd_d_patient_info
+		WHERE
+			first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+			and del_flag='0' 
+	)
+GROUP BY hp_id
+) h on h.hp_id = a.pd_center_no
+LEFT JOIN(
+	SELECT DISTINCT hp_id,COUNT(1) as inspectionNum FROM
+	(
+	SELECT
+ 		distinct a.hp_id,
+		a.pt_id
+	FROM
+		pd_d_patient_inspection_routine_blood a
+	LEFT JOIN pd_d_patient_inspection_biochemical b on a.pt_id=b.pt_id
+	LEFT JOIN pd_d_patient_inspection_blood_coagulation c on a.pt_id=c.pt_id
+	LEFT JOIN pd_d_patient_inspection_infection_diseases d on a.pt_id=d.pt_id
+	LEFT JOIN pd_d_patient_inspection_routine_urine e on a.pt_id=e.pt_id
+	LEFT JOIN pd_d_patient_inspection_routine_stool f on a.pt_id=f.pt_id
+	LEFT JOIN pd_d_patient_inspection_renal_b_ultrasound g on a.pt_id=g.pt_id
+	LEFT JOIN pd_d_patient_inspection_chest_x_ray h on a.pt_id=h.pt_id
+	LEFT JOIN pd_d_patient_inspection_electrocardiogram i on a.pt_id=i.pt_id
+	WHERE
+		a.del_flag = '0' AND b.del_flag = '0' AND c.del_flag = '0' AND d.del_flag = '0' AND e.del_flag = '0' AND f.del_flag = '0'
+		AND g.del_flag = '0' AND h.del_flag = '0' AND i.del_flag = '0'
+		AND a.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND a.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		AND b.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND b.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		AND c.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND c.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		AND d.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND d.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		AND e.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND e.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		AND f.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND f.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		AND g.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND g.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		AND h.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND h.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		AND h.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND i.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+		)t1 GROUP BY t1.hp_id
+)i on i.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT
+		COUNT(DISTINCT pt_id) AS tubeNum,
+		hp_id
+	FROM
+		pd_d_patient_tube_operation
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+	and del_flag='0' and pt_id in (
+		SELECT
+			id
+		FROM	
+			pd_d_patient_info
+		WHERE
+			first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+			and del_flag='0' 
+	)
+	GROUP BY hp_id
+) j on j.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT COUNT(DISTINCT pt_id) AS dialsysNum,hp_id FROM
+		pd_d_patient_dialsys_solution
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+	and del_flag='0' and pt_id in (
+			SELECT
+				id
+			FROM	
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+				and del_flag='0' 
+		)
+	GROUP BY hp_id
+) k on k.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT COUNT(DISTINCT pt_id) AS drugNum,hp_id FROM
+		pd_d_patient_drug_taken
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE} 
+	and del_flag='0' and pt_id in (
+			SELECT
+				id
+			FROM	
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+				and del_flag='0' 
+		)
+	GROUP BY hp_id
+) l on l.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT COUNT(DISTINCT pt_id) AS followupNum,hp_id FROM
+		pd_d_patient_followup
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE} 
+	and del_flag='0' and pt_id in (
+			SELECT
+				id
+			FROM	
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+				and del_flag='0' 
+		)
+	GROUP BY hp_id
+) m on m.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT COUNT(DISTINCT pt_id) AS outpatientNum,hp_id FROM
+		pd_d_patient_outpatient_evaluation
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE} 
+	and del_flag='0' and pt_id in (
+			SELECT
+				id
+			FROM	
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+				and del_flag='0' 
+		)
+	GROUP BY hp_id
+) n on n.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT COUNT(DISTINCT pt_id) AS adequacyNum,hp_id FROM
+		pd_d_patient_dialysis_adequacy   
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+	and del_flag='0' and pt_id in (
+			SELECT
+				id
+			FROM	
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+				and del_flag='0' 
+		)
+	GROUP BY hp_id
+) o on o.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT COUNT(DISTINCT pt_id) AS petNum,hp_id FROM
+		pd_d_patient_pet
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE} 
+	and del_flag='0' and pt_id in (
+			SELECT
+				id
+			FROM	
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+				and del_flag='0' 
+		)
+	GROUP BY hp_id
+) p on p.hp_id = a.pd_center_no
+LEFT JOIN (
+	SELECT COUNT(DISTINCT pt_id) AS complicationNum,hp_id FROM
+		pd_d_patient_complication  
+	where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+	and del_flag='0'and pt_id in (
+			SELECT
+				id
+			FROM	
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+				and del_flag='0' 
+		)
+	GROUP BY hp_id
+) q on q.hp_id = a.pd_center_no
+WHERE
+	b.parent_no = #{orgNo,jdbcType=VARCHAR}
+    </select>
+    <select id="getInspectionList" parameterType="com.ustcsoft.pdqc.web.workstation.form.CompletenessSelectParameterForm"
+    resultType="com.ustcsoft.pdqc.web.workstation.form.CompletenessReportForm">
+    SELECT
+		e.patientNum AS shouldReportPeople,
+		i.inspectionNum AS actualReportPeople,
+		format(i.inspectionNum / e.patientNum * 100,2) AS integrity,
+		i.dateCreated1 AS dateCreated1,i.dateCreated2 AS dateCreated2,i.dateCreated3 AS dateCreated3,
+		i.dateCreated4 AS dateCreated4,i.dateCreated5 AS dateCreated5,i.dateCreated6 AS dateCreated6,
+		i.dateCreated7 AS dateCreated7,i.dateCreated8 AS dateCreated8,i.dateCreated9 AS dateCreated9
+	FROM
+		pd_d_center a
+	LEFT JOIN (
+		SELECT
+			hp_id,
+			count(1) AS patientNum
+		FROM
+			pd_d_patient_info
+		WHERE
+			first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+		AND del_flag = '0'
+		GROUP BY hp_id
+	) e ON e.hp_id = a.pd_center_no
+LEFT JOIN(
+		SELECT
+			COUNT(1) AS inspectionNum,
+			hp_id,max(dateCreated1) as dateCreated1,
+			max(dateCreated2) as dateCreated2,max(dateCreated3) as dateCreated3,max(dateCreated4) as dateCreated4,
+			max(dateCreated5) as dateCreated5,max(dateCreated6) as dateCreated6,max(dateCreated7) as dateCreated7,
+			max(dateCreated8) as dateCreated8,max(dateCreated9) as dateCreated9
+		from (
+			SELECT
+			 	distinct a.hp_id,
+				a.pt_id,
+				a.date_created as dateCreated1,
+				b.date_created as dateCreated2,
+				c.date_created as dateCreated3,
+				d.date_created as dateCreated4,
+				e.date_created as dateCreated5,
+				f.date_created as dateCreated6,
+				g.date_created as dateCreated7,
+				h.date_created as dateCreated8,
+				i.date_created as dateCreated9
+			FROM
+				pd_d_patient_inspection_routine_blood a
+			LEFT JOIN pd_d_patient_inspection_biochemical b on a.pt_id=b.pt_id
+			LEFT JOIN pd_d_patient_inspection_blood_coagulation c on a.pt_id=c.pt_id
+			LEFT JOIN pd_d_patient_inspection_infection_diseases d on a.pt_id=d.pt_id
+			LEFT JOIN pd_d_patient_inspection_routine_urine e on a.pt_id=e.pt_id
+			LEFT JOIN pd_d_patient_inspection_routine_stool f on a.pt_id=f.pt_id
+			LEFT JOIN pd_d_patient_inspection_renal_b_ultrasound g on a.pt_id=g.pt_id
+			LEFT JOIN pd_d_patient_inspection_chest_x_ray h on a.pt_id=h.pt_id
+			LEFT JOIN pd_d_patient_inspection_electrocardiogram i on a.pt_id=i.pt_id
+			WHERE
+				a.del_flag = '0' AND b.del_flag = '0' AND c.del_flag = '0' AND d.del_flag = '0' AND e.del_flag = '0' AND f.del_flag = '0'
+			AND g.del_flag = '0' AND h.del_flag = '0' AND i.del_flag = '0'
+			AND a.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND a.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			AND b.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND b.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			AND c.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND c.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			AND d.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND d.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			AND e.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND e.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			AND f.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND f.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			AND g.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND g.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			AND h.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND h.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			AND h.tdate &gt;=#{checkStartTime,jdbcType=DATE} AND i.tdate &lt;=#{checkEndTime,jdbcType=DATE}
+			group by a.pt_id
+		) t1
+		group by hp_id
+	) i ON i.hp_id = a.pd_center_no
+	WHERE
+		a.pd_center_no = #{pdCenterNo,jdbcType=VARCHAR}
+    </select>
+    <select id="getExportList" parameterType="com.ustcsoft.pdqc.web.workstation.form.CompletenessSelectParameterForm"
+    resultType="com.ustcsoft.pdqc.web.workstation.form.CompletenessReportForm">
+		SELECT 
+			b.patientNum as shouldReportPeople,
+			c.actualReportPeople as actualReportPeople,
+			format(C.actualReportPeople/b.patientNum*100,2) as integrity,
+			c.recentReportTime as recentReportTime
+		FROM
+			pd_d_center a
+		LEFT JOIN (
+			SELECT
+				hp_id,
+				count(1) AS patientNum
+			FROM	
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;=#{patientRetentionTime,jdbcType=DATE}
+				and del_flag='0' 
+				GROUP BY hp_id
+		) b ON b.hp_id = a.pd_center_no 
+		LEFT JOIN (
+			SELECT
+				COUNT(DISTINCT pt_id) AS actualReportPeople,
+				hp_id,
+				max(date_created) as recentReportTime
+			FROM
+				<choose>
+					<when test="tableName =='outcome'">
+						pd_d_patient_outcome
+					</when>
+					<when test="tableName =='tube'">
+						pd_d_patient_tube_operation
+					</when>
+					<when test="tableName =='dialsys'">
+						pd_d_patient_dialsys_solution
+					</when>
+					<when test="tableName =='drug'">
+						pd_d_patient_drug_taken
+					</when>
+					<when test="tableName =='followup'">
+						pd_d_patient_followup
+					</when>
+					<when test="tableName =='outpatient'">
+						pd_d_patient_outpatient_evaluation
+					</when>
+					<when test="tableName =='adequacy'">
+						pd_d_patient_dialysis_adequacy
+					</when>
+					<when test="tableName =='pet'">
+						pd_d_patient_pet
+					</when>
+					<when test="tableName =='complication'">
+						pd_d_patient_complication
+					</when>
+				</choose>
+				
+			where tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+			and del_flag='0' and pt_id  in(
+				SELECT
+					id
+				FROM	
+					pd_d_patient_info
+				WHERE
+					first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+					and del_flag='0' 
+			
+				)
+			GROUP BY hp_id
+		) c on c.hp_id = a.pd_center_no 
+			WHERE a.pd_center_no =#{pdCenterNo,jdbcType=VARCHAR}
+    </select>
+    <select id="getUnexportedPatientList" parameterType="com.ustcsoft.pdqc.web.workstation.form.CompletenessSelectParameterForm"
+    resultType="com.ustcsoft.pdqc.web.workstation.form.UnreportedPatientForm">
+	SELECT
+		pdpi. NAME AS patientName,
+		pdpi.card_no AS carNo,
+		pdpi.first_dialsys_date AS firstDialsysDate,
+		tableA.pt_id
+	FROM
+		pd_d_patient_info pdpi
+		LEFT JOIN (
+			SELECT
+				c.pt_id
+			FROM
+				pd_d_center a
+			LEFT JOIN (
+				SELECT
+					DISTINCT pt_id,
+					hp_id
+				FROM
+					<choose>
+						<when test="tableName =='outcome'">
+							pd_d_patient_outcome
+						</when>
+						<when test="tableName =='tube'">
+							pd_d_patient_tube_operation
+						</when>
+						<when test="tableName =='dialsys'">
+							pd_d_patient_dialsys_solution
+						</when>
+						<when test="tableName =='drug'">
+							pd_d_patient_drug_taken
+						</when>
+						<when test="tableName =='followup'">
+							pd_d_patient_followup
+						</when>
+						<when test="tableName =='outpatient'">
+							pd_d_patient_outpatient_evaluation
+						</when>
+						<when test="tableName =='adequacy'">
+							pd_d_patient_dialysis_adequacy
+						</when>
+						<when test="tableName =='pet'">
+							pd_d_patient_pet
+						</when>
+						<when test="tableName =='complication'">
+							pd_d_patient_complication
+						</when>
+						<when test="inspectionType =='biochemical'">
+							pd_d_patient_inspection_biochemical
+						</when>
+						<when test="inspectionType =='bloodBoagulation'">
+							pd_d_patient_inspection_blood_coagulation
+						</when>
+						<when test="inspectionType =='chestXRay '">
+							pd_d_patient_inspection_chest_x_ray
+						</when>
+						<when test="inspectionType =='electrocardiogram'">
+							pd_d_patient_inspection_electrocardiogram
+						</when>
+						<when test="inspectionType =='infectionDiseases'">
+							pd_d_patient_inspection_infection_diseases
+						</when>
+						<when test="inspectionType =='renalBUltrasound'">
+							pd_d_patient_inspection_renal_b_ultrasound
+						</when>
+						<when test="inspectionType =='routineBlood'">
+							pd_d_patient_inspection_routine_blood
+						</when>
+						<when test="inspectionType =='routineStool'">
+							pd_d_patient_inspection_routine_stool   
+						</when>
+						<when test="inspectionType =='routineUrine'">
+							pd_d_patient_inspection_routine_urine   
+						</when>
+					</choose>
+				WHERE tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+				AND del_flag = '0'
+				AND pt_id IN (
+					SELECT
+						id
+					FROM
+						pd_d_patient_info
+					WHERE
+						first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+						AND del_flag = '0'
+				)
+			) c ON c.hp_id = a.pd_center_no
+		) tableA ON pdpi.id = tableA.pt_id
+	WHERE
+		pdpi.first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+		AND pdpi.del_flag = '0'
+		AND pdpi.hp_id=#{pdCenterNo,jdbcType=VARCHAR}
+		AND tableA.pt_id IS NULL
+    </select>
+    <select id="getExaminationRate" parameterType="com.ustcsoft.pdqc.web.workstation.form.CompletenessSelectParameterForm"
+    resultType="com.ustcsoft.pdqc.web.workstation.form.EChartCodeForm">
+    	SELECT
+			a.pd_center_name AS name,
+			a.org_index as orgIndex,
+			format(f.checkNum/e.patientNum*100,2) AS percentage
+		FROM
+			pd_d_center a
+		LEFT JOIN pd_m_organization b ON a.org_no = b.org_no
+		AND b.org_type = '2'
+		LEFT JOIN pd_d_qc_center c ON b.parent_no = c.org_no
+		LEFT JOIN pd_m_check_result_time d ON c.qc_center_no = d.qc_center_no
+		LEFT JOIN (
+			SELECT
+				hp_id,
+				count(1) AS patientNum
+			FROM
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;=#{patientRetentionTime,jdbcType=DATE}
+			AND del_flag = '0'
+			GROUP BY
+				hp_id
+		) e ON e.hp_id = a.pd_center_no
+		LEFT JOIN (
+			SELECT
+				count(DISTINCT pt_id) AS checkNum,
+				hp_id
+			FROM
+				<choose>
+					<when test="examType =='hb'">
+						pd_d_patient_inspection_routine_blood
+					</when>
+					<when test="examType =='alb'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='ca'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="p"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="pth"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='totalKt'">
+						pd_d_patient_dialysis_adequacy
+					</when>
+				</choose>
+			WHERE
+				del_flag = '0'
+			and tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+			AND 
+				<choose>
+					<when test="examType =='hb'">
+						hb
+					</when>
+					<when test="examType =='alb'">
+						alb
+					</when>
+					<when test="examType =='ca'">
+						ca
+					</when>
+					<when test='examType =="p"'>
+						p
+					</when>
+					<when test='examType =="pth"'>
+						pth
+					</when>
+					<when test="examType =='totalKt'">
+						total_kt
+					</when>
+				</choose> 
+				&lt;&gt; ''
+			AND pt_id IN (
+				SELECT
+					id
+				FROM
+					pd_d_patient_info
+				WHERE
+					first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+					AND del_flag = '0'
+				)
+			GROUP BY
+				hp_id
+		) f ON f.hp_id = a.pd_center_no
+		WHERE
+			b.parent_no = #{orgNo,jdbcType=VARCHAR}
+			order by
+			<if test="orderBy != null and orderBy !=''">
+	        	<choose>
+					<when test='orderBy =="0"'>
+						a.org_index
+					</when>
+					<when test='orderBy =="1"'>
+						f.checkNum/e.patientNum desc
+					</when>
+				</choose>
+	        </if>
+    </select>
+    <select id="getStandardRate" parameterType="com.ustcsoft.pdqc.web.workstation.form.CompletenessSelectParameterForm"
+    resultType="com.ustcsoft.pdqc.web.workstation.form.EChartCodeForm">
+    	SELECT
+			a.pd_center_name AS NAME,
+			a.org_index as orgIndex,
+			format(
+				g.standsrdRateNum / f.checkNum * 100,
+				2
+			) AS percentage
+		FROM
+			pd_d_center a
+		LEFT JOIN pd_m_organization b ON a.org_no = b.org_no
+		AND b.org_type = '2'
+		LEFT JOIN (
+			SELECT
+				count(DISTINCT pt_id) AS checkNum,
+				hp_id
+			FROM
+				<choose>
+					<when test="examType =='hb'">
+						pd_d_patient_inspection_routine_blood
+					</when>
+					<when test="examType =='alb'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='ca'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="p"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="pth"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='totalKt'">
+						pd_d_patient_dialysis_adequacy
+					</when>
+				</choose>
+			WHERE
+				del_flag = '0'
+			and tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+			AND 
+				<choose>
+					<when test="examType =='hb'">
+						hb
+					</when>
+					<when test="examType =='alb'">
+						alb
+					</when>
+					<when test="examType =='ca'">
+						ca
+					</when>
+					<when test='examType =="p"'>
+						p
+					</when>
+					<when test='examType =="pth"'>
+						pth
+					</when>
+					<when test="examType =='totalKt'">
+						total_kt
+					</when>
+				</choose> 
+				&lt;&gt; ''
+		and pt_id in (
+			SELECT
+								id
+							FROM
+								pd_d_patient_info
+							WHERE
+								first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+								AND del_flag = '0'
+		)
+			GROUP BY
+				hp_id
+		) f ON f.hp_id = a.pd_center_no
+		LEFT JOIN (
+			SELECT
+				count(1) as standsrdRateNum,
+				hp_id
+			FROM
+				<choose>
+					<when test="examType =='hb'">
+						pd_d_patient_inspection_routine_blood
+					</when>
+					<when test="examType =='alb'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='ca'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="p"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="pth"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='totalKt'">
+						pd_d_patient_dialysis_adequacy
+					</when>
+				</choose>
+			WHERE
+		pt_id in (
+			SELECT
+								id
+							FROM
+								pd_d_patient_info
+							WHERE
+								first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+								AND del_flag = '0'
+		)
+		<if test="minValue != null and minValue !=''">
+		and 
+			<choose>
+				<when test="examType =='hb'">
+					hb
+				</when>
+				<when test="examType =='alb'">
+					alb
+				</when>
+				<when test="examType =='ca'">
+					ca
+				</when>
+				<when test='examType =="p"'>
+					p
+				</when>
+				<when test='examType =="pth"'>
+					pth
+				</when>
+				<when test="examType =='totalKt'">
+					total_kt
+				</when>
+			</choose>
+        </if>
+        <if test="minOperator != null and minOperator !=''">
+        	<choose>
+				<when test='minOperator =="0"'>
+					&gt;=#{minValue,jdbcType=VARCHAR}
+				</when>
+				<when test='minOperator =="1"'>
+					=#{minValue,jdbcType=VARCHAR}
+				</when>
+			</choose>
+        </if>
+        <if test="maxValue != null and maxValue !=''">
+		and 
+			<choose>
+				<when test="examType =='hb'">
+					hb
+				</when>
+				<when test="examType =='alb'">
+					alb
+				</when>
+				<when test="examType =='ca'">
+					ca
+				</when>
+				<when test='examType =="p"'>
+					p
+				</when>
+				<when test='examType =="pth"'>
+					pth
+				</when>
+				<when test="examType =='totalKt'">
+					total_kt
+				</when>
+			</choose>
+        </if>
+        <if test="maxOperator != null and maxOperator !=''">
+        	<choose>
+				<when test='maxOperator =="0"'>
+					&lt;=#{maxValue,jdbcType=VARCHAR}
+				</when>
+				<when test='maxOperator =="1"'>
+					=#{maxValue,jdbcType=VARCHAR}
+				</when>
+			</choose>
+        </if>
+		and del_flag = '0'
+		GROUP BY hp_id
+		) g on g.hp_id = a.pd_center_no
+		WHERE
+			b.parent_no = #{orgNo,jdbcType=VARCHAR}
+			order by
+			<if test="orderBy != null and orderBy !=''">
+	        	<choose>
+					<when test='orderBy =="0"'>
+						a.org_index
+					</when>
+					<when test='orderBy =="1"'>
+						g.standsrdRateNum / f.checkNum desc
+					</when>
+				</choose>
+	        </if>
+    </select>
+    <select id="getFraction" parameterType="com.ustcsoft.pdqc.web.workstation.form.CompletenessSelectParameterForm"
+    resultType="com.ustcsoft.pdqc.web.workstation.form.EChartCodeForm">
+    SELECT
+    		a.pd_center_no as pdCenterNo,
+			a.pd_center_name AS NAME,
+			a.org_index as orgIndex,
+			format(
+			f.checkNum/e.patientNum*100,
+			2
+			) as examinationRate,
+			format(
+			g.standsrdRateNum/f.checkNum*100,
+			2
+			) as standardRate,
+			format(
+				f.checkNum/e.patientNum*g.standsrdRateNum/f.checkNum*#{description,jdbcType=VARCHAR},
+				2
+			) AS percentage
+		FROM
+			pd_d_center a
+		LEFT JOIN pd_m_organization b ON a.org_no = b.org_no
+		AND b.org_type = '2'
+				LEFT JOIN (
+			SELECT
+				hp_id,
+				count(1) AS patientNum
+			FROM
+				pd_d_patient_info
+			WHERE
+				first_dialsys_date &gt;=#{patientRetentionTime,jdbcType=DATE}
+			AND del_flag = '0'
+			GROUP BY
+				hp_id
+		) e ON e.hp_id = a.pd_center_no
+		LEFT JOIN (
+			SELECT
+				count(DISTINCT pt_id) AS checkNum,
+				hp_id
+			FROM
+				<choose>
+					<when test="examType =='hb'">
+						pd_d_patient_inspection_routine_blood
+					</when>
+					<when test="examType =='alb'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='ca'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="p"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="pth"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='totalKt'">
+						pd_d_patient_dialysis_adequacy
+					</when>
+				</choose>
+			WHERE
+				del_flag = '0'
+			and tdate&gt;=#{checkStartTime,jdbcType=DATE} and tdate&lt;=#{checkEndTime,jdbcType=DATE}
+			AND 
+				<choose>
+					<when test="examType =='hb'">
+						hb
+					</when>
+					<when test="examType =='alb'">
+						alb
+					</when>
+					<when test="examType =='ca'">
+						ca
+					</when>
+					<when test='examType =="p"'>
+						p
+					</when>
+					<when test='examType =="pth"'>
+						pth
+					</when>
+					<when test="examType =='totalKt'">
+						total_kt
+					</when>
+				</choose> 
+				&lt;&gt; ''
+		and pt_id in (
+			SELECT
+								id
+							FROM
+								pd_d_patient_info
+							WHERE
+								first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+								AND del_flag = '0'
+		)
+			GROUP BY
+				hp_id
+		) f ON f.hp_id = a.pd_center_no
+		LEFT JOIN (
+			SELECT
+				count(1) as standsrdRateNum,
+				hp_id
+			FROM
+				<choose>
+					<when test="examType =='hb'">
+						pd_d_patient_inspection_routine_blood
+					</when>
+					<when test="examType =='alb'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='ca'">
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="p"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test='examType =="pth"'>
+						pd_d_patient_inspection_biochemical
+					</when>
+					<when test="examType =='totalKt'">
+						pd_d_patient_dialysis_adequacy
+					</when>
+				</choose>
+			WHERE
+		pt_id in (
+			SELECT
+								id
+							FROM
+								pd_d_patient_info
+							WHERE
+								first_dialsys_date &gt;= #{patientRetentionTime,jdbcType=DATE}
+								AND del_flag = '0'
+		)
+		<if test="minValue != null and minValue !=''">
+		and 
+			<choose>
+				<when test="examType =='hb'">
+					hb
+				</when>
+				<when test="examType =='alb'">
+					alb
+				</when>
+				<when test="examType =='ca'">
+					ca
+				</when>
+				<when test='examType =="p"'>
+					p
+				</when>
+				<when test='examType =="pth"'>
+					pth
+				</when>
+				<when test="examType =='totalKt'">
+					total_kt
+				</when>
+			</choose>
+        </if>
+        <if test="minOperator != null and minOperator !=''">
+        	<choose>
+				<when test='minOperator =="0"'>
+					&gt;=#{minValue,jdbcType=VARCHAR}
+				</when>
+				<when test='minOperator =="1"'>
+					=#{minValue,jdbcType=VARCHAR}
+				</when>
+			</choose>
+        </if>
+        <if test="maxValue != null and maxValue !=''">
+		and 
+			<choose>
+				<when test="examType =='hb'">
+					hb
+				</when>
+				<when test="examType =='alb'">
+					alb
+				</when>
+				<when test="examType =='ca'">
+					ca
+				</when>
+				<when test='examType =="p"'>
+					p
+				</when>
+				<when test='examType =="pth"'>
+					pth
+				</when>
+				<when test="examType =='totalKt'">
+					total_kt
+				</when>
+			</choose>
+        </if>
+        <if test="maxOperator != null and maxOperator !=''">
+        	<choose>
+				<when test='maxOperator =="0"'>
+					&lt;=#{maxValue,jdbcType=VARCHAR}
+				</when>
+				<when test='maxOperator =="1"'>
+					=#{maxValue,jdbcType=VARCHAR}
+				</when>
+			</choose>
+        </if>
+		and del_flag = '0'
+		GROUP BY hp_id
+		) g on g.hp_id = a.pd_center_no
+		WHERE
+			b.parent_no = #{orgNo,jdbcType=VARCHAR}
+			order by
+			<if test="orderBy != null and orderBy !=''">
+	        	<choose>
+					<when test='orderBy =="0"'>
+						a.org_index
+					</when>
+					<when test='orderBy =="1"'>
+						f.checkNum/e.patientNum*g.standsrdRateNum/f.checkNum*#{description,jdbcType=VARCHAR} desc
+					</when>
+				</choose>
+	        </if>
+    </select>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Shiro权限配置 -->
+<!-- 本配置文件依赖 application-config-cache.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd ">
+
+    <!-- Shiro配置 -->
+    <description>Shiro权限认证系统的设定</description>
+
+    <!-- Shiro缓存对象(EhCache缓存的SHIRO适配器) -->
+    <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <!-- 注入EhCache实例（定义在application-config-cache.xml中） -->
+        <property name="cacheManager" ref="ehCacheManager" />
+    </bean>
+
+    <!-- 基于FormAuthServiceRealm的认证域 -->
+    <bean id="webRealm" class="com.ustcsoft.marsfw.shiro.web.realm.FormAuthServiceRealm"></bean>
+
+    <!-- 权限管理器配置 -->
+    <bean id="securityManager" class="com.ustcsoft.marsfw.shiro.web.mgt.WebCacheSessionSecurityManager">
+        <!-- 认证域 -->
+        <property name="realm" ref="webRealm"></property>
+        <!-- 缓存配置 -->
+        <property name="cacheManager" ref="shiroEhcacheManager" />
+    </bean>
+
+    <!-- Filter定义 -->
+    <bean id="ShiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 属性：权限管理器 -->
+        <property name="securityManager" ref="securityManager" />
+        <!-- 登录页面 -->
+        <property name="loginUrl" value="/login" />
+        <!-- 登录成功页面 -->
+        <property name="successUrl" value="/" />
+        <!-- 未认证页面 -->
+        <property name="unauthorizedUrl" value="/unauthorized" />
+        <!-- 自定义权限过滤器 -->
+        <property name="filters">
+            <util:map>
+                <!-- 基础表单验证过滤器 -->
+                <entry key="formAuthc">
+                    <bean class="com.ustcsoft.marsfw.shiro.web.filter.authc.FormAuthcFilter"></bean>
+                </entry>
+                <!-- 匿名访问过滤器 -->
+                <entry key="none">
+                    <bean class="com.ustcsoft.marsfw.shiro.core.filter.authc.AnonFilter"></bean>
+                </entry>
+            </util:map>
+        </property>
+        <!-- 定义过滤链规则 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /logout = logout
+                /favicon.ico = none
+                /favicon.png = none
+                /static/** = none
+                /sample/** = none
+                /** = formAuthc
+            </value>
+        </property>
+    </bean>
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+</beans>

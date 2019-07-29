@@ -1,0 +1,26 @@
+\\172.17.1.3
+
+禅道：http://172.17.2.99:8080/zentao/user-login.html
+zhangrui zhangrui
+
+SVN：https://172.17.1.153/svn/xytx/02_项目库/New GC-HOPE
+zhangrui ebt123456
+
+
+勤务管理系统：http://eip.gcsoft.com
+170286  zhangrui
+
+项目管理系统：http://172.17.1.5:8081/IPS/Login.aspx
+图书管理系统：http://60.174.249.202:28080/book/index.php
+知识库系统：http://172.17.1.118/knowledge/
+新OA系统：http://218.22.24.105:10000/in/
+Gcsoft外网web地址：https://mail.gcsoft.com/extmail
+软件园网络打印机地址:\\172.17.1.81
+新大楼网络打印机地址:\\172.17.1.3
+Maven私服: http://maven.gcsoft.com
+技术部Redmine: http://tech.gcsoft.com
+
+
+https://172.17.1.153/svn/xytx/02_%E9%A1%B9%E7%9B%AE%E5%BA%93/New%20GC-HOPE/src/trunk
+
+https://172.17.1.153/svn/xytx/02_%E9%A1%B9%E7%9B%AE%E5%BA%93/New%20GC-HOPE

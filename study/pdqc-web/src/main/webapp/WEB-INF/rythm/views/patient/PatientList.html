@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@extends(views.common.MainView, v_sTitle:"患者一览")
+@args List<Code> hospitalOptions
+@args List<Code> patientTypes
+@widget.ctnr.Form("searchForm"){
+	@widget.ctnr.Box(){
+		@widget.ctrl.SelectPicker(sLabel:"所属医院:",sId:"hospitalNo",sName:"hospitalNo",sGroupCss:"col-3 hanzi5", oOptions:hospitalOptions,bShowEmptyOption:false)
+		@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-3 hanzi5", sMaxLength="40",sId:"patientName", sName:"patientName",sPlaceHolder: "请输入患者姓名或拼音")
+		@widget.ctrl.SelectPicker(sLabel:"患者类型:",sGroupCss:"col-3 hanzi5",sInitValue:"PD_OUT_1",sId:"outComeType",sName:"outComeType", oOptions:patientTypes,bShowEmptyOption:false)
+		@widget.ctnr.Column(sAlign:"right",sCss:"col-12",sId:"btncolumn"){
+	        @widget.ctrl.ButtonSearch({sLabel:"查询",sId:"btnSearch",sOnClick:"searchPatient"})
+        	@* @widget.ctrl.ButtonClear({sLabel:"重置",sId:"btnReset",sBtncss:"btn-normal"}) *@
+	    }
+	}
+}
+<!-- 检索结果列表 -->
+@widget.ctrl.Table(sId:"search_result",sQueryParamFunction:"createQueryParams",sUrl:"/patientlist/getPatientData",iPageSize:10,sSidePagination:"client"){
+	@widget.ctnr.Toolbar(){
+		@widget.ctrl.Button({sLabel:"添加患者", sBtncss:"btn-normal",sOnClick:"addPatient"})
+	}
+	@widget.ctnr.Columns(){
+		{field: 'state',align:'center',checkbox: true},
+		{field: 'hospitalName',title: '医院名称'},
+		{field: 'patientId',title: '患者id',visible:false},
+		{field: 'rowVersion',title: '更新标记',visible:false},
+		{field: 'patientName',title: '患者姓名',formatter:function (value, row, index){
+               return setLengthLimit(value, row, index,6);
+        }},
+		{field: 'cardNo',title: '身份证号'},
+		{field: 'firstDialsysDate',title: '首次腹透日'},
+		{field: 'primaryDisease',title: '肾原发病'},
+		{field: 'infectionDisease',title: '传染病'},
+		{field: 'patientType',title: '患者类型',formatter:function (value, row, index){
+			if("PD_OUT_1" == value){
+			    return "在科患者";
+			}
+            if("PD_OUT_2" == value){
+                return "退出患者";
+            }
+        }},
+		@widget.ctnr.OptColumn(){
+			@widget.ctrl.IconLink(sLabel:"查看患者资料", sIconCss:"fa fa-search",sOnClick:"seePatient"),
+            @widget.ctrl.IconLink(sLabel:"编辑患者资料", sIconCss:"fa fa-pencil",sOnClick:"editPatient"),
+            @widget.ctrl.IconLink(sLabel:"删除", sIconCss:"fa fa-times",sOnClick:"deletePatient")
+		}
+	}
+}
+<script>
+
+	$(function(){
+	    
+	    bindKeyUpEvent($("#patientName"),function(){
+	        searchPatient();
+	    });
+	    
+	    $("#hospitalNo").on('change',function(){
+	        searchPatient();
+	    });
+	    $("#outComeType").on('change',function(){
+	        searchPatient();
+	    });
+	});
+	
+	//重置
+	function resetBtn(){
+		$("#hospital").find(".selectpicker").selectpicker('val', "");
+		$("#patientName").val("");
+		$("#patientType").find(".selectpicker").selectpicker('val', "0");
+	}
+	
+	function searchPatient(){
+	    $("#search_result").bootstrapTable('refresh');
+	}
+	
+	function createQueryParams(params) {
+		return buildQueryParam('#searchForm', params);
+	}
+	
+	// 添加患者
+	function addPatient(){
+	    operatePatient(0,'');
+	}
+	
+	// 查看患者
+	function seePatient(row){
+	    operatePatient(1,row.patientId);    
+	}
+	
+	// 编辑患者
+	function editPatient(row){
+	    operatePatient(2,row.patientId);    
+	}
+	
+	// 删除患者
+	function deletePatient(row){
+	    MsgBox.confirm("确认删除吗？", function(isConfirm) {
+	        if (isConfirm) {
+	            Ajax.ajax({
+	                url : '@url("/patientlist/deletePatient")',
+	                data : {
+	                    patientId : row.patientId,
+	                    rowVersion : row.rowVersion
+	                },
+	                success : function(data) {
+	                    if (data.successCount > 0) {
+	                        MsgBox.success(data.retMsg);
+	                        $("#search_result").bootstrapTable('refresh');
+	                    } else {
+	                        MsgBox.warning(data.retMsg);
+	                    }
+	                }
+	            })
+	        }
+	    });
+	}
+	
+	//患者操作
+	function operatePatient(editflag,patientId){
+	    var title = "";
+	    if(editflag == 0){
+	        title = "添加患者";
+	    }else if(editflag == 1){
+	        title = "查看患者";
+	    }else if(editflag == 2){
+	        title = "编辑患者";
+        }
+	    var hospitalNo = $("#hospitalNo").find(".selectpicker").selectpicker('val');
+		Dialog.open('@url("/patientlist/operatePatient")'+ '?editflag=' + editflag + '&hospitalNo=' + hospitalNo + '&patientId=' + patientId,{
+			iframeHeight : 700,
+			iframeWidth : 300,
+	    	title: title
+		});
+	}
+	
+	//设置字符长度
+	function setLengthLimit(value, row, index,length){
+	     if(value == null){
+	         return "<div style='white-space:nowrap' class='td-ellipsis' title=''></div>";
+	     }else if(value.length>length){
+	         return "<div style='white-space:nowrap' class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+	     }else{
+	         return "<div style='white-space:nowrap' class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+	     }
+	}
+</script>

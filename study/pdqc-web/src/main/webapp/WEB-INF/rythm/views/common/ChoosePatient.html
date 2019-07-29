@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+@import com.ustcsoft.lotus.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.lotus.web.common.entity.Code;
+@extends(views.common.DialogView, title:"患者选择", v_bFixedBottomButton:true)
+@args List<Code> statusList
+@args List<Code> listMTag
+@args List<Code> ioList
+@args List<Code> groupList
+@args List<Code> treatTypeList
+@args String type
+@args String ioflag
+@widget.ctnr.Form("search_form"){
+@widget.ctrl.Hidden({sLabel:"",sId:"type",sName:"type",oValue:type})
+	@widget.ctnr.Box(){
+	    @widget.ctrl.Input(sLabel:"患者姓名:",sId:"patientname",sGroupCss:"col-md-3 col-xs-4  hanzi4",sMaxLength="40",sName:"name", sPlaceHolder: "请输入患者姓名")
+	    @if("1".equals(type)){
+		    <div id='experiment1'>
+		     @widget.ctrl.SelectPicker(sLabel:"患者类型:",sGroupCss:"col-md-3 col-xs-4  hanzi4",sId:"statusflag",sName:"statusflag", oOptions:"{'PD_OUT_1':'在科','PD_OUT_2':'退出'}", bRequired:false,sInitValue:"PD_OUT_1")
+		    </div>
+		    <div id='experiment2'>
+		     @widget.ctrl.SelectPicker(sLabel:"患者类型:",sGroupCss:"col-md-3 col-xs-4  hanzi4",sId:"statusflagd",sName:"statusflagd", oOptions:"{'PD_OUT_1':'在科','PD_OUT_2':'退出'}", bRequired:false,bDisabled:true)
+		    </div>
+	    }else if("2".equals(type)){
+	    	@widget.ctrl.SelectPicker(sLabel:"转归类型:",sGroupCss:"col-md-3 col-xs-4  hanzi4",sId:"statusflag",sName:"statusflag", oOptions:statusList, bRequired:false,bDisabled:true)
+	    }else{
+	    	<div id='statusflag1'>
+	    	@widget.ctrl.SelectPicker(sLabel:"转归类型:",sGroupCss:"col-md-3 col-xs-4  hanzi4",sId:"statusflag",sName:"statusflag", oOptions:statusList, bRequired:false,sInitValue:"HD_OUT_1")
+	    	</div>
+	    	<div id='statusflag2'>
+	    	@widget.ctrl.SelectPicker(sLabel:"转归类型:",sGroupCss:"col-md-3 col-xs-4  hanzi4",sId:"statusflagd",sName:"statusflagd", oOptions:statusList,bDisabled:true)
+	    	</div>
+	    }
+	    @widget.ctrl.Input(sLabel:"病历号:",sGroupCss:"col-md-3 col-xs-4 hanzi4",sMaxLength="10",sType:"number",sId:"medicalrecordno",sName:"medicalrecordno", sPlaceHolder: "请输入病历号")
+	    @if(!"1".equals(type)){
+    		@widget.ctrl.SelectPicker(sLabel:"患者分组:",sGroupCss:"col-md-3 col-xs-4  hanzi4",sId:"groupcode",sName:"groupcode", oOptions:groupList, bRequired:false)
+	    }
+	    @widget.ctrl.SelectPicker(sLabel:"门诊分类:",sInitValue:ioflag,sGroupCss:"col-md-3 col-xs-4  hanzi4",sId:"ioflag",sName:"ioflag", oOptions:ioList, bRequired:false)
+    	@if(!"1".equals(type)){
+    		@widget.ctrl.SelectPicker(sLabel:"患者标签:",sId:"tagname11",sGroupCss:"col-md-3 col-xs-4  hanzi4", oOptions:listMTag,bMultiple:true,bShowEmptyOption:false, sPlaceHolder: "请输入患者标签")
+	    }
+	    @widget.ctrl.Hidden({sLabel:"标签",sId:"tagnames",sName:"tagnames"})
+	    @if("1".equals(type) || "2".equals(type)){
+	        @widget.ctrl.SelectPicker(sLabel:"固定随访:",sGroupCss:"col-md-3 col-xs-4  hanzi4",sInitValue:"1",sId:"isfollowup",sName:"isfollowup", oOptions:"{'0':'否','1':'是'}", bRequired:false,bShowEmptyOption:true)
+	    }
+	    @widget.ctrl.Input(sLabel:"传染病信息:",sGroupCss:"col-md-3 col-xs-4 hanzi5",sMaxLength="40",sId:"infectionname",sName:"infectionname", sPlaceHolder: "请输入传染病信息")
+	    @if("1".equals(type)){
+	    	@*@widget.ctrl.SelectPicker(sLabel:"治疗类型:",sGroupCss:"col-xs-3  hanzi4",sId:"treatmenttype",sName:"treatmenttype", oOptions:"{'1':'腹透','2':'血透,腹透'}", bRequired:false,bShowEmptyOption:false)*@
+	    	@widget.ctrl.Hidden({sLabel:"治疗类型:",sId:"treatmenttype",sName:"treatmenttype",oValue:"1"})
+	    }else if("2".equals(type)){
+	    	@*@widget.ctrl.SelectPicker(sLabel:"治疗类型:",sGroupCss:"col-xs-3  hanzi4",sId:"treatmenttype",sName:"treatmenttype", oOptions:treatTypeList, bRequired:false)*@
+	    	@widget.ctrl.Hidden({sLabel:"治疗类型:",sId:"treatmenttype",sName:"treatmenttype",oValue:"2"})
+	    }else{
+	     	@*@widget.ctrl.SelectPicker(sLabel:"治疗类型:",sGroupCss:"col-xs-3  hanzi4",sId:"treatmenttype",sName:"treatmenttype", oOptions:"{'0':'血透','2':'血透,腹透'}", bRequired:false,bShowEmptyOption:false)*@
+	     	@widget.ctrl.Hidden({sLabel:"治疗类型:",sId:"treatmenttype",sName:"treatmenttype",oValue:"0"})
+	    }
+	    @widget.ctnr.Column(sAlign:"right",sCss:"col-12"){
+	        @widget.ctrl.ButtonSearch({sLabel:"查询",sId:"btnSearch"})
+	    }
+    }
+}
+<!-- 检索结果列表 -->
+@widget.ctnr.Column(sCss:"col-12",sStyle:"padding-bottom:45px;"){
+	@widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/choosepatient/getPatientData",iPageSize:10,sSidePagination:"server",bClickToSelect:true,bSingleSelect:true){
+	    @widget.ctnr.Columns(){
+	    	{field: 'state',align:'center',checkbox: true},
+	    	{field: 'name',align:'center',title: '姓名'},
+	    	{field: 'sex',align:'center',title: '性别',formatter: function (value, row, index){
+	   			if(value == null){
+					return "<div style='width:80px;' class='td-ellipsis' title=''></div>";
+				}else if(value == "F"){
+					return "<div style='width:80px;' class='td-ellipsis' title=\""+value+"\">女</div>";
+				}else if(value == "M"){
+					return "<div style='width:80px;' class='td-ellipsis' title=\""+value+"\">男</div>";
+				}
+			}},
+			@if("1".equals(type) || "2".equals(type)){
+				{field: 'cardno',align:'center',title: '身份证号'},
+			}
+	    	{field: 'birthday',align:'center',title: '出生日期',formatter:function(value, row, index){
+	 			var date = new Date();
+	 			date.setTime(value);
+	 			var year=date.getFullYear();
+	 			var month =date.getMonth() +1;
+	 			var day =date.getDate();
+	 			if(value==null){
+	 				return "<div class='td-ellipsis' title=''></div>";
+	 			}else{
+	  				return year + "-" + month + "-" +day; 
+	  			}
+			}},
+			@if(!"1".equals(type)){
+	    		{field: 'groupname',align:'center',title: '患者分组'},
+	    	}
+	    	{field: 'medicalrecordno',align:'center',title: '病历号'},
+	    	@if(!"1".equals(type)){
+	    		{field: 'ioname',align:'center',title: '门诊分类'},
+	    	}
+	    	{field: 'statusname',align:'center',title: '转归情况'},
+	        {field: 'infectionname',align:'center',title: '传染病信息'},
+	        @if(!"1".equals(type)){
+	        	{field: 'tagname',align:'center',title: '患者标签'},
+	        }
+	    	
+		}
+	}
+}
+
+@widget.ctnr.Row(){
+	@widget.ctnr.BtnBoxFixed(bBorder:true) {
+        @widget.ctrl.Button({sLabel:"取消", sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()"})
+        @widget.ctrl.Button({sLabel:"确认", sBtncss:"btn-normal", sOnClick:"choosePatient()"})
+    }
+}
+<!-- 脚本 -->
+<script>
+$("body").keydown(function() {
+    if (event.keyCode == "13") {//keyCode=13是回车键
+    	choosePatient();
+    }
+});
+$(function(){
+	$("#patientname").focus();//初始化时焦点定位在患者姓名处
+	$("#patientname").on("keyup",function(){
+		freshtable();
+	}); 
+	/* $("#patientname").on('change',function(){
+		freshtable();
+	}); */
+	$("#statusflag").on('change',function(){
+		freshtable();
+	});
+	$("#isfollowup").on('change',function(){
+		freshtable();
+	});
+	$("#groupcode").on('change',function(){
+		freshtable();
+	});
+	$("#ioflag").on('change',function(){
+		freshtable();
+	});
+	$("#infectionname").on('keyup',function(){
+		freshtable();
+	});
+	$("#medicalrecordno").on('keyup',function(){
+		freshtable();
+	});
+	$("#tagname11").on('change',function(){
+		var tagname = $("#tagname11").find(".selectpicker").val();
+		$("#tagnames").val(tagname);
+		freshtable();
+	});
+});
+function freshtable(){
+	$('#search-result').bootstrapTable('refresh');
+}
+function choosePatient(){
+	var changerows = $('#search-result').bootstrapTable('getSelections');
+	var bpatientinfo = null;
+	var fnSuccess = function(data) {
+		if (data.data !=null) {
+			bpatientinfo = data.data;
+			
+		} else {
+			MsgBox.warning("获取患者信息失败");
+		}
+	}
+	if(changerows.length <= 0){
+		MsgBox.warning("请选择患者");
+		return false;
+	}else{
+		var patientid = changerows[0].id;
+		Ajax.ajax({
+			url: '@url("/choosepatient/getpatientinfo")',
+			data:"patientid="+changerows[0].id,
+			type:"post",
+			async: false,
+			success: fnSuccess
+      	});
+	}
+	if(bpatientinfo!=null){
+		//将腹透号追加到对象中
+		bpatientinfo.pdialysisid = changerows[0].pdialysisid;
+		window.parent.changePatient(bpatientinfo);
+		Dialog.closeSelf();
+	}
+
+	
+}
+
+function createQueryParams(params) {
+	return buildQueryParam('#search_form', params);
+}
+
+$(function(){
+	$("#treatmenttype").selectpicker().on('change',function(){
+		bindChange();
+	});
+});
+//刷新页面运行bindChange()方法
+$(document).ready(function(){
+	bindChange();
+})
+function bindChange(){
+	var type=$("#type").val();
+	if(type=="1"){
+	var treatmenttype=$("#treatmenttype").find("option:selected").val();
+	if(treatmenttype=='2'){
+		$("#experiment2").show();
+		$("#experiment1").hide();
+		$("#statusflag").find(".selectpicker").selectpicker('val', "");
+
+	}else{
+		$("#experiment1").show();
+		$("#experiment2").hide();
+	}
+	}else if(type=="0"){
+		var treatmenttype=$("#treatmenttype").find("option:selected").val();
+		if(treatmenttype=='2'){
+			$("#statusflag2").show();
+			$("#statusflag1").hide();
+			$("#statusflag").find(".selectpicker").selectpicker('val', "");
+
+		}else{
+			$("#statusflag1").show();
+			$("#statusflag2").hide();
+		}
+	}
+	freshtable();
+}
+
+</script>

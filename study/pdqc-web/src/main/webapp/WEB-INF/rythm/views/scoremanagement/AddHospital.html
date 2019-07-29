@@ -1,0 +1,67 @@
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+@args String id
+@args String pid
+@args String treeNo
+
+@widget.ctnr.Row(){
+	@widget.ctnr.Form("search_result"){
+		@widget.ctrl.Hidden({sLabel:"id:", sName:"id", sId:"id", sGroupCss:"col-3 hanzi4",oValue:id})
+		@widget.ctrl.Hidden({sLabel:"pid:", sName:"pid", sId:"pid", sGroupCss:"col-3 hanzi4",oValue:pid})
+		@widget.ctrl.Hidden({sLabel:"treeNo:", sName:"treeNo", sId:"pid", sGroupCss:"col-3 hanzi4",oValue:treeNo})
+		}
+		
+		@widget.ctrl.Table(sId:"search-result", sQueryParamFunction:"createQueryParams", sUrl:"/inspectionArrangement/getHospitalDetailsPage", iPageSize:10, sSidePagination:"server"){
+		@widget.ctnr.Columns(){
+			{field: 'state', align:'center', checkbox: true},
+			{field: 'pdCenterNo', title: 'pdCenterNo',visible:false},
+			{field: 'pdCenterName', title: '全选'},
+		}
+	}
+	@widget.ctnr.BtnBox(sAlign:"center"){
+		@widget.ctrl.Button({sLabel:"确定", sBtncss:"btn-normal", sOnClick:"saveHospital", sId:"saveHospitalBtn"})
+		@widget.ctrl.Button({sLabel:"关闭", sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()", sId:"closeDialogBtn"})
+	}
+}
+<!-- 脚本 -->
+<script>
+//列表检索参数
+function createQueryParams(params) {
+	debugger
+    return buildQueryParam('#search_result', params);
+}
+//保存,编辑
+function saveHospital(){
+	var changerows = $('#search-result').bootstrapTable('getSelections');
+	var pid = $("#pid").val();
+	if (changerows.length > 0) {
+		var codes = "";
+		for (var i=0; i < changerows.length; i++) {
+			codes += changerows[i].pdCenterNo + ",";
+		}
+		codes.substr(0,codes.length-1);
+    Ajax.ajax({
+		url : '@url("/inspectionArrangement/addHospital")',
+			data : {
+				ids : codes,
+				pid : pid
+				},
+		success : function(data) {
+			if(data.retCode != -1){
+				if (data.successCount > 0) {
+				    parent.MsgBox.success("保存成功",function(){
+                        parent.freshtable();
+                        Dialog.closeSelf();
+                    });
+				} else if(data.successCount < 0){
+					MsgBox.warning("数据重复,请重新选择");
+				} else {
+					MsgBox.warning("保存失败");
+				}
+			}
+		}
+	});
+	}
+}
+</script>

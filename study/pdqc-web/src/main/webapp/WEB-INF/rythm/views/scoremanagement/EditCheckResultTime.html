@@ -1,0 +1,89 @@
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.pdqc.web.scoremanagement.form.CheckResultTimeListForm;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+@args CheckResultTimeListForm checkResultTimeListForm;
+@args String editflag
+@args List<Code> kpiList
+@args List<Code> standardList
+@widget.ctnr.Row(){
+	@widget.ctnr.Form("checkResultTime_form"){
+		@widget.ctrl.Hidden({sLabel:"评分编号:", sName:"checkNo", sId:"checkNo", sGroupCss:"col-6 hanzi9",oValue:checkResultTimeListForm.getCheckNo()})
+		@widget.ctrl.Hidden({sLabel:"质控中心编号:", sName:"qcCenterNo", sId:"qcCenterNo", sGroupCss:"col-6 hanzi9",oValue:checkResultTimeListForm.getQcCenterNo()})
+		@widget.ctrl.Input({sLabel:"评分名:", sName:"checkName", sId:"checkName", sGroupCss:"col-6 hanzi9",oValue:checkResultTimeListForm.getCheckName(),sMaxLength:"10",bRequired:true})
+		@widget.ctrl.SelectPicker(sLabel:"标准版本:", sName:"standardNo", sId:"standardNo", sGroupCss:"col-6 hanzi9",sInitValue:checkResultTimeListForm.getStandardNo(),oOptions:standardList,bRequired:true)
+		@widget.ctrl.DatePicker({sLabel:"评分数据时间开始日:", sName:"checkStartDate", sId:"checkStartDate", sGroupCss:"col-6 hanzi9",oValue:checkResultTimeListForm.getCheckStartDate(),bRequired:true})
+		@widget.ctrl.DatePicker({sLabel:"评分数据时间截止日:", sName:"checkEndDate", sId:"checkEndDate", sGroupCss:"col-6 hanzi9",oValue:checkResultTimeListForm.getCheckEndDate(),bRequired:true})
+		@widget.ctrl.DatePicker({sLabel:"发布开始时间:", sName:"publishStartDate", sId:"publishStartDate", sGroupCss:"col-6 hanzi9",oValue:checkResultTimeListForm.getPublishStartDate(),bRequired:true})
+		@widget.ctrl.DatePicker({sLabel:"发布截止时间:", sName:"publishEndDate", sId:"publishEndDate", sGroupCss:"col-6 hanzi9",oValue:checkResultTimeListForm.getPublishEndDate(),bRequired:true})
+		@widget.ctrl.SelectPicker(sLabel:"是否使用上次评分:", sName:"useSign", sId:"useSign", sGroupCss:"col-6 hanzi9",sInitValue:checkResultTimeListForm.getUseSign(), oOptions:"{'0':'是','1':'否'}")
+		@widget.ctrl.SelectPicker({sLabel:"需要评分的kpi项:", sName:"kpiPart", sId:"kpiPart", sGroupCss:"col-6 hanzi9", oOptions:kpiList,sInitValue:checkResultTimeListForm.getKpiPart()})
+	}
+	
+	@widget.ctnr.BtnBox(bBorder:true,sCss:"btnBox",sAlign:"right"){
+		@widget.ctrl.Button({sLabel:"确定", sBtncss:"btn-normal", sOnClick:"saveCheckResuleTime", sId:"saveCheckResuleTimeBtn"})
+		@widget.ctrl.Button({sLabel:"关闭", sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()", sId:"closeDialogBtn"})
+	}
+}
+<script>
+$(function(){
+	debugger
+    var editflag = "@editflag";
+    // 查看
+    if(editflag == "1"){
+        $("textarea").attr("readonly","readonly");
+        $("input").attr("readonly","readonly");
+        $("#saveCheckResuleTimeBtn").css("display","none");
+        changeDisabled($('#standardNo'),true);
+        changeDisabled($('#useSign'),true);
+        changeDisabled($('#kpiPart'),true);
+    }
+});
+
+//保存,编辑
+function saveCheckResuleTime(){
+	$('#checkResultTime_form').bootstrapValidator('validate');
+	var isValid = $('#checkResultTime_form').data('bootstrapValidator').isValid();
+    if(!isValid){
+    	return;
+    }
+    var sConidtion = $("#checkResultTime_form").serializeObject();
+    Ajax.ajax({
+		url : '@url("/checkResultTimeManagement/addCheckResultTime")',
+		data : sConidtion,
+		success : function(data) {
+			debugger
+			if(data.retCode != -1){
+				if (data.successCount > 0) {
+				    parent.MsgBox.success("保存成功",function(){
+                        parent.$("#search_result").bootstrapTable('refresh');
+                        Dialog.closeSelf();
+                    });
+				} else {
+					MsgBox.warning("保存失败");
+				}
+			}
+		}
+	});
+}
+
+function changeDisabled($widget, disabled) {
+    // 顶层容器
+    var $div = $widget;
+    // 容器
+    var $bootstrapselect = $div.find("div.bootstrap-select");
+    // 按钮
+    var $btn = $bootstrapselect.find(".btn.dropdown-toggle");
+    // 下拉框
+    var $select = $div.find("select.selectpicker");
+    if (disabled) {
+        $bootstrapselect.addClass("disabled");
+        $btn.addClass("disabled");
+    } else {
+        $bootstrapselect.removeClass("disabled");
+        $btn.removeClass("disabled");
+    }
+    // Select本身
+    $select.prop("disabled", disabled);
+}
+</script>

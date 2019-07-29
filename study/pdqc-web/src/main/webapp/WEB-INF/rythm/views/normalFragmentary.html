@@ -1,0 +1,290 @@
+@extends(views.common.MainView)
+@args String sampleArg
+
+
+
+@widget.ctnr.Form("user-form"){
+    @widget.ctnr.Box(){
+        @widget.ctrl.Label({sLabel:"总金额",sName:"totalKe",sLabelCss:"label-large",oValue:fnFormatNumber(new java.math.BigDecimal("123455242"),"元")})
+        @widget.ctrl.Input({sLabel:"折扣率",sName:"zhekoulv",sLabelCss:"label-large",oValue:fnFormatNumber(new java.math.BigDecimal("12")), sUnitString:"%",sMaxLength:"50"})
+        @widget.ctnr.Column(sAlign:"right"){
+            @widget.ctrl.ButtonSave()
+            @widget.ctrl.ButtonSearch()
+        }
+    }
+    
+
+   
+    @widget.ctrl.FtNumber(sLabel:"金额",sFromName:"jeqjfrom",sToName:"jeqjto",sGroupCss:"col-5",bValidation:true)
+    @widget.ctrl.Input({sLabel:"身份证号",sName:"idcard",sType:"idcard"})
+    @widget.ctrl.Input({sLabel:"银行帐号",sName:"bank",sType:"bank"})
+
+    @widget.ctrl.Input({sLabel:"用户名",sName:"userName",sMaxLength:"50",}){
+        @widget.ctrl.Hidden({sId:"userId"})
+    }
+    @widget.ctrl.Input({sLabel:"Email",sName:"email",sType:"email",sMaxLength:"40",sPlaceHolder:"格式xxx@xxx.xx"})
+    @widget.ctnr.Row(){
+        @widget.ctrl.Input({sLabel:"独占单行",sName:"email1",sMaxLength:"50",bRequired:true})
+        @widget.ctrl.Input({sLabel:"独占单行不可用",sName:"email1",sMaxLength:"50",bRequired:true,bDisabled:true})
+    }
+    @widget.ctnr.Row(){
+        @widget.ctrl.Input({sGroupCss:"col-12",sLabel:"整行",sName:"password",bRequired:true})
+    }
+    @widget.ctnr.Row(){
+        @widget.ctrl.Input(sName:"seqKey",sLabel:"流水类型", bRequired:true,readonly:false,sType:"char",sMinLength:"2",sMaxLength:"3")
+        @widget.ctrl.InputSelect(sName:"seqNo",sLabel:"流水号", bRequired:true,readonly:false, sOnclick:"doGetSeqNo",bDisabled:true)
+        @widget.ctrl.InputMobile({sLabel:"手机",sName:"mobile",bRequired:true})
+    }
+    @widget.ctnr.Row(){
+        @widget.ctnr.Column()
+        @widget.ctnr.Column()
+        @widget.ctrl.InputPhone({sLabel:"电话",sName:"phone",bRequired:true, sPopPlace:"left"})
+    }
+    @widget.ctnr.Row(){
+        @widget.ctrl.TextArea(sLabel:"多行输入0",bRequired:true,sName:"textarea1")
+        @widget.ctrl.TextArea(sLabel:"多行输入1",bDisabled:true,sName:"textarea2")
+        @widget.ctrl.TextArea(sLabel:"多行输入2",sName:"textarea3")
+    }
+    @widget.ctrl.TextArea(sLabel:"多行输入2",iRows:4,sGroupCss:"col-12",sName:"textarea4")
+    @widget.ctrl.Label(sLabel:"固定文本",oValue:"当文本内容很长的时候，需要用省略号来显示，同时提供ToolTips", sPopPlace:"right")
+    @widget.ctrl.InputFloat({sLabel:"数字带小数",sName:"number1",sPrecision:"5",sScale:"3",bRequired:true, sUnitString:"元"})
+    @widget.ctrl.InputNumber({sLabel:"数字不带小数",sName:"number2",sPrecision:"6",bRequired:true, sUnitString:"千克"})
+    @widget.ctrl.InputPassword({sLabel:"密码",sName:"password",sMaxLength:"50",bRequired:true, sUnitString:"最多显示六个",sUnitWidth:"6"})
+    @widget.ctrl.InputIp({sLabel:"IP",sId:"ip2",sValue:"1221",bRequired:true})
+    @widget.ctnr.Row() {
+        @widget.ctnr.Panel(sTitle : "下拉树相关组件", bCollapsable : true) {
+            @widget.ctnr.Row() {
+                @widget.ctrl.ComboZTree(sLabel:"下拉树",sGroupCss:"col-6", sDataUrl:"sample/ztree/getTree", sInitValue : "7", bShowFilter : true)
+                @widget.ctrl.ComboZTree(sLabel:"必须下拉树",sGroupCss:"col-6", sDataUrl:"sample/ztree/getTree", sInitValue : "7",bRequired:true)
+                @widget.ctrl.ComboZTree(sLabel:"下拉树不可用",sGroupCss:"col-6", sDataUrl:"sample/ztree/getTree", sInitValue : "7",bDisabled:true)
+                @widget.ctrl.ComboZTree(sLabel:"必须下拉树不可用",sGroupCss:"col-6",bRequired:true,bDisabled:true)
+                @widget.ctrl.ComboZTree(sLabel:"下拉树多选",sGroupCss:"col-6", sDataUrl:"sample/ztree/getTree", bMultiple : true, bShowFilter : true)
+                @widget.ctrl.ComboZTree(sLabel:"必须下拉树多选",sGroupCss:"col-6", sDataUrl:"sample/ztree/getTree", bMultiple : true, sInitValue : "7,18,33",bRequired:true)
+                @widget.ctrl.ComboZTree(sLabel:"下拉树多选不可用",sGroupCss:"col-6", sDataUrl:"sample/ztree/getTree", bMultiple : true, sInitValue : "7,18,33",bDisabled:true)
+                @widget.ctrl.ComboZTree(sLabel:"必须树多选不可用",sGroupCss:"col-6", sDataUrl:"sample/ztree/getTree", bMultiple : true, sInitValue : "7,18,33",bRequired:true,bDisabled:true)
+            }
+        }
+    }
+    @widget.ctnr.Row() {
+        @widget.ctnr.Panel(sTitle : "下拉框相关组件") {
+            @widget.ctnr.Row(){
+                @widget.ctrl.SelectSingle(sLabel:"下拉框单选",sGroupCss:"col-6",sName:"xiala4",sId:"xiala4", bShowEmptyOption:true, sInitValue:"李四",oOptions:",abc,张三,李四", sPopplace:"right")
+                @widget.ctrl.SelectSingle(sLabel:"必须下拉框单选",sGroupCss:"col-6",sName:"xiala44",sId:"xiala44", bShowEmptyOption:true, sInitValue:"李四",oOptions:",abc,张三,李四",bRequired:true, sPopplace:"top")
+                @widget.ctrl.SelectSingle(sLabel:"下拉框单选不可用",sGroupCss:"col-6",sName:"xiala4444",sId:"xialwwwa4", bShowEmptyOption:true, sPopplace:"right",bDisabled:true)
+                @widget.ctrl.SelectSingle(sLabel:"必须下拉框单选不可用",sGroupCss:"col-6",sName:"xiala44444",sId:"xiala4www4", bShowEmptyOption:true, bRequired:true, sPopplace:"right",bDisabled:true)
+            }
+        }
+    }
+    
+    @widget.ctnr.Row() {
+           @widget.ctnr.Panel(sTitle : "省市县联动组件") {
+                @widget.tool.PccBox(sId="IdsProvinceId",bShowEmptyOption:true)
+                @widget.tool.PccBox(sId="IdsCityId",sParentId:"IdsProvinceId")
+                @widget.tool.PccBox(sId="IdsCountyId",sParentId:"IdsCityId")
+                @widget.tool.PccLinkBox(sId="ABC")
+           }
+    }
+    @widget.ctnr.Row() {
+        @widget.ctnr.Panel(sTitle : "日期相关组件") {
+            @widget.ctnr.Row() {
+                @widget.ctrl.DatePicker(sLabel:"年月日期", bRequired:true, sName:"datetime01-YM", sFormat:"YYYY-MM", bReadonly : true)
+                @widget.ctrl.DatePicker(sLabel:"普通日期", bRequired:true, sName:"datetime01", sFormat:"YYYY-MM-DD")
+                @widget.ctrl.DatePicker(sLabel:"普通日期禁用", bRequired:false, sName:"datetime01-B", sFormat:"YYYY-MM-DD", bDisabled:true)
+                @widget.ctrl.DatePicker(sLabel:"日期带时有周", bRequired:true, sName:"datetime02", sFormat:"YYYY-MM-DD HH", bDpShowWeeks:true)
+                @widget.ctrl.DatePicker(sLabel:"日期带分", bRequired:true, sName:"datetime03", sFormat:"YYYY-MM-DD HH:mm")
+                @widget.ctrl.DatePicker(sLabel:"日期带秒", bRequired:true, sName:"datetime04", sFormat:"YYYY-MM-DD HH:mm:ss", oValue:(new Date()))
+                @widget.ctrl.DatePicker(sLabel:"普通日期", bRequired:true, sName:"datetime05", sFormat:"YYYY-MM-DD", bDpShowButton:false)
+                @widget.ctrl.DatePicker(sLabel:"时分", bRequired:true, sName:"datetime10", sFormat:"HH:mm", bDpShowButton:false)
+                @widget.ctrl.DatePicker(sLabel:"时分秒", bRequired:true, sName:"datetime11", sFormat:"HH:mm:ss")
+                @widget.ctrl.DatePicker(sLabel:"时分秒不可用", bRequired:true, sName:"datetime12", sFormat:"HH:mm", bDpShowButton:false, bDisabled:true)
+            }
+            @widget.ctnr.Row() {
+                @{ int i = 0;}
+                @widget.ctrl.DatePickerFT(sLabel:"年月日期",sGroupCss:"col-md-6", bRequired:true, sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"YYYY-MM", bReadonly : true)
+                @widget.ctrl.DatePickerFT(sLabel:"普通日期",sGroupCss:"col-md-6", bRequired:true, sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"YYYY-MM-DD")
+                @widget.ctrl.DatePickerFT(sLabel:"普通日期禁用",sGroupCss:"col-md-6", bRequired:false, sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"YYYY-MM-DD", bDisabled:true)
+                @widget.ctrl.DatePickerFT(sLabel:"日期带时有周",sGroupCss:"col-md-6", bRequired:true, sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"YYYY-MM-DD HH", bDpShowWeeks:true)
+                @widget.ctrl.DatePickerFT(sLabel:"日期带分",sGroupCss:"col-md-6", bRequired:true, sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"YYYY-MM-DD HH:mm")
+                @widget.ctrl.DatePickerFT(sLabel:"日期带秒",sGroupCss:"col-md-6", bRequired:true, sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"YYYY-MM-DD HH:mm:ss", oValue:(new Date()))
+                @widget.ctrl.DatePickerFT(sLabel:"普通日期",sGroupCss:"col-md-6", bRequired:true, sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"YYYY-MM-DD", bDpShowButton:false)
+                @widget.ctrl.DatePickerFT(sLabel:"时分",sGroupCss:"col-md-6", bRequired:true, , sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"HH:mm", bDpShowButton:false)
+                @widget.ctrl.DatePickerFT(sLabel:"时分秒",sGroupCss:"col-md-6", bRequired:true, , sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"HH:mm:ss")
+                @widget.ctrl.DatePickerFT(sLabel:"时分秒不可用",sGroupCss:"col-md-6", bRequired:true, , sNameFrom:("DatePickerFT-F" + (i)), sNameTo:("DatePickerFT-T" + (i++)), 
+                    sFormat:"HH:mm", bDpShowButton:false, bDisabled:true)
+            }
+        }
+    }
+    @widget.ctrl.Switch(sLabel:"开关", sName:"switch1",bDisabled:false,bValue:true,sOnlabel:"开启",sOfflabel:"关闭")
+    
+    @widget.ctnr.Row(){
+        @widget.ctrl.DateHM(sLabel:"时分普通", sHourInputName:"dateHmHour1",sMinuteInputName:"dateHmMin1", sHour:"2", sMinute:"30")
+        @widget.ctrl.DateHM(sLabel:"时分必须", sHourInputName:"dateHmHour2",sMinuteInputName:"dateHmMin2", bRequired:true)
+        @widget.ctrl.DateHM(sLabel:"时分禁用", sHourInputName:"dateHmHour3",sMinuteInputName:"dateHmMin3", bDisabled:true)
+    }
+
+    @widget.ctnr.Row(){
+    @widget.ctrl.InputSelect(sName:"codeSel",sLabel:"普通按钮输入框", bRequired:true,bReadonly:false)
+    }
+    @widget.ctnr.Row(){
+        @widget.ctrl.Check(sLabel:"单选框"sName:"AAAA",oOptions:"1,11,111,1111,11111")
+        @widget.ctrl.Check(sLabel:"单选框Url"sName:"AqweqweqAAA",sUrl:"sample/icheck/getData")
+    }
+    @widget.ctnr.Row(){
+        @widget.ctrl.Check(sLabel:"必须单选框"sName:"BBBB",oOptions:"1,11,111,1111,11111",bRequired:true)
+        @widget.ctrl.Check(sLabel:"必须单选框Url"sName:"BBqweqweBB",sUrl:"sample/icheck/getData",bRequired:true)
+    }
+    @widget.ctnr.Row(){
+        @widget.ctrl.Check(sLabel:"多选框"sName:"CCCC",oOptions:"1,11,111,1111,11111",bMultiple:true)
+        @widget.ctrl.Check(sLabel:"多选框Url"sName:"CCCqweqweC",sUrl:"sample/icheck/getData",bMultiple:true)
+    }
+    @widget.ctnr.Row(){
+        @widget.ctrl.Check(sLabel:"必须多选框"sName:"DDDD",oOptions:"1,11,111,1111,11111",bRequired:true,bMultiple:true)
+        @widget.ctrl.Check(sLabel:"必须多选框Url"sName:"DDDqweqweDD",sUrl:"sample/icheck/getData",bRequired:true,bMultiple:true)
+    }
+    @widget.ctnr.Row(){
+        @widget.ctrl.TextArea(sLabel:"序列化结果",sName:"textarea20161129",sGroupCss : "col-12", sPlaceHolder:"序列化结果待更新......")
+    }
+    @widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.ButtonSave()
+        @widget.ctrl.ButtonSearch()
+        @widget.ctrl.ButtonEnter(sLabel:"校验", sOnClick:"validate")
+        @widget.ctrl.ButtonClear()
+        @widget.ctrl.ButtonBack()
+        @widget.ctrl.Button({sLabel:"返回", sBtncss:"btn-default", css:"btn-back dm-back"})
+         @widget.ctrl.Button(sLabel:"禁用所有", sOnClick:"App.Form.disabledForm(this.form, true);")
+        @widget.ctrl.Button(sLabel:"启用所有", sOnClick:"App.Form.disabledForm(this.form, false);")
+    }
+}
+<!-- 脚本 -->
+<script>
+    function checkedFormatter(value, row, index){
+        return {checked:(index == 0),disabled:(index == 0)};
+    }
+
+    $(function(){
+        // 日期绑定change事件
+        $('#date-rythm-date5').datetimepicker().on('changeDate', function(ev){
+            alert($('#date5').val())
+        });
+        // 下拉框绑定select事件
+        $('#xiala4').selectpicker().on('change',function(){
+        });
+    });
+    //监听表格数据修改事件
+    function tableDataChange(){
+         bodyWarning("数据变了");
+     }
+     
+     function onCheckTest(row){
+        info(row.userName);
+    }
+
+    //列表检索参数
+    function createQueryParams(params){
+        return buildQueryParam('#search-condition', params);
+    }
+    
+    //动态插入一行
+    function insertRow(){
+        $('#userList').bootstrapTable('insertRow',{index:0, row:{userName:"newUser",personName:"新用户"}});
+    }
+    
+    //客户端删除一行
+    function deleteRows(){
+        var delrows = $('#userList').bootstrapTable('getSelections');
+        if(delrows.length > 0){
+            confirm("确认删除选中的记录吗?", function(){
+                for(var i=0; i < delrows.length; i++){
+                    delrows[i]["deleteFlag"] = "true";
+                }
+                $('#userList').bootstrapTable('remove',{field:"deleteFlag", values:["true"]});
+                return true;
+            });
+        }else{
+            warning("请选择要删除的记录!");
+        }
+    }
+
+    function validate(){
+        $('#user-form').bootstrapValidator('validate');
+    }
+    
+    //是否可以编辑用户
+    function canEdit(value, row, index){
+        return row && row.userName == 'admin';
+    }
+
+    function save(){
+        $('#user-form').bootstrapValidator('validate');
+        var formValid = $('#user-form').data('bootstrapValidator').isValid();
+            //if(formValid){
+                var params = new FormData($('#user-form')[0]);
+               ajax({ 
+                url: "@url("/sample/saveMutilFile.action")",
+                data:params,
+                type:"post", 
+                
+                mask:true,
+                /** 
+                 *必须false才会自动加上正确的Content-Type 
+                 */
+                contentType:false,  
+                /** 
+                 * 必须false才会避开jQuery对 formdata 的默认处理 
+                 * XMLHttpRequest会对 formdata 进行正确的处理 
+                 */  
+                processData:false,  
+                success: function(result){
+                    //刷新文件上传控件
+                    if(result.data.file1){
+                        $("#f1").fileinput('refresh', {
+                            fileId:result.data.file1.fileId,
+                            fileName:result.data.file1.fileName
+                        });
+                    }
+                    if(result.data.file2){
+                        $("#f2").fileinput('refresh', {
+                            fileId:result.data.file2.fileId,
+                            fileName:result.data.file2.fileName
+                        });
+                    }
+                    if(result.data.file3){
+                        $("#f3").fileinput('refresh', {
+                            fileId:result.data.file3.fileId,
+                            fileName:result.data.file3.fileName
+                        });
+                    }
+                    $("#f4").fileinput('refresh', {
+                            fileId:result.data.fileId,
+                            fileName:result.data.fileName
+                    });
+                  }
+            });
+            //}
+    }
+    
+    //采番
+    function doGetSeqNo(){
+        if($('#seqKey').val() == ''){
+            error("请输入2-3位流水类型");
+            return;
+        }
+        ajax({
+            url:'@url("/sample/getSeqNo.action")',
+            data:{seqKey:$('#seqKey').val()},
+            success:function(data){
+                $('#seqNo').val(data);
+            }
+        });
+        
+    }
+</script>

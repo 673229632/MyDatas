@@ -1,0 +1,30 @@
+
+//删除的ajax实现
+Ajax.ajax({
+	url : '@url("/FtMotionScheme/deleteFtMotionSchemeDetail")',
+	data : {
+	motiondetailid:row.motiondetailid
+	},
+	success : function(data) {
+		if (data.successCount > 0) {
+			MsgBox.success(data.retMsg);
+			setMotionSchemeDetailTableData();
+		} else {
+			MsgBox.warning(data.retMsg);
+		}
+	}
+});
+
+
+//controller的方法实现
+	/**
+     * 删除信息.
+     * 
+     * @param condForm 
+     * @return JacksonCountReturn
+     */
+    @RequestMapping("/deletepdappointmentinfo")
+    @ControllerID(DBScreenID.PD_CHECKTIME_REGISTER_D)
+    public JacksonCountReturn delete(PdAppointmentInfoConditionForm condForm) {
+        return pdAppointmentInfoService.delete(condForm);
+    }

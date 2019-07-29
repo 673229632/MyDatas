@@ -1,0 +1,57 @@
+@extends(views.common.DialogView,  v_sTitle:"腹膜平衡实验上报/编辑")
+@import com.ustcsoft.pdqc.web.common.entity.Code
+@import com.ustcsoft.pdqc.web.patient.form.BalanceExperimentForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+@args String hpId
+@args BalanceExperimentForm condForm
+
+@widget.ctnr.Row() {
+	@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi4",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi4",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi4",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+}
+@widget.ctnr.Form("BalanceExperimentForm"){
+	@widget.ctrl.Hidden(sId:"id",sName:"id",oValue:condForm.getId())
+	@widget.ctrl.Hidden(sId:"patientId",sName:"patientId",oValue:condForm.getPatientId())
+	@widget.ctrl.Hidden(sId:"hpId",sName:"hpId",oValue:condForm.getHpId())
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"日期:",sGroupCss:"col-md-4 hanzi2",sName:"tdate",sId:"tdate",sFormat:"YYYY-MM-DD",bRequired:true,oValue:condForm.getTdate())	
+		@widget.ctrl.Input(sLabel:"D/P:", sGroupCss:"col-md-4 hanzi4",sId:"value", sName:"value",bDisabled:false,oValue:condForm.getValue())
+		@widget.ctrl.SelectPicker(sLabel:"腹膜转运类型:", sName:"peritonealTransportRate", sId:"peritonealTransportRate",bShowEmptyOption:true,oOptions:"{'1':'高转运（H）','2':'高平均转运（HA）','3':'均值（A）','4':'低平均转运（LA）','5':'低转运（L）'}",sGroupCss:"col-md-4 hanzi6",sInitValue:condForm.getPeritonealTransportRate())
+    }
+	@widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"balanceExperimentSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+ 	}
+	
+	}
+	 <script type="text/javascript">
+		//保存
+		function balanceExperimentSave(){
+			var patientId=$("#patientId").val();
+			$('#BalanceExperimentForm').bootstrapValidator('validate');
+			var isValid = $('#BalanceExperimentForm').data('bootstrapValidator').isValid();
+			if(!isValid){
+		    	return;
+		    }
+			var sConidtion = $('#BalanceExperimentForm').serialize();
+			Ajax.ajax({
+				url : '@url("/patientOverView/experimentSave")',
+				data : sConidtion,
+				success : function(data) {
+					if (data.retCode == 0) {
+						parent.MsgBox.success(data.retMsg,function(){
+		                    parent.$("#experiment-result2").bootstrapTable('refresh', {query: {patientId : patientId}});
+		                    parent.$("#experiment-result").bootstrapTable('refresh');
+		                    Dialog.closeSelf();
+		                })
+		                ;
+					} else {
+						MsgBox.warning(data.retMsg);
+					}
+				}
+			});
+		}
+	 </script>

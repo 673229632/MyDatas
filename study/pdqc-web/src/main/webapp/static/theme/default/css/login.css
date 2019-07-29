@@ -1,0 +1,148 @@
+html {
+	height: 100%;
+	width: 100%;
+	font-family: 'Microsoft YaHei';
+	font-size: 18px;
+	outline: 0;
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	position: relative;
+	background:#001D34;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+    overflow: hidden;
+}
+canvas {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+.container {
+	height: 100%;
+	width: 100%;
+	background-color: #2b3643;
+	padding-top: 72px;
+}
+
+.header {
+	position: absolute;
+	width: 100%;
+	height: 72px;
+	line-height: 72px;
+}
+
+.login-bg-img{
+	
+	position: relative;
+   	margin-top:10%;
+   	background: url(../images/login.png) no-repeat center;
+}
+
+
+
+.logo {
+	float: left;
+	margin-left: 30px;
+	padding-left: 180px;
+	color: #ffffff;
+	font-size: 16px;
+	background: url(../images/logo.png) no-repeat left;
+}
+
+.content {
+	position: absolute;
+	height: 60%;
+	width: 100%;
+	background-color: rgba(185, 251, 229, 0.9);
+	min-height: 400px;
+}
+.container {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.login-bg {
+	height: 342px;
+	padding-left: 575px;
+	background: url(../images/login.png) no-repeat left center;
+	position: relative;
+	top: 50%;
+	margin-top: -170px;
+}
+
+.login {
+	width: 380px;
+	height: 342px;
+	margin-left: 330px;
+	padding-left: 20px;
+	background-color: rgba(0,0,0,0.5);
+	border: 1px solid rgba(0,0,0,0.8);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 0 10px #ada3a1;
+	-moz-box-shadow: 0 0 10px #ada3a1;
+	box-shadow: 0 0 10px #ada3a1;
+}
+
+.login-title {
+	color: #fff;
+	margin-top: 12px;
+	border-left: 3px #32cfb0 solid;
+	padding-left: 10px;
+}
+
+.login-input {
+	width: 340px;
+	height: 42px;
+	line-height: 42px;
+	padding-left: 37px;
+	border: 1px solid #ededed;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+
+.icon-user {
+	margin-top: 40px;
+	background: url(../images/user.png) no-repeat left center;
+}
+
+.icon-password {
+	margin-top: 30px;
+	background: url(../images/password.png) no-repeat left center;
+}
+
+.submit {
+	width: 340px;
+	height: 42px;
+	border: none;
+	background-color: #32cfb0;
+	color: #ffffff;
+	margin-top: 57px;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 20%;
+	font-size: 13px;
+	color: #647183;
+	text-align: center;
+	background: none;
+}
+
+.footer>span {
+	position: relative;
+	top: 50%;
+}

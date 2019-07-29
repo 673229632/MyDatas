@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SQL填充</title>
+</head>
+
+<style>
+    .css {
+        font-size: 15px;
+        height: 100%;
+        width: 100%
+    }
+	.tablecss {
+		height: 450px;
+        width: 90%;
+		margin-left: 5%;
+	}
+	
+	textarea {
+		border: 5px #ebebeb solid;
+	}
+	
+	td {
+		padding: 20px;
+	}
+	
+	button {
+		background-color: #4CAF50; /* Green */
+		border: none;
+		color: white;
+		padding: 5px 10px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		cursor: pointer;
+		border-radius: 8px;
+	}
+	
+	.biaoti {
+		width: 100%;
+		text-align: left;
+		padding-left: 5%;
+		font-size: 22px;
+		margin-bottom: 20px;
+		margin-top: 20px;
+	}
+</style>
+<body align="center">
+<div class="biaoti">SQL填充  v3.5</div>
+<table class="tablecss" border="1" cellspacing="0">
+	<tr>
+		<td style="height: 400px;">
+			<textarea id="sql" class="css" placeholder="[DEBUG] [2018-03-29 10:33:21.512] [http-nio-8080-exec-28] selecttrendsdata - ==>  Preparing:  sql语句
+[DEBUG] [2018-03-29 10:33:21.513] [http-nio-8080-exec-28] selecttrendsdata - ==> Parameters:   参数
+[DEBUG] [2018-03-29 10:33:21.601] [http-nio-8080-exec-28] selecttrendsdata - <==      Total:   查询结果条数
+(以上日志为一组,支持多组)"></textarea>
+		</td>
+		<td style="width: 40%;">
+			<textarea id="result" class="css" placeholder="结果"  style="height: 380px;"></textarea>
+			<div>
+				<div>
+					<button id="clear">清空</button>
+				</div>
+				<div>
+					<span id="info" ></span>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+<div>
+	<span class="biaoti" style="font-size:15px;width:90%;float: left;">提示: 将[控制台]的sql日志粘贴于左侧输入框, 点击[结果]框即可完成sql填充及复制成功</span>
+</div>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+    $(function(){	
+	
+		$("#clear").click(function(){
+			$("#sql").val("");
+			$("#parameters").val("");
+			$("#result").val("");   
+			$("#info").html("");
+		});
+		
+		$("#result").on('click',function(){
+			doWay();
+		
+			var e= document.getElementById("result");
+			e.select();
+			document.execCommand("Copy"); 
+			$("#info").html("复制成功!");
+		});
+    });
+	
+	function doWay(){
+			//返回的字符串
+			var result = "";
+			//数组
+		    var arr = new Array();
+			var str = $("#sql").val();
+			//将str分成两部分第一部分从开始到Parameters
+			var num = str.indexOf('Parameters');
+			while(num != -1){
+				//创建对象
+				var obj = new Object();
+				//截取sql部分
+				var sql = str.substring(0,str.indexOf('Parameters'));
+				
+				var num1 = sql.indexOf('Preparing');
+				if (num1 != -1) {
+					sql = sql.substring(sql.indexOf('Preparing')+11,sql.indexOf('\n'));
+				} else {
+					sql = sql.substring(0,sql.indexOf('\n'));
+				}
+				var parameters = str.substring(str.indexOf('Parameters'),str.length);
+				//截取到换行符
+				num1 = parameters.indexOf('\n');
+				if (num1 != -1) {
+					num1 = parameters.indexOf('Preparing');
+					if(num1 != -1){
+						str = parameters.substring(parameters.indexOf('Preparing'),parameters.length);
+					} else {
+						str = "";
+					}
+					//去掉总条数行
+					if(parameters.indexOf('\n') != -1){
+						parameters = parameters.substring(0,parameters.indexOf('\n'));
+					}else{
+						parameters = parameters.substring(0,parameters.length);
+					}
+				}else{
+					str = "";
+				}
+				obj.sql = sql;
+				obj.parameters = parameters;
+				arr.push(obj);
+				num = str.indexOf('Parameters');
+			}
+			for(var i=0 ;i < arr.length;i++){
+				var sql = arr[i].sql;
+				var parameters = arr[i].parameters;
+
+				if(parameters == ""){
+					return;
+				}
+				parameters = parameters.trim();
+				parameters = parameters.replace(/Parameters:/g,"");
+				
+				var canshu = parameters.split(/, (?![^\(]*?\))/);
+				$.each(canshu ,function(index,value){
+					var str;
+					/*if(value.indexOf("(String)") > 0){
+						str = value.replace(/\(String\)/g,"");
+						str = "'" + str + "'";
+					}else if(value.indexOf("(Timestamp)") > 0){
+						str = value.replace(/\(Timestamp\)/g,"");
+						str = "'" + str + "'";
+					}else */
+					if(value.indexOf("(Integer)") > 0){
+						str = value.replace(/\(Integer\)/g,"");
+					}else{
+						str = value.substring(0,value.lastIndexOf('('));
+						str = "'" + str + "'";
+					}
+					str = str.replace(/ /,"");
+					sql = sql.replace(/\?/,str);
+				});
+				result += sql + ";";
+			}
+			$("#result").val(result.trim());	
+        }
+</script>
+</html>
+
+

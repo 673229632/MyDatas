@@ -1,0 +1,122 @@
+@extends(views.common.MainView, v_sTitle:"腹透中心规模")
+
+@widget.ctnr.Row(){
+	@widget.ctnr.Column(sAlign:"center",sCss:"col-8"){
+			@widget.ctnr.Div(sId:"VentralCenterScaleChart",sStyle:"width:1000px;height:500px;"){}
+	}
+	@widget.ctnr.Column(sAlign:"center",sCss:"col-4"){
+		@widget.ctnr.Div(sStyle:"margin-top:140px;"){
+			@widget.ctrl.Table(sId:"search-result",sQueryParamFunction:"createQueryParams",sUrl:"/VentralCenterScale/initVentralCenterScaleChart",bPagination:true,iPageSize:10,sSidePagination:"client",sCss:"no-pagination-left"){
+        		@widget.ctnr.Columns(){
+		            {field: 'hospitalName',align:'center',title: '医院',width:'600',formatter:function (value, row, index){
+		                           return setLengthLimit(value, row, index,10);
+		            }},
+		            {field: 'count',align:'center',title: '规模',width:'150',formatter:function (value, row, index){
+						return "<div style='width:130px;'class='td-ellipsis' title=''><span style='cursor:pointer;' onclick='transmissParameter(\""+row.hp_id+"\")'>"+value+"</div>";
+					}}
+        		}
+    		}
+   		}
+	}
+}
+		
+		
+<script>
+$(function(){
+	initVentralCenterScale();
+});
+
+//腹透中心规模 柱状图
+function initVentralCenterScale(){
+	
+	Ajax.ajax({
+		url : '@url("/VentralCenterScale/initVentralCenterScaleChart")',
+		success : function(data) {
+			initVentralCenterScaleChart(data.data);
+		}
+	});
+}
+
+//加载腹透中心规模柱状图
+function initVentralCenterScaleChart(data){
+	var myChart = echarts.init(document.getElementById('VentralCenterScaleChart'));
+	var dataAxis = [];
+	var dataCount = [];
+	var dataHp_id = [];
+	//此处的遍历，是遍历得到的数据，将性别和其对应的数量对应起来放到dataAxis和dataCount中.
+    for(var i=0;i<data.length;i++){
+		dataAxis.push(data[i].hospitalName);
+		dataCount.push(data[i].count);
+		dataHp_id.push(data[i].hp_id);
+	}
+    option = {
+   	    title : {
+   	    	text: '腹透中心规模',
+   	        x:"center",
+   	        y:'10px'
+   	    },
+   	    tooltip : {
+   	        trigger: 'axis'
+   	    },
+        toolbox: {
+        	x: '900',
+	        feature: {
+	            saveAsImage: {},// 保存为图片
+	        }
+	    },
+   	    xAxis : [
+   	        {
+   	        	axisLabel:{interval: 0},
+   	            type : 'category',
+   	            name : '医院',
+   	            data : dataAxis,
+      	         axisLabel:{ 
+      	   	         formatter : function(v) {
+      	   	          for (var i = 1; i < dataAxis.length+1; i++) {
+							if(v == dataAxis[i-1]){
+								return dataHp_id[i-1];
+							}		
+						}
+      	   	    	}
+      	   	     } 
+   	        }
+   	    ],
+   	    yAxis : [
+   	        {
+   	            type : 'value',
+   	         	name : '人数'
+   	        }
+   	    ],
+   	    series : [
+   	       
+   	        {
+   	            name:'人数',
+   	            type:'bar',
+   	            data:dataCount,
+   	            barWidth : 20
+   	        }
+   	    ]
+   	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+}
+
+//展示表格的详细数据
+function transmissParameter(hospitalName){
+    Dialog.open('@url("/VentralCenterScale/transmissParameter?hospitalName='+hospitalName+'")', {
+        iframeHeight : 650,
+        title:"患者列表"
+    });
+}
+
+//设置字符长度
+function setLengthLimit(value, row, index,length){
+     if(value == null){
+         return "<div class='td-ellipsis' title=''></div>";
+     }else if(value.length>length){
+         return "<div class='td-ellipsis'  title=\""+value+"\">"+value.substring(0,length-1)+"...</div>";
+     }else{
+         return "<div class='td-ellipsis' title=\""+value+"\">"+value+"</div>";
+     }
+}
+</script>

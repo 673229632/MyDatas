@@ -1,0 +1,73 @@
+
+//实现保存或者修改的js方法
+	function addOrEdit(){
+		//对页面的控件进行序列化取值
+		$('#result_form').bootstrapValidator('validate');
+		//判断页面是否都正常赋值
+		var isValid = $('#result_form').data('bootstrapValidator').isValid();
+		if(isValid == false){
+			return false;
+		}
+		
+		var sConidtion = $("#result_form").serialize();
+		Ajax.ajax({
+			url : '@url("/pdappointmentinfo/edit")',
+			data : sConidtion,
+			type : "post",
+			async: false,
+			success : function(data) {
+				if(data.retCode == 0){
+					parent.MsgBox.success("保存成功",function(){
+						   /* parent.$("#search-result").bootstrapTable('refresh');
+						   parent.$("search-detail").bootstrapTable('refresh'); */
+						   parent.location.reload();
+						   Dialog.closeSelf();
+					 });
+				}
+			}
+		}); 
+	}
+
+//controller的方法实现
+	/**
+     * 保存/编辑信息.
+     * 
+     * @param condForm 
+     * @return JacksonCountReturn
+     */
+    @RequestMapping(value="/edit", method = RequestMethod.POST)
+    @ControllerID(DBScreenID.PD_CHECKTIME_REGISTER_D)
+    public JacksonCountReturn edit(PdAppointmentInfoConditionForm condForm) {
+        return pdAppointmentInfoService.edit(condForm);
+    }
+	
+//ServiceImpl的方法实现
+	/**
+     * 保存/编辑信息
+	 *
+	 * @param condForm 
+     * @return JacksonCountReturn
+     */
+    @Override
+    public JacksonCountReturn edit(PdAppointmentInfoConditionForm condForm) {
+        JacksonCountReturn result = new JacksonCountReturn();
+        BPatientPdCheckRegister bPatientPdCheckRegister = new BPatientPdCheckRegister();
+        bPatientPdCheckRegister.setId(condForm.getId());
+        bPatientPdCheckRegister.setIschangetube(condForm.getIschangetube());
+        bPatientPdCheckRegister.setIscomplete(condForm.getIscomplete());
+        bPatientPdCheckRegister.setOthers(condForm.getOthers());
+        bPatientPdCheckRegister.setWorkdate(condForm.getWorkdate());
+        bPatientPdCheckRegister.setTimezone(condForm.getTimezone());
+        bPatientPdCheckRegister.setModifyid(getLoginUser().getId());
+        bPatientPdCheckRegister.setModifydate(new Date());
+        int successCount = bPatientPdCheckRegisterMapper.updateByPrimaryKeySelective(bPatientPdCheckRegister);
+        result.setSuccessCount(successCount);
+        if (successCount > 0) {
+            result.setRetMsg("保存成功！");
+        } else {
+            result.setRetMsg("保存失败！");
+        }
+        return result;
+    }
+	
+	

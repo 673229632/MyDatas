@@ -1,0 +1,67 @@
+@extends(views.common.DialogView,  v_sTitle:"置管手术信息上报/编辑")
+@import com.ustcsoft.pdqc.web.common.entity.Code
+@import com.ustcsoft.pdqc.web.patient.form.CatheterOperationReportForm
+@args String hospitalName
+@args String patientName
+@args String patientType
+@args String hpId
+@args String patientId
+@args CatheterOperationReportForm condForm
+
+@widget.ctnr.Row() {
+	@widget.ctrl.Input(sLabel:"所属医院:", sGroupCss:"col-md-4 hanzi4",sId:"hospitalName", sName:"hospitalName",oValue:hospitalName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者姓名:", sGroupCss:"col-md-4 hanzi4",sId:"patientName", sName:"patientName",oValue:patientName,bDisabled:true)
+	@widget.ctrl.Input(sLabel:"患者类型:", sGroupCss:"col-md-4 hanzi4",sId:"patientType", sName:"patientType",oValue:patientType,bDisabled:true)
+}
+@widget.ctnr.Form("atheterOperationReport_form"){
+	@widget.ctrl.Hidden(sId:"id",sName:"id",oValue:condForm.getId())
+	@widget.ctrl.Hidden(sId:"patientId",sName:"patientId",oValue:condForm.getPatientId())
+	@widget.ctrl.Hidden(sId:"hpId",sName:"hpId",oValue:condForm.getHpId())
+	@widget.ctnr.Row() {
+		@widget.ctrl.DatePicker(sLabel:"置管日期:",sGroupCss:"col-md-4 hanzi4",sName:"catheterdate",sId:"catheterdate",sFormat:"YYYY-MM-DD",bRequired:true,oValue:condForm.getCatheterdate())	
+	    @widget.ctrl.Input(sLabel:"置管医院:", sGroupCss:"col-md-4 hanzi4",sId:"catheterhospital", sName:"catheterhospital",oValue:condForm.getCatheterhospital(),bRequired:true,bDisabled:false)
+	    @widget.ctrl.Input(sLabel:"置管医生:", sGroupCss:"col-md-4 hanzi4",sId:"catheterdoctor", sName:"catheterdoctor",oValue:condForm.getCatheterdoctor(),bRequired:true,bDisabled:false)
+    }
+  	@widget.ctnr.Row() {
+	   	@widget.ctrl.SelectPicker(sLabel:"手术类型:", sName:"operationtype", sId:"operationtype",bShowEmptyOption:true,oOptions:"{'1':'置管','2':'拔管','3':'拔管+重置管','4':'再置管'}",sGroupCss:"col-md-4 hanzi4",bRequired:true,sInitValue:condForm.getOperationtype())
+	    @widget.ctrl.SelectPicker(sLabel:"麻醉方式:", sGroupCss:"col-md-4 hanzi4",sId:"anesthesiamethod", sName:"anesthesiamethod",oOptions:"{'1':'百特双联','2':'长富双联','3':'华仁双联','4':'其他'}",bDisabled:false,oValue:condForm.getAnesthesiamethod())
+   	    @widget.ctrl.SelectPicker(sLabel:"置管方法:", sName:"catheterway", sId:"catheterway",bShowEmptyOption:true,oOptions:"{'1':'手术法','2':'穿刺法','3':'腹腔镜法'}",sGroupCss:"col-md-4 hanzi4",bRequired:true,sInitValue:condForm.getCatheterway())
+    }
+    @widget.ctnr.Row() {
+	    @widget.ctrl.Input(sLabel:"置管方法选择原因:", sGroupCss:"col-md-4 hanzi8",sId:"reason", sName:"reason",oValue:"",bDisabled:false,oValue:condForm.getReason())
+    	@widget.ctrl.Input(sLabel:"透析系统:", sGroupCss:"col-md-4 hanzi4",sId:"dialysissystems", sName:"dialysissystems",oValue:condForm.getDialysissystems(),bDisabled:false)
+    	@widget.ctrl.Input(sLabel:"透析初始阶段:", sGroupCss:"col-md-4 hanzi6",sId:"dialysisstage", sName:"dialysisstage",oValue:condForm.getDialysisstage(),bDisabled:false)
+	}
+	@widget.ctnr.BtnBox(bBorder:true){
+        @widget.ctrl.Button({sId:"saveBtn",sLabel:"保存",style:"margin-left:20px", sOnClick:"CatheterSave"})
+        @widget.ctrl.Button({sLabel:"返回",style:"margin-left:20px", sOnClick:"Dialog.closeSelf()"})
+ 	}
+	
+	}
+	 <script type="text/javascript">
+		//保存
+		function CatheterSave(){
+			var patientId=$("#patientId").val();
+			$('#atheterOperationReport_form').bootstrapValidator('validate');
+			var isValid = $('#atheterOperationReport_form').data('bootstrapValidator').isValid();
+			if(!isValid){
+		    	return;
+		    }
+			var sConidtion = $('#atheterOperationReport_form').serialize();
+			Ajax.ajax({
+				url : '@url("/patientOverView/catheterSave")',
+				data : sConidtion,
+				success : function(data) {
+					if (data.retCode == 0) {
+						parent.MsgBox.success(data.retMsg,function(){
+		                    parent.$("#patient-result2").bootstrapTable('refresh', {query: {patientId : patientId}});
+		                    parent.$("#patient-result").bootstrapTable('refresh');
+		                    Dialog.closeSelf();
+		                });
+					} else {
+						MsgBox.warning(data.retMsg);
+					}
+				}
+			});
+		}
+	 </script>

@@ -1,0 +1,75 @@
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+@args String employeeNo
+
+
+	@widget.ctnr.BtnBox(sAlign:"right"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+			@widget.ctrl.Button({sLabel:"上传", sBtncss:"btn-normal", sId:"uploadBtn",sOnClick:"uploadMaretial()" })
+		}
+	}
+	@widget.ctnr.Form("search_form"){
+		@widget.ctrl.Hidden(sId:"employeeNo",sName:"employeeNo",oValue:employeeNo)
+	}
+	@widget.ctrl.Table(sId:"searchResult",iPageSize:10,sQueryParamFunction:"createQueryParams", 
+							sUrl:"/employeeList/getFiles", iPageSize:10, sSidePagination:"client"){
+		@widget.ctnr.Columns(){
+			{field: 'employeeNo', title: '职员编号', visible:false},
+			{field: 'fileType', title: '文件类型',formatter:function(value, row, index){
+				if(value==null){
+					return "";
+				}else if(value=="gcspxzm"){
+					return "工程师培训证明";
+				}else if(value=="gcszcz"){
+					return "工程师职称证";
+				}else if(value=="hspxzm"){
+					return "护士培训证明";
+				}else if(value=="hszcz"){
+					return "护士注册证";
+				}else if(value=="yszgzs"){
+					return "医师资格证书";
+				}else if(value=="yszyz"){
+					return "医师执业证";
+				}
+			}},
+			{field: 'uploadTime', title: '上传时间',formatter:function(value, row, index){
+				var date = new Date();
+				date.setTime(value);
+				var year=date.getFullYear();
+				var month =date.getMonth() +1;
+				var day =date.getDate();
+				if(value==null){
+					return "<div class='td-ellipsis' title=''></div>";
+				}else{
+					return "<div style='width:80px;' class='td-ellipsis' title=''>"+ year + "-" + month + "-" +day+"</div>"; 
+				}
+			}},
+			{field: 'fileName', title: '文件名称'},
+			{title: '操作', formatter: function (value, row, index){
+				return "<div><input type='button' style='margin-left: 5px' onclick='deleteMaterial(\""+row.employeeNo+"\")' value='删除' title='删除' /></div>";
+				}
+      		},
+		}
+	}
+	@widget.ctnr.BtnBox(sAlign:"right"){
+		@widget.ctnr.Div(sCss:"col-xs-12"){
+        	@widget.ctrl.Button({sLabel:"关闭",sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()"})
+    	}
+    }
+<!--脚本  -->
+<script>
+//列表检索参数
+function createQueryParams(params) {
+    return buildQueryParam('#search_form', params);
+}
+//上传职员资料
+function uploadMaretial(){
+	var employeeNo='@employeeNo';
+	Dialog.open('@url("/employeeList/uploadMaretial")'+ '?employeeNo=' + employeeNo,{
+		iframeHeight : 200,
+		iframeWidth : 150,
+    	title: "上传文件"
+	});
+}
+</script>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrganizationListMapper">
+    <!-- 获取父节点组织信息 -->
+    <select id="getParentOrgSelect" parameterType="java.lang.String"
+        resultType="com.ustcsoft.pdqc.web.common.entity.Code">
+    	SELECT
+			qc_center_name AS text,
+			org_no AS value
+		FROM
+			(
+				SELECT
+					parent_no AS parentNO
+				FROM
+					pd_m_organization
+				WHERE
+					org_no = #{orgNo,jdbcType=CHAR}
+				AND del_flag = '0'
+			) a
+		LEFT JOIN pd_d_qc_center b ON a.parentNO = b.org_no
+		AND b.del_flag = '0'
+    </select>
+    
+</mapper>

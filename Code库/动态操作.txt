@@ -1,0 +1,14 @@
+
+//当赋值变化时，执行操作
+    //日期选择框
+    $('#date').on('dp.change', function(e){
+        $('#search-result').bootstrapTable('refresh');
+    });
+	//input输入框
+	$("#warehousename").on("keyup",function(){
+		$("#search-result").bootstrapTable('refresh');
+	});
+	//下拉框
+	$("#colour").on('change',function(){
+		typeChange();//方法
+	});

@@ -1,0 +1,116 @@
+@import com.ustcsoft.pdqc.rythm.widget.bootstrapselect.*;
+@import com.ustcsoft.pdqc.web.common.entity.Code;
+@import com.ustcsoft.pdqc.web.systemmanagement.form.UserManagementForm;
+@extends(views.common.DialogView, v_bFixedBottomButton:true)
+
+@args List<Code> organizationList
+@args List<Code> userEditTypeList
+@args List<Code> empList
+@args UserManagementForm userManagementForm
+
+@args String userNo
+
+@widget.ctnr.Row(){
+	@widget.ctnr.Form("result_form"){
+		@widget.ctrl.Hidden({sLabel:"userNo:",oValue:userNo, sName:"userNo", sId:"userNo", sGroupCss:"col-3"})
+		@widget.ctrl.Input({sLabel:"登录名:", sName:"loginName", sId:"loginName", oValue:userManagementForm.getLoginName(), sGroupCss:"col-3", sMaxLength:"10", bRequired:true})
+		@widget.ctrl.Input({sLabel:"用户姓名:", sName:"userRealName", sId:"userRealName", oValue:userManagementForm.getUserRealName(), sGroupCss:"col-3", sMaxLength:"16", bRequired:true})
+		@widget.ctrl.Hidden({sLabel:"所属组织:", sName:"orgNoHide", sId:"orgNoHide", oValue:userManagementForm.getOrgNo(), sGroupCss:"col-3"})
+		@widget.ctrl.ComboZTree(sLabel:"所属组织", sName:"orgNo", sId:"orgNo", sGroupCss:"col-3",sInitValue:userManagementForm.getOrgNo(), sDataUrl:"roleManagement/getTree", bShowFilter : true, bPNodeSelectable : true)
+		@widget.ctrl.Hidden({sLabel:"用户类型:", sName:"userTypeHide", sId:"userTypeHide", oValue:userManagementForm.getUserType()})
+		@widget.ctrl.SelectPicker({sLabel:"用户类型:", sName:"userType", sId:"userType",sInitValue:userManagementForm.getUserType(), oOptions:userEditTypeList, sGroupCss:"col-3", bRequired:true})
+		@widget.ctrl.Hidden({sLabel:"关联职员:", sName:"employeeNoHide", sId:"employeeNoHide", oValue:userManagementForm.getEmployeeNo()})
+		@widget.ctrl.SelectPicker({sLabel:"关联职员:", sName:"employeeNo", sId:"employeeNo",sInitValue:userManagementForm.getEmployeeNo(), oOptions:empList, sGroupCss:"col-3"})
+	}
+	
+	@widget.ctnr.BtnBox(sAlign:"center"){
+		@widget.ctrl.Button({sLabel:"确定", sBtncss:"btn-normal", sOnClick:"saveUser", sId:"saveUserBtn"})
+		@widget.ctrl.Button({sLabel:"关闭", sBtncss:"btn-normal", sOnClick:"Dialog.closeSelf()", sId:"closeDialogBtn"})
+	}
+}
+
+<script>
+$(function() {
+	changeEmployeeNoSelect();
+})
+
+
+
+// 保存用户
+function saveUser() {
+	$('#result_form').bootstrapValidator('validate'); 
+	var isValid = $('#result_form').data('bootstrapValidator').isValid();
+    if(!isValid) {
+    	return;
+    }
+    var datas = $("#result_form").serialize();
+    Ajax.ajax({
+		url : '@url("/userManagement/saveUser")',
+		data : datas,
+		type:'post',
+		success : function(data) {
+			if (data.successCount > 0) {
+				MsgBox.success(data.retMsg,function() {
+					parent.freshtable();
+					Dialog.closeSelf();
+				});
+			} else {
+				MsgBox.warning(data.retMsg,function() {
+					parent.freshtable();
+					Dialog.closeSelf();
+				});
+			}
+		}
+	})
+}
+
+// 所属机构改变触发事件
+$("#orgNo").change(function(){
+	$("#orgNoHide").val($("#orgNo").ComboZTree("getValue"));
+	changeEmployeeNoSelect();
+	changeUserTypeSelect();
+})
+
+// 职员联动下拉框
+function changeEmployeeNoSelect() {
+	var orgNo = $("#orgNoHide").val();
+	Ajax.ajax({
+		url : '@url("/userManagement/changeEmployeeNoSelect")',
+		data : { orgNo : orgNo },
+		type:'post',
+		async: false, 
+		success : function(data) {
+			$("#employeeNo").find("select").empty();
+            $.each(data.data,function(i,code){ 
+            	$("#employeeNo select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            }); 
+		    $('#employeeNo select').selectpicker('refresh');//刷新操作
+		    $("#employeeNo select").trigger("change");
+		    var employeeNo = $("#employeeNoHide").val();
+			$('#employeeNo select').selectpicker('val', employeeNo);
+		}
+	})
+}
+
+// 用户类型联动下拉框
+function changeUserTypeSelect() {
+	var orgNo = $("#orgNoHide").val();
+	Ajax.ajax({
+		url : '@url("/userManagement/changeUserTypeSelect")',
+		data : { orgNo : orgNo },
+		type:'post',
+		async: false, 
+		success : function(data) {
+			$("#userType").find("select").empty();
+            $.each(data.data,function(i,code){ 
+            	$("#userType select").append("<option selected value='"+code.value+"'>"+code.text+"</option>");
+            }); 
+		    $('#userType select').selectpicker('refresh');//刷新操作
+		    $("#userType select").trigger("change");
+		    var userType = $("#userTypeHide").val();
+			$('#userType select').selectpicker('val', userType);
+		}
+	})
+}
+</script>
+

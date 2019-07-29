@@ -1,0 +1,20 @@
+	$('#result_form').bootstrapValidator('validate');
+	var isValid = $('#result_form').data('bootstrapValidator').isValid();
+	if(isValid == false){
+		return false;
+	}
+
+ 	$("#result_form").data('bootstrapValidator').destroy();
+	$('#result_form').data('bootstrapValidator', null);
+
+	var sConidtion = $("#result_form").serializeObject();
+	var sConidtion = $("#result_form").serialize();
+
+
+	function destroyFormisValid(){
+	    var tmp = $("#result_form").data('bootstrapValidator'); 
+	    if (tmp != "" && tmp != null && typeof(tmp)!="undefined"){ 
+	        tmp.destroy();
+	    }
+	    $('#result_form').data('bootstrapValidator', null);
+	}

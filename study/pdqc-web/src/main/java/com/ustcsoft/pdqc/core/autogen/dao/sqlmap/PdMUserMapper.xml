@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustcsoft.pdqc.core.autogen.dao.PdMUserMapper">
+  <resultMap id="BaseResultMap" type="com.ustcsoft.pdqc.core.autogen.entity.PdMUser">
+    <id column="user_no" jdbcType="VARCHAR" property="userNo" />
+    <result column="org_no" jdbcType="VARCHAR" property="orgNo" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="user_pass" jdbcType="VARCHAR" property="userPass" />
+    <result column="user_real_name" jdbcType="VARCHAR" property="userRealName" />
+    <result column="user_type" jdbcType="VARCHAR" property="userType" />
+    <result column="phone_num" jdbcType="VARCHAR" property="phoneNum" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="skinCss" jdbcType="VARCHAR" property="skincss" />
+    <result column="order_index" jdbcType="BIGINT" property="orderIndex" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="date_created" jdbcType="TIMESTAMP" property="dateCreated" />
+    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
+    <result column="date_modified" jdbcType="TIMESTAMP" property="dateModified" />
+    <result column="row_version" jdbcType="BIGINT" property="rowVersion" />
+    <result column="screen_id" jdbcType="VARCHAR" property="screenId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    user_no, org_no, user_name, login_name, user_pass, user_real_name, user_type, phone_num, 
+    email, skinCss, order_index, del_flag, created_by, date_created, modified_by, date_modified, 
+    row_version, screen_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pd_m_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUserKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_m_user
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUserKey">
+    delete from pd_m_user
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUserExample">
+    delete from pd_m_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUser">
+    insert into pd_m_user (user_no, org_no, user_name, 
+      login_name, user_pass, user_real_name, 
+      user_type, phone_num, email, 
+      skinCss, order_index, del_flag, 
+      created_by, date_created, modified_by, 
+      date_modified, row_version, screen_id
+      )
+    values (#{userNo,jdbcType=VARCHAR}, #{orgNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{loginName,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR}, #{userRealName,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{skincss,jdbcType=VARCHAR}, #{orderIndex,jdbcType=BIGINT}, #{delFlag,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{dateCreated,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, 
+      #{dateModified,jdbcType=TIMESTAMP}, #{rowVersion,jdbcType=BIGINT}, #{screenId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUser">
+    insert into pd_m_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userNo != null">
+        user_no,
+      </if>
+      <if test="orgNo != null">
+        org_no,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="userPass != null">
+        user_pass,
+      </if>
+      <if test="userRealName != null">
+        user_real_name,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="phoneNum != null">
+        phone_num,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="skincss != null">
+        skinCss,
+      </if>
+      <if test="orderIndex != null">
+        order_index,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="dateCreated != null">
+        date_created,
+      </if>
+      <if test="modifiedBy != null">
+        modified_by,
+      </if>
+      <if test="dateModified != null">
+        date_modified,
+      </if>
+      <if test="rowVersion != null">
+        row_version,
+      </if>
+      <if test="screenId != null">
+        screen_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userNo != null">
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orgNo != null">
+        #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPass != null">
+        #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealName != null">
+        #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNum != null">
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="skincss != null">
+        #{skincss,jdbcType=VARCHAR},
+      </if>
+      <if test="orderIndex != null">
+        #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreated != null">
+        #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null">
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="dateModified != null">
+        #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowVersion != null">
+        #{rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="screenId != null">
+        #{screenId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUserExample" resultType="java.lang.Integer">
+    select count(*) from pd_m_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pd_m_user
+    <set>
+      <if test="record._selectiveMark.userNo != null">
+        user_no = #{record.userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orgNo != null">
+        org_no = #{record.orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.loginName != null">
+        login_name = #{record.loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.userPass != null">
+        user_pass = #{record.userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.userRealName != null">
+        user_real_name = #{record.userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.userType != null">
+        user_type = #{record.userType,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.phoneNum != null">
+        phone_num = #{record.phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.skincss != null">
+        skinCss = #{record.skincss,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.orderIndex != null">
+        order_index = #{record.orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.delFlag != null">
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateCreated != null">
+        date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.modifiedBy != null">
+        modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record._selectiveMark.dateModified != null">
+        date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record._selectiveMark.rowVersion != null">
+        row_version = #{record.rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="record._selectiveMark.screenId != null">
+        screen_id = #{record.screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pd_m_user
+    set user_no = #{record.userNo,jdbcType=VARCHAR},
+      org_no = #{record.orgNo,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      login_name = #{record.loginName,jdbcType=VARCHAR},
+      user_pass = #{record.userPass,jdbcType=VARCHAR},
+      user_real_name = #{record.userRealName,jdbcType=VARCHAR},
+      user_type = #{record.userType,jdbcType=VARCHAR},
+      phone_num = #{record.phoneNum,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      skinCss = #{record.skincss,jdbcType=VARCHAR},
+      order_index = #{record.orderIndex,jdbcType=BIGINT},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=VARCHAR},
+      date_created = #{record.dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{record.modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{record.dateModified,jdbcType=TIMESTAMP},
+      row_version = #{record.rowVersion,jdbcType=BIGINT},
+      screen_id = #{record.screenId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUser">
+    update pd_m_user
+    <set>
+      <if test="_selectiveMark.orgNo != null">
+        org_no = #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.loginName != null">
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.userPass != null">
+        user_pass = #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.userRealName != null">
+        user_real_name = #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.userType != null">
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.phoneNum != null">
+        phone_num = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.skincss != null">
+        skinCss = #{skincss,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.orderIndex != null">
+        order_index = #{orderIndex,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateCreated != null">
+        date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.modifiedBy != null">
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="_selectiveMark.dateModified != null">
+        date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="_selectiveMark.rowVersion != null">
+        row_version = #{rowVersion,jdbcType=BIGINT},
+      </if>
+      <if test="_selectiveMark.screenId != null">
+        screen_id = #{screenId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ustcsoft.pdqc.core.autogen.entity.PdMUser">
+    update pd_m_user
+    set org_no = #{orgNo,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      user_pass = #{userPass,jdbcType=VARCHAR},
+      user_real_name = #{userRealName,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=VARCHAR},
+      phone_num = #{phoneNum,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      skinCss = #{skincss,jdbcType=VARCHAR},
+      order_index = #{orderIndex,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      date_created = #{dateCreated,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      date_modified = #{dateModified,jdbcType=TIMESTAMP},
+      row_version = #{rowVersion,jdbcType=BIGINT},
+      screen_id = #{screenId,jdbcType=VARCHAR}
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

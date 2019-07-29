@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ustcsoft.lotus</groupId>
+    <artifactId>pdqc-web</artifactId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>PdqcWeb</name>
+    <url>http://maven.apache.org</url>
+
+    <!-- 属性配置 -->
+    <properties>
+        <!-- JDK版本 -->
+        <java.version>1.7</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- JUnit版本 -->
+        <junit.version>4.12</junit.version>
+        <!-- 条码版本 -->
+        <barcode4j.version>2.0</barcode4j.version>
+        <!-- WEB容器依赖 -->
+        <jsp-api.version>2.2.1</jsp-api.version>
+        <servlet-api.version>3.0.1</servlet-api.version>
+        <!-- 日志输出 -->
+        <slf4j-api.version>1.7.21</slf4j-api.version>
+        <jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
+        <logback.version>1.1.7</logback.version>
+        <!-- Spring框架的版本 -->
+        <springframework.version>4.2.6.RELEASE</springframework.version>
+        <!-- Json -->
+        <jackson.version>2.7.6</jackson.version>
+        <!-- mysql -->
+        <mysql.connector.version>5.1.21</mysql.connector.version>
+        <!-- commons-dbcp.version -->
+        <commons-dbcp.version>1.4</commons-dbcp.version>
+        <!-- 文件上传 -->
+        <commons-fileupload.version>1.3.2</commons-fileupload.version>
+        <!-- Apache Commons Lang -->
+        <commons-lang3.version>3.4</commons-lang3.version>
+        <commons-beanutils.version>1.8.3</commons-beanutils.version>
+        <!-- UserAgentUtils -->
+        <UserAgentUtils.version>1.20</UserAgentUtils.version>
+        <!-- 内部框架 -->
+        <!-- Rythm UI Engine -->
+        <rythm-ui.version>0.0.19-SNAPSHOT</rythm-ui.version>
+        <!-- FrameWork版本 -->
+        <marsfw.version>1.0.11-RELEASE</marsfw.version>
+        <!-- mybatis-paging -->
+        <mybatis-paging.version>1.0.5-V2-SNAPSHOT</mybatis-paging.version>
+        <!-- jacob版本 -->
+        <jacob.version>1.14.3</jacob.version>
+    </properties>
+
+    <!-- 依赖 -->
+    <dependencies>
+    	<!-- CXF add by caowenjun -->
+        <dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-rt-frontend-jaxws</artifactId>
+		    <version>3.1.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-rt-transports-http-jetty</artifactId>
+		    <version>3.1.4</version>
+		</dependency>
+        
+    	<!-- oracle -->
+     	<dependency>
+		  <groupId>com.oracle</groupId>
+		  <artifactId>ojdbc6</artifactId>
+		  <version>11.2.0.4</version>
+		</dependency>
+    	<!-- FTP by cwj-->
+      <dependency>
+       <groupId>commons-net</groupId>
+       <artifactId>commons-net</artifactId>
+       <version>3.1</version>
+       </dependency>
+    	<!-- quartz add by cwj -->
+        <dependency>
+          <groupId>org.quartz-scheduler</groupId>
+          <artifactId>quartz</artifactId>
+          <version>2.2.1</version>
+        </dependency>
+    	<!-- 读取患者生命体征接口 -->
+	    <dependency>
+		    <groupId>com.google.protobuf</groupId>
+		    <artifactId>protobuf-java</artifactId>
+		    <version>3.1.0</version>
+		</dependency>
+        <!-- -->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <!-- FrameWork依赖 -->
+        <dependency>
+            <groupId>com.ustcsoft.marsfw</groupId>
+            <artifactId>marsfw-webmvc</artifactId>
+            <version>${marsfw.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ustcsoft.marsfw</groupId>
+            <artifactId>marsfw-shiro-web</artifactId>
+            <version>${marsfw.version}</version>
+        </dependency>
+
+        <!-- Servlet依赖 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>${jsp-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 日志Logging with SLF4J & LogBack -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${jcl-over-slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- SpringFramework依赖 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${springframework.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
+        <!-- sqlsever -->
+        <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+       <!-- excel导入导出 add by cwj -->
+        <dependency>
+          <groupId>net.sourceforge.jexcelapi</groupId>
+          <artifactId>jxl</artifactId>
+          <version>2.6.12</version>
+        </dependency>
+        <!-- Json支持 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Apache Commons DBCP -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>${commons-dbcp.version}</version>
+        </dependency>
+        
+		<!-- POI -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.15</version>
+        </dependency>
+        
+        <!-- 文件上传 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload.version}</version>
+        </dependency>
+        <!-- Apache Commons Lang -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <!-- Apache Commons Beanutils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons-beanutils.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
+		<dependency>
+		    <groupId>com.belerweb</groupId>
+		    <artifactId>pinyin4j</artifactId>
+		    <version>2.5.0</version>
+		</dependency>
+
+        <!-- MyBatis -->
+        <dependency>
+            <groupId>com.ustcsoft.mybatis</groupId>
+            <artifactId>mybatis-paging</artifactId>
+            <version>${mybatis-paging.version}</version>
+        </dependency>
+
+        <!-- 用户浏览器检测 -->
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${UserAgentUtils.version}</version>
+        </dependency>
+
+        <!-- JUnit依赖 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- 条码 -->
+        <dependency>
+			<groupId>net.sf.barcode4j</groupId>
+			<artifactId>barcode4j-light</artifactId>
+			<version>${barcode4j.version}</version>
+		</dependency>
+		
+        <!-- UI依赖 -->
+        <dependency>
+            <groupId>com.ustcsoft.rythm</groupId>
+            <artifactId>rythm-ui</artifactId>
+            <version>${rythm-ui.version}</version>
+        </dependency>
+        
+        <!-- jacob -->
+		<dependency>
+		    <groupId>net.sf.jacob-project</groupId>
+		    <artifactId>jacob</artifactId>
+		    <version>${jacob.version}</version>
+		</dependency>
+		
+		<!-- jna依赖 -->
+        <dependency>
+		    <groupId>net.java.dev.jna</groupId>
+		    <artifactId>jna</artifactId>
+		    <version>4.1.0</version>
+		</dependency>
+		
+		<!-- dwr -->
+		<dependency>
+	    	<groupId>org.directwebremoting</groupId>
+	    	<artifactId>dwr</artifactId>
+	    	<version>3.0.2-RELEASE</version>
+	    </dependency>
+    </dependencies>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <!-- 是否替换资源中的属性 -->
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- Java编译插件, 设定JDK版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <showWarnings>true</showWarnings>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <!-- war打包插件, 设定war包名称不带版本号 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <warName>${project.artifactId}</warName>
+                </configuration>
+            </plugin>
+            <!-- Resources Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <includeEmptyDirs>true</includeEmptyDirs>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <!-- MyBatis DAO自动生成插件 -->
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.3</version>
+                <configuration>
+                    <!-- 配置文件地址 -->
+                    <configurationFile>${basedir}/src/main/resources/plugins/mybatis-generator-config.xml</configurationFile>
+                    <!-- 输出过程 -->
+                    <verbose>true</verbose>
+                    <!--允许覆盖生成的文件 -->
+                    <overwrite>true</overwrite>
+                </configuration>
+                <dependencies>
+                	<!-- sqlServer
+                 	<dependency>
+                        <groupId>net.sourceforge.jtds</groupId>
+                        <artifactId>jtds</artifactId>
+                        <version>1.3.1</version>
+                    </dependency> -->
+                    <!-- oracle -->
+	               <!-- <dependency>
+					  <groupId>com.oracle</groupId>
+					  <artifactId>ojdbc6</artifactId>
+					  <version>11.2.0.4</version>
+					</dependency>
+					-->
+					<!-- mysql -->
+                   <dependency> 
+	                   <groupId>mysql</groupId> 
+	                   <artifactId>mysql-connector-java</artifactId> 
+	                   <version>${mysql.connector.version}</version> 
+                   </dependency> 
+                    <!-- 自定义插件 -->
+                    <dependency>
+                        <groupId>com.ustcsoft.mybatis</groupId>
+                        <artifactId>mybatis-paging</artifactId>
+                        <version>${mybatis-paging.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- 自定义仓库 -->
+    <repositories>
+        <repository>
+            <id>GCI-Repository</id>
+            <name>GCI Maven Repository</name>
+            <url>http://maven.gcsoft.com/content/groups/public/</url>
+            <snapshots>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>GCI-Repository</id>
+            <name>GCI Maven Repository</name>
+            <url>http://maven.gcsoft.com/content/groups/public/</url>
+            <snapshots>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
