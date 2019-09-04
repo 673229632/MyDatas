@@ -1,0 +1,32 @@
+$(function() {
+    window.addEventListener("pageshow", function() {
+    	sessionStorage.setItem("pad-back-flag", true);
+    	
+        if(sessionStorage.getItem("need-refresh")) {
+            var u = navigator.userAgent;
+            // var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isiOS) {
+                location.reload();
+            }
+            sessionStorage.removeItem("need-refresh");
+        }
+    });
+});
+
+// 加载上一页地址
+function App_go_history_page() {
+     sessionStorage.setItem("need-refresh", true);
+     window.history.go(-1);
+     // window.history.back();
+}
+
+// 用于替代location.replace, 适配ios及其Android中的浏览器兼容问题
+function App_RedefineLocationReplace(url) {
+    if (history.replaceState) {
+        history.replaceState(null, document.title, url);
+        history.go(0);
+    } else {
+        location.replace(url);
+    }
+}
