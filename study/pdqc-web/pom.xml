@@ -32,7 +32,7 @@
         <!-- Json -->
         <jackson.version>2.7.6</jackson.version>
         <!-- mysql -->
-        <mysql.connector.version>5.1.21</mysql.connector.version>
+        <mysql.connector.version>8.0.16</mysql.connector.version>
         <!-- commons-dbcp.version -->
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <!-- 文件上传 -->
