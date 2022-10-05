@@ -30,7 +30,7 @@
         <!-- Spring框架的版本 -->
         <springframework.version>4.2.6.RELEASE</springframework.version>
         <!-- Json -->
-        <jackson.version>2.7.6</jackson.version>
+        <jackson.version>2.12.6.1</jackson.version>
         <!-- mysql -->
         <mysql.connector.version>5.1.21</mysql.connector.version>
         <!-- commons-dbcp.version -->
